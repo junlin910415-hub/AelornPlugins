@@ -1,0 +1,494 @@
+# ─────────────────────────────────────────────────────────────
+# AelornWorlds — Folia 多世界管理
+#   世界設定套用 / 視覺與規則 / 世界邊界 / 區塊與實體負載 / 世界傳送
+#
+# 設計原則:程式碼裡沒有寫死的數值、材質、訊息或介面配置。
+# 這份檔案(和 messages.yml)是唯一的真實來源;每個區段都是選填,
+# 省略時使用註解標示的預設值,所以精簡版設定與完整版行為完全一致。
+#
+# 改完之後執行 /aw reload(非同步,不會卡伺服器)。
+# ─────────────────────────────────────────────────────────────
+
+# 設定檔結構版本。舊版本仍可正常運作,但啟動時會提醒有哪些新功能尚未設定。
+config-version: 5
+
+# 所有文字的顏色格式:
+#   AUTO(預設)  含有 <標籤> 者以 MiniMessage 解析,否則視為 & 色碼
+#   LEGACY      一律 & 色碼
+#   MINIMESSAGE 一律 MiniMessage(<red>、<gradient:…> 等)
+#   PLAIN       不處理格式
+text-format: AUTO
+
+# Folia 無法在執行期動態載入世界。保留此旗標僅為相容舊設定;
+# 啟用時會嘗試載入並在失敗時輸出明確訊息。
+attempt-dynamic-load: false
+
+# 是否把 worlds 區段中的設定實際套用到世界(舊版世界管理器只讀取不套用)。
+apply-world-settings:
+  difficulty: true
+  pvp: true
+  # 寫入世界出生點會變更 level.dat,預設關閉;
+  # 關閉時 spawn 座標仍會作為「傳送目的地」使用(唯讀)。
+  spawn-point: false
+  # 是否套用每個世界的 border 區段。
+  border: true
+  # 是否套用每個世界的 visual.spawn-chunk-radius。
+  spawn-chunk-radius: true
+
+# 每世界視覺處理:視距、模擬距離、時間與天氣鎖定、game rules。
+# 全部在 GlobalRegionScheduler 上套用,不會阻塞區域執行緒。
+visual:
+  enabled: true
+
+# 世界未指定 icon 時,依 environment 選用的預設傳送圖示。
+default-icons:
+  NORMAL: GRASS_BLOCK
+  NETHER: NETHERRACK
+  THE_END: END_STONE
+  CUSTOM: STONE
+
+# ─────────────────────────────────────────────────────────────
+# 區塊觀測與掉落物上限
+# ─────────────────────────────────────────────────────────────
+chunk:
+  # 統計每個世界的區塊載入/卸載量(純觀測,無副作用)。用 /aw chunks 查看。
+  metrics-enabled: true
+  # 掉落物計數器的追蹤上限;超過即整批重置,避免長時間執行後記憶體累積。
+  max-tracked-chunks: 20000
+  # 區塊抖動偵測。
+  #
+  # warn-threshold 計算的是「重複載入次數」,不是載入次數 —— 也就是同一個區塊在
+  # 同一個視窗內第二次(以後)被載入的總和。這個區別很重要:
+  #   一位玩家上線、預生成、飛行探索 → 每個區塊各載入「一次」,重複次數為 0,不會警告。
+  #   傳送迴圈、兩個區塊載入器互相拉扯、spawn-chunk-radius 與邊界打架
+  #                                  → 同一批區塊反覆進出,重複次數迅速累積,會警告。
+  # 舊版是用「載入總數」當門檻,所以只要有人上線(視距 10 約 441 個區塊)就會誤報。
+  churn:
+    window-seconds: 10
+    warn-threshold: 200
+    warn-cooldown-seconds: 300
+    # 伺服器啟動或世界剛載入時會一次重播大片區域,那是一次性成本不是抖動。
+    # 這段時間內不發警告。
+    startup-grace-seconds: 90
+  # 每區塊掉落物上限。預設關閉;啟用後只會清除「普通」掉落物,
+  # 具名物品與帶有 PDC 的 RPG 物品(AelornItems / Nexo / AeloriaHUD / MythicCore)永不清除。
+  item-cap:
+    enabled: false
+    max-per-chunk: 96
+    # 超過上限時要實際掃描整個區塊才能確認,所以同一個區塊兩次掃描至少間隔這麼久。
+    # 沒有這個間隔的話,長期停在上限的刷怪塔會讓「每一次掉落」都掃一次整個區塊。
+    rescan-cooldown-seconds: 5
+    protect-named-items: true
+    protect-custom-data-items: true
+
+# ─────────────────────────────────────────────────────────────
+# 世界傳送
+# ─────────────────────────────────────────────────────────────
+transfer:
+  enabled: true
+  # 傳送前以 getChunkAtAsync 非同步預載目標區塊,避免同步載入卡頓。
+  preload-chunks: true
+  cooldown-seconds: 3
+  # 啟用後除了 aelorn.worlds.transfer,還需要下列前綴 + 世界名稱(小寫)的權限。
+  require-per-world-permission: false
+  permission-prefix: 'aelorn.worlds.world.'
+
+  # 安全落點:設定的 spawn 座標若已被建築填滿、變成岩漿或懸空,
+  # 會在附近搜尋可站立的位置(頭腳兩格淨空、腳下實心且非深水)。
+  # 半徑越大搜尋時的方塊讀取越多,建議維持個位數。
+  safe-landing:
+    enabled: true
+    horizontal-radius: 8
+    vertical-radius: 4
+    # 玩家身體/頭部所在的兩格不得是這些方塊(實心方塊一律排除,不需列出)。
+    unsafe-body-blocks: [FIRE, SOUL_FIRE, LAVA, POWDER_SNOW]
+    # 腳下那格不得是這些方塊。自訂危險方塊可自行追加。
+    unsafe-floor-blocks:
+      - LAVA
+      - MAGMA_BLOCK
+      - CACTUS
+      - CAMPFIRE
+      - SOUL_CAMPFIRE
+      - SWEET_BERRY_BUSH
+      - WITHER_ROSE
+    # 兩格以上深水視為溺水陷阱。
+    treat-deep-water-as-unsafe: true
+
+  # 傳送介面。所有槽位、材質與排序都可調整;文字在 messages.yml 的 menu 區段。
+  menu:
+    # 可用佔位符: {page} {pages} {count}
+    title: '&5世界傳送 &8({page}/{pages})'
+    rows: 6
+    # 隱藏未載入的世界(預設顯示成灰色圖示,讓管理員看得到少了什麼)。
+    hide-unloaded: false
+    # CONFIG(依設定順序) / ALIAS / NAME / PLAYERS(人多的在前)
+    sort: CONFIG
+    unloaded-icon: GRAY_DYE
+    # 世界圖示可放的槽位。留空 = 除了按鈕列以外的所有槽位。
+    content-slots: []
+    # 空槽填充物。
+    filler:
+      enabled: false
+      material: GRAY_STAINED_GLASS_PANE
+    # slot 設為 -1 可移除該按鈕。省略 slot 時自動放在最後一列。
+    buttons:
+      previous-page:
+        slot: 45
+        material: ARROW
+      close:
+        slot: 49
+        material: BARRIER
+      next-page:
+        slot: 53
+        material: ARROW
+
+# ─────────────────────────────────────────────────────────────
+# 玩家規則(遊戲模式、飛行、虛空保護、重生導向)
+# 這些是讓多世界像多台伺服器的關鍵開關,全部在每個世界的 rules 區段啟用。
+# ─────────────────────────────────────────────────────────────
+rules:
+  enabled: true
+  # 具此權限者完全不受下列規則限制。留空字串則沒有人可豁免。
+  bypass-permission: 'aelorn.worlds.rules.bypass'
+  # 進入「沒有設定 game-mode」的世界時要還原成哪個模式。
+  # 留空 = 不動玩家的模式(預設,最不意外)。
+  # 設成 SURVIVAL 就能確保創造模式不會被帶出建築世界。
+  default-game-mode: ''
+  # 全域關掉虛空保護的總開關(各世界仍需自行啟用)。
+  void-protection: true
+
+  # 每世界的 entry 規則是否也套用到「不是本插件發起」的跨世界傳送
+  # (其他插件的 /tp、/home、傳送門…)。
+  # 關閉時 player-limit / blocked-origins / entry.permission 只對 /aw tp 與傳送介面有效,
+  # 任何其他插件都能繞過去——所以預設開啟。
+  enforce-entry-on-teleport: true
+  # 登入時是否也檢查一次進入規則。
+  # 關閉時,只要在受限世界登出再登入就能繞過 player-limit 與 entry.permission ——
+  # 伺服器會把玩家放回原處,中間不經過任何規則。所以預設開啟。
+  # 不合規時會移到 entry-fallback-world(留空則用伺服器的第一個世界)。
+  enforce-entry-on-join: true
+  entry-fallback-world: ''
+  # 這些傳送原因不受進入規則限制。可用值見 Bukkit 的 TeleportCause,
+  # 例如 [COMMAND, SPECTATE] 可讓管理工具的傳送不被擋。
+  entry-exempt-causes: []
+  # 每世界 rules.commands.blocked 的豁免權限。留空 = 沿用上面的 bypass-permission。
+  command-bypass-permission: ''
+
+# ─────────────────────────────────────────────────────────────
+# 實體清理
+# ─────────────────────────────────────────────────────────────
+purge:
+  # /aw purge 未指定類別時清除的範圍。
+  default-categories:
+    - MONSTER
+    - ANIMAL
+    - WATER_ANIMAL
+    - WATER_AMBIENT
+    - WATER_UNDERGROUND_CREATURE
+    - AMBIENT
+    - AXOLOTL
+  # 永不清除的實體。預設涵蓋 RPG 伺服器不能弄丟的東西。
+  protect:
+    named: true               # 具名實體
+    persistent-data: true     # 帶 PDC 的實體(MythicMobs / Citizens / ModelEngine)
+    scoreboard-tags: true     # 帶計分板標籤的實體
+    tamed: true               # 已馴服的寵物
+    leashed: true             # 被拴繩牽住的生物
+    entity-types:
+      - VILLAGER
+      - WANDERING_TRADER
+      - IRON_GOLEM
+      - SNOW_GOLEM
+      - ARMOR_STAND
+  # 排程清理。實際的開關與間隔在每個世界的 purge 區段;
+  # 這裡是所有世界的預設值與檢查頻率。
+  auto:
+    enabled: false
+    check-seconds: 30
+    default-interval-seconds: 600
+    announce: false
+
+# ─────────────────────────────────────────────────────────────
+# /aw health 的警戒門檻。超過即以警示樣式標示該世界。
+# 設為 0 表示不檢查該項。
+# ─────────────────────────────────────────────────────────────
+health:
+  warn-entities: 3000
+  warn-tile-entities: 4000
+  warn-chunks: 2000
+  warn-items: 400
+  # 普查會對每個已載入區塊各送一個任務,不指定世界時對所有世界一起做。
+  # 同一位發送者兩次普查之間至少間隔這麼久,避免連續執行時互相排隊。
+  # 需要 aelorn.worlds.inspect 權限(預設 op)。
+  census-cooldown-seconds: 10
+
+# ─────────────────────────────────────────────────────────────
+# 每個世界的設定。以下欄位全部選填。
+#
+#   alias / environment / difficulty / pvp / spawn — 與舊版相同
+#   icon          — 傳送介面圖示(省略時用 default-icons)
+#   transferable  — 是否出現在傳送介面(預設 true)
+#   menu-slot     — 固定在介面的某個槽位(每頁都在同一格),-1 = 自動排列
+#   visual        — 視距、時間/天氣鎖定、auto-save、game rules
+#   border        — 世界邊界(限制地形生成最有效的手段)
+#   chunk         — 此世界的掉落物上限覆寫
+#   spawn-control — 生怪上限與頻率(bukkit.yml 只有全伺服器一組值)
+#   entry         — 進入規則:人數上限、來源世界、額外權限
+#   rules         — 玩家規則:遊戲模式、飛行、虛空保護、重生導向、封鎖指令
+#   portals       — 傳送門:停用、依環境導向到指定世界
+#   purge         — 排程實體清理
+#   arrival       — 進入世界時的訊息 / 標題 / 音效 / 指令
+#
+# arrival.commands 注意事項:
+#   commands-as-player: false(預設)時,指令以「主控台」身分執行,也就是完整的
+#   管理員權限,而觸發條件是「玩家進入世界」—— 那是玩家自己控制、而且可以反覆做的事。
+#   所以清單裡若有 give / eco add 這類指令,務必保留 command-cooldown-seconds,
+#   否則來回走一次傳送門就是一次發放。冷卻以「玩家 × 世界」計算,預設 5 秒。
+#   {player} 只會在玩家名稱是純英數與底線時代入;Bedrock 之類帶前綴或空白的名稱
+#   會讓整串指令被拆成不同的參數,因此會直接略過並記錄警告。
+# ─────────────────────────────────────────────────────────────
+worlds:
+  world:
+    alias: '&6艾洛恩大陸'
+    environment: NORMAL
+    difficulty: EASY
+    pvp: false
+    icon: GRASS_BLOCK
+    menu-slot: -1
+    spawn:
+      x: -204.4980129437804
+      y: -18.0
+      z: 146.70247528393446
+      yaw: -179.20801
+      pitch: -2.7744408
+    # 主世界範例:壓低模擬距離以減輕實體運算,保留較遠的可視距離。
+    visual:
+      view-distance: 10
+      simulation-distance: 4
+    # 世界邊界範例:限制地形生成範圍,長期下來也限制了世界資料夾大小。
+    border:
+      enabled: true
+      size: 12000
+      center-x: 0
+      center-z: 0
+      # 大於 0 時邊界會在這麼多秒內平滑縮放到 size。
+      transition-seconds: 0
+      warning-distance: 32
+      warning-time-seconds: 15
+      damage-amount: 0.2
+      damage-buffer: 5
+    # 生怪預算範例。limits 為每玩家可存在的數量上限,
+    # tick-rates 為生成間隔(數字越大越少生)。
+    # 類別: MONSTER ANIMAL WATER_ANIMAL WATER_AMBIENT
+    #       WATER_UNDERGROUND_CREATURE AMBIENT AXOLOTL MISC
+    spawn-control:
+      limits:
+        MONSTER: 30
+        ANIMAL: 6
+      tick-rates:
+        MONSTER: 8
+        ANIMAL: 400
+    # 傳送門導向範例:本世界的地獄門通往 world_nether(多主世界時這是必要設定,
+    # 原版會把所有主世界的地獄門都送進同一個地獄)。
+    # 座標縮放仍由原版計算,這裡只換「送到哪個世界」。
+    portals:
+      disabled: false
+      targets:
+        NETHER: world_nether
+    # 排程清理範例:每 10 分鐘清一次怪,每個區塊留 4 隻(留年輕的,老的先清)。
+    # keep-per-chunk 只影響排程清理;手動 /aw purge 一律全清。
+    purge:
+      auto-enabled: false
+      interval-seconds: 600
+      categories: [MONSTER]
+      keep-per-chunk: 4
+      announce: false
+
+  world_nether:
+    alias: '&4地獄'
+    environment: NETHER
+    difficulty: EASY
+    pvp: true
+    icon: NETHERRACK
+    spawn:
+      x: 6.0
+      y: 32.0
+      z: 11.0
+      yaw: 0.0
+      pitch: 0.0
+
+  newbie:
+    alias: '&a初風原野'
+    environment: NORMAL
+    difficulty: EASY
+    pvp: false
+    icon: OAK_SAPLING
+    spawn:
+      x: 0.4989222419113892
+      y: 101.0
+      z: 0.5015835359872426
+      yaw: 179.73138
+      pitch: -5.846504
+    # 新手村範例:永遠白天晴朗,關閉怪物生成。
+    visual:
+      view-distance: 8
+      simulation-distance: 4
+      locked-time: 6000
+      weather: CLEAR
+      game-rules:
+        doMobSpawning: false
+        doFireTick: false
+    # 玩家規則範例:掉出世界會被接回出生點,死亡也回這裡。
+    rules:
+      void:
+        enabled: true
+        # 省略 below-y 表示「世界底部再往下 5 格」。
+        action: TELEPORT_SPAWN
+        message: '&e你差點掉出世界,已被送回安全處。'
+      respawn:
+        use-configured-spawn: true
+    # 進入提示範例。
+    arrival:
+      title: '&a初風原野'
+      subtitle: '&7新手的起點'
+      stay-ticks: 40
+      sound: 'minecraft:entity.player.levelup'
+      sound-volume: 0.6
+      sound-pitch: 1.4
+
+  build:
+    alias: '&2建築世界'
+    environment: NORMAL
+    difficulty: EASY
+    pvp: false
+    icon: BRICKS
+    spawn:
+      x: 112.0
+      y: 4.0
+      z: 978.0
+      yaw: 16.096558
+      pitch: 12.585604
+    visual:
+      locked-time: 6000
+      weather: CLEAR
+      # 出生點常駐區塊半徑(取代舊的 keep-spawn-in-memory)。
+      # 0 = 沒人時整個出生區都能卸載,閒置世界設 0 最省。-1 = 不更動。
+      spawn-chunk-radius: 0
+      # auto-save: true      # 個別關閉自動存檔請設 false
+      game-rules:
+        doMobSpawning: false
+        doDaylightCycle: false
+    # 建築世界範例:進來就是創造模式,離開時由 rules.default-game-mode 決定要不要收回。
+    rules:
+      game-mode: CREATIVE
+      allow-flight: true
+      void:
+        enabled: true
+        below-y: -80
+        action: TELEPORT_SPAWN
+      # 在這個世界裡擋掉的指令。比對第一個 token 並去掉 plugin: 命名空間,
+      # 所以 /home 與 /essentials:home 都會被同一條規則擋下。
+      commands:
+        blocked: []
+        denied-message: ''
+    # 建築世界不開傳送門。
+    portals:
+      disabled: true
+      denied-message: '&c建築世界不能使用傳送門。'
+    entry:
+      permission: 'aelorn.worlds.world.build'
+    arrival:
+      message: '&7你進入了 &2建築世界&7,這裡不會產生怪物。'
+
+  class:
+    alias: '&f職業測試場'
+    environment: NORMAL
+    difficulty: EASY
+    pvp: true
+    icon: IRON_SWORD
+    spawn:
+      x: 0.0
+      y: -60.0
+      z: 0.0
+      yaw: 0.0
+      pitch: 0.0
+
+  Dungeon:
+    alias: '&9秘境世界'
+    environment: NORMAL
+    difficulty: EASY
+    pvp: false
+    icon: MOSSY_COBBLESTONE
+    spawn:
+      x: -106.5
+      y: 4.0
+      z: 148.5
+      yaw: -179.98077
+      pitch: -1.8432053
+
+  Dungeon1:
+    alias: '&c秘境測試場'
+    environment: NORMAL
+    difficulty: EASY
+    pvp: true
+    icon: CRACKED_STONE_BRICKS
+    transferable: false
+    spawn:
+      x: 0.0
+      y: 35.0
+      z: 0.0
+      yaw: 0.0
+      pitch: 0.0
+    # 進入規則範例:同時最多 10 人,且不得由建築世界直接進入。
+    # 具 aelorn.worlds.entry.bypass 權限者不受限制。
+    entry:
+      player-limit: 10
+      blocked-origins:
+        - build
+      # allowed-origins 若非空,就只有列出的世界可以進來(白名單優先於黑名單)。
+      allowed-origins: []
+    # 死在秘境會被送回主世界。
+    rules:
+      respawn:
+        world: world
+        use-configured-spawn: true
+        override-bed: false
+
+  world1:
+    alias: '&e鍛造區'
+    environment: NORMAL
+    difficulty: EASY
+    pvp: false
+    icon: ANVIL
+    spawn:
+      x: -105.0
+      y: 91.0
+      z: 66.0
+      yaw: -18.393188
+      pitch: 0.6143981
+
+  world2:
+    alias: '&2蒼嵐浮洲'
+    environment: NORMAL
+    difficulty: EASY
+    pvp: false
+    icon: AZURE_BLUET
+    spawn:
+      x: 2022.0
+      y: 104.0
+      z: 976.0
+      yaw: 0.0
+      pitch: 0.0
+
+  world3:
+    alias: '&6大世界二'
+    environment: NORMAL
+    difficulty: EASY
+    pvp: false
+    icon: MAP
+    spawn:
+      x: 163.0
+      y: 82.0
+      z: -1885.0
+      yaw: 0.0
+      pitch: 0.0

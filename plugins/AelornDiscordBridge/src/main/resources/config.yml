@@ -1,0 +1,44 @@
+config-version: 2
+
+bridge:
+  # 填你自己的 Discord 伺服器與頻道 ID。
+  # 這三個是「訊息只准從這裡進出」的白名單，留空等於白名單失效 —— 不建議。
+  expected-guild-id: ""
+  expected-channel-id: ""
+  expected-console-channel-id: ""
+  game-channel: "global"
+  reject-unexpected-channel: true
+  require-linked-discord-account: true
+
+security:
+  max-message-code-points: 256
+  block-directional-control-characters: true
+  block-mass-mentions: true
+  attachments:
+    max-count: 3
+    max-file-size-bytes: 4194304
+
+rate-limits:
+  minecraft:
+    window-seconds: 10
+    max-messages: 6
+  discord:
+    window-seconds: 10
+    max-messages: 8
+  interactive-shares:
+    max-placeholders-per-message: 2
+    window-seconds: 30
+    max-messages: 3
+
+resource-pack:
+  audit-enabled: true
+  source: "Nexo/pack/pack.zip"
+  addon-copy: "InteractiveChatDiscordSrvAddon/resourcepacks/aelorn-nexo.zip"
+
+messages:
+  prefix: "&6[艾洛恩同步] &r"
+  message-too-long: "&c訊息過長，請縮短後再傳送。"
+  unsafe-characters: "&c訊息含有不支援的控制字元，已取消同步。"
+  rate-limited: "&e訊息傳送太快，請等待 {seconds} 秒。"
+  too-many-shares: "&e每則訊息最多分享 {limit} 個物品或背包資訊。"
+  share-rate-limited: "&e物品與背包分享過於頻繁，請等待 {seconds} 秒。"

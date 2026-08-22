@@ -1,0 +1,322 @@
+# PluginsManager — 所有玩家與管理員看得到的文字
+#
+# 程式碼裡只出現鍵名，沒有一句話。要改字改這裡，不必重新編譯。
+# 佔位符是 {name}；{prefix} 隨處可用。
+# 支援 & 色碼、&#RRGGBB 十六進位色，以及 MiniMessage（含 <tag> 時自動判定）。
+# 新版新增的鍵會自動補進這個檔案，你只會保留自己改過的行。
+
+prefix: "&8[&bPluginsManager&8]&r "
+
+# ── 通用 ──────────────────────────────────────────────────────────────
+common:
+  yes-label: "&a是"
+  no-label: "&c否"
+  none: "&8-"
+  unknown: "&8未知"
+  separator: "&7, &f"
+  missing-plugin: "&c缺少插件名稱。"
+  no-permission: "&c缺少權限：&f{permission}"
+  unknown-subcommand: "&c未知子指令。請使用 &f/{command} help&c。"
+  # 鍵名從 common.confirm 改過來,因為佔位符語法從 1.x 的 %s 換成 {usage}。
+  # 沿用舊鍵名會讓升級過的伺服器永遠拿到舊模板 —— copyDefaults 不覆寫既有鍵,
+  # 於是 %s 被原字印出來。改佔位符就要改鍵名,這是遷移的硬規則。
+  needs-confirm: "&e這個操作需要確認。加上 &f--confirm&e 後重送：&7{usage}"
+  truncated: "&7… 還有 &f{remaining}&7 筆，請用更精準的關鍵字。"
+
+# 指令根名稱，用來組出「請這樣重送」的提示。改了指令別名時一起改這裡。
+command:
+  root: "/zpm"
+
+# 拒絕訊息裡的動作名稱。
+action:
+  disable: "停用"
+  reload: "重載"
+  unload: "卸載"
+
+# ── 狀態 ──────────────────────────────────────────────────────────────
+state:
+  enabled: "&a啟用"
+  disabled: "&c停用"
+  loaded: "&a已載入"
+  not-loaded: "&8未載入"
+  protected: "&6受保護"
+  region-safe: "&a分區安全"
+  region-unknown: "&e未宣告分區"
+
+# ── 名稱解析 ──────────────────────────────────────────────────────────
+lookup:
+  not-found: "&c找不到插件：&f{query}"
+  ambiguous: "&c插件名稱不明確，符合：&f{candidates}"
+
+jar:
+  missing-name: "&c缺少 jar 檔名或插件名稱。"
+  not-found: "&c找不到符合的 jar：&f{value}"
+  ambiguous: "&cjar 名稱不明確：&f{value}"
+  folder-unreadable: "&c無法讀取插件資料夾：&7{value}"
+
+# ── 護欄 ──────────────────────────────────────────────────────────────
+guard:
+  self: "&c拒絕對 PluginsManager 自身執行{action}。"
+  protected: "&f{plugin} &c目前受保護，請先移除保護。"
+  dependants-block: "&c有已啟用的插件相依於 &f{plugin}&c：&f{dependants}&c。加上 &f--force&c 會先停用它們。"
+  dependants-disabled: "&7已停用相依插件：&f{dependants}"
+  dependants-suspended: "&7已暫時停用相依插件：&f{dependants}"
+  soft-dependants: "&e軟相依插件可能需要重載：&f{dependants}"
+
+# ── 生命週期 ──────────────────────────────────────────────────────────
+lifecycle:
+  enabled: "&a已啟用 &f{plugin}&a。"
+  disabled: "&a已停用 &f{plugin}&a。"
+  reloaded: "&a已重載 &f{plugin}&a。"
+  loaded: "&a已從 &f{jar} &a載入並啟用 &f{plugin}&a。"
+  already-enabled: "&e{plugin} 已經是啟用狀態。"
+  already-disabled: "&e{plugin} 已經是停用狀態。"
+  already-loaded: "&e{plugin} 已經載入。"
+  load-null: "&c伺服器載入 &f{jar} &c時回傳 null。"
+  enable-failed: "&c啟用失敗：&7{reason}"
+  disable-failed: "&c停用失敗：&7{reason}"
+  reload-failed: "&c重載失敗：&7{reason}"
+  load-failed: "&c載入失敗：&7{reason}"
+
+# ── 卸載 ──────────────────────────────────────────────────────────────
+unload:
+  disabled: "&cconfig.yml 已停用 unload。"
+  no-internals: "&c這個伺服器沒有可用的內部介接層，無法安全卸載。&7{detail}"
+  done: "&a已卸載 &f{plugin}&a。"
+  done-with-warnings: "&e已卸載 &f{plugin}&e，但有步驟未完成。"
+  steps: "&7完成步驟：&f{steps}"
+  step-failed: "&c未完成：&f{step} &7{reason}"
+  classloader-paper: "Paper 類別載入器（已反註冊）"
+  classloader-legacy: "傳統類別載入器"
+  step:
+    disable: "停用"
+    tasks: "取消排程"
+    listeners: "監聽器"
+    services: "服務"
+    channels: "訊息通道"
+    commands: "指令"
+    permissions: "權限"
+    registry: "插件註冊表"
+    classloader: "類別載入器"
+    command-tree: "指令樹"
+
+# ── 清單與詳情 ────────────────────────────────────────────────────────
+list:
+  header: "&b插件清單 &7第 &f{page}&7/&f{pages} &8（{count} 筆符合）"
+  row: "&7- {state} &f{plugin} &7v{version} {protected} {region}"
+  empty: "&7沒有符合的插件。"
+
+info:
+  header: "&b{plugin}"
+  state: "&7狀態：{state}"
+  version: "&7版本：&f{version}"
+  main: "&7主類別：&f{main}"
+  api: "&7API：&f{api}"
+  region-safe: "&7宣告分區安全：&f{value}"
+  authors: "&7作者：&f{authors}"
+  provides: "&7提供別名：&f{provides}"
+  depends: "&7硬相依：&f{plugins}"
+  soft-depends: "&7軟相依：&f{plugins}"
+  dependants: "&7相依此插件：&f{plugins}"
+  soft-dependants: "&7軟相依此插件：&f{plugins}"
+  protected: "&7受保護：&f{value}"
+  jar: "&7Jar：&f{jar}"
+
+# ── 掃描 ──────────────────────────────────────────────────────────────
+scan:
+  header: "&b掃描 &f{shown}&7/&f{total} &7個 jar&8（{errors} 個錯誤、{duplicates} 組重複名稱）"
+  row: "&7- {state} &f{plugin} &7v{version} &8({jar} / {descriptor}) {region} &8sha={hash}"
+  duplicate: "&e重複名稱 &f{plugin}&7：&f{jars}"
+  error: "&c錯誤：&7{detail}"
+  more-errors: "&c… 還有 {remaining} 個錯誤。"
+
+# ── 受保護清單 ────────────────────────────────────────────────────────
+protect:
+  list: "&b受保護插件：&f{plugins}"
+  added: "&a已保護 &f{plugin}&a。"
+  removed: "&a已將 &f{plugin} &a從受保護清單移除。"
+  removed-still-locked: "&e已從清單移除 &f{plugin}&e，但它仍屬於受保護群組，操作依然會被擋下。"
+  self-locked: "&c自我保護已啟用；請先把 protect-self 設為 false。"
+  usage: "&c用法：&f/{command} protect list|add|remove <插件>"
+
+# ── 群組 ──────────────────────────────────────────────────────────────
+group:
+  none: "&e目前沒有啟用中的插件群組。"
+  not-found: "&c找不到或無法唯一辨識群組：&f{query}"
+  locked-tag: "&6受保護"
+  locked: "&c群組 &f@{group} &c已標記為受保護，不能批次{action}。"
+  unsupported-action: "&c不支援的群組操作：&f{action}"
+  list-header: "&b插件群組 &7（{count}）"
+  list-row: "&7- &f@{group} &8（{count} 個插件） {locked} &7{description}"
+  info-header: "&b@{group}"
+  info-description: "&7描述：&f{description}"
+  info-locked: "&7受保護：&f{locked}"
+  info-member: "&7- {state} &f{plugin} {protected}"
+  result: "&a群組 &f@{group} &a完成{action}：&f{done}&7/&f{total}"
+  result-failures: "&e未完成：&7{failures}"
+  usage: "&c用法：&f/{command} group list|info|enable|disable|reload <群組>"
+
+# ── 指令索引 ──────────────────────────────────────────────────────────
+command-index:
+  disabled: "&ccommands.yml 已停用指令索引控制。"
+  unregister-disabled: "&ccommands.yml 不允許反註冊指令。"
+  missing-command: "&c缺少指令名稱。"
+  not-found: "&c找不到指令：&f{command}"
+  header: "&b指令索引：&f{count} &7筆符合"
+  row: "&7- &f/{label} &8→ &b{owner} {permission} {aliases}"
+  permission: "&7perm=&f{permission}"
+  aliases: "&7alias=&f{aliases}"
+  owner-server: "伺服器"
+  unregistered: "&a已反註冊指令 &f/{command}&a。&7移除鍵：&f{keys}"
+  tree-stale: "&e指令樹未重送（{reason}）；客戶端要重連才會更新。"
+  usage: "&c用法：&f/{command} command unregister <指令> --confirm"
+
+# ── 版本保存 ──────────────────────────────────────────────────────────
+archive:
+  disabled: "&cversion-control.yml 已停用版本控制。"
+  saved: "&a已保存 &f{plugin} &a版本：&f{file}"
+  pruned: "&7已清掉 &f{count} &7個舊版本（保留 {keep} 個）。"
+  save-failed: "&c保存版本失敗：&7{reason}"
+  list-header: "&b版本保存 &f{plugin} &7（{count}）"
+  list-row: "&7- &f{file} &8{size} bytes"
+  none: "&e找不到 &f{plugin} &e的版本保存。"
+  version-not-found: "&c找不到符合或無法唯一辨識的版本檔：&f{version}"
+  still-loaded: "&f{plugin} &c仍在載入中；請先卸載或停服後再還原 jar。"
+  restored: "&a已還原 &f{plugin} &a到 &f{file}&a。"
+  restore-failed: "&c還原版本失敗：&7{reason}"
+
+# ── 狀態報告 ──────────────────────────────────────────────────────────
+status:
+  header: "&b狀態"
+  server: "&7伺服器：&f{name} &8/ &f{version}"
+  threading: "&7執行緒模型：&f{model}"
+  threading-regionised: "分區（Folia 系）"
+  threading-single: "單執行緒（Paper 系）"
+  core: "&7AelornLib：&f{state} &8/ 排程 {scheduler} &8/ 文字 {renderer}"
+  core-yes: "&a已接上"
+  core-no: "&e未使用（內建回退）"
+  internals: "&7內部介接層：&f{detail}"
+  plugins: "&7插件：&a{enabled} &7個啟用 &8/ &f{total} &7個已載入"
+  protected: "&7受保護：&f{count}"
+  groups: "&7插件群組：&f{count}"
+  files: "&7YAML 檔案：&f{count}"
+  confirmation: "&7需要確認：&f{value}"
+  unload: "&7允許卸載：&f{value}"
+  audit: "&7稽核儲存：&f{storage}"
+
+# ── 設定 ──────────────────────────────────────────────────────────────
+config:
+  check-header: "&bYAML 檢查"
+  reloaded: "&a所有設定已重新載入。&7管理檔案=&f{files}&7，監看器=&f{watcher}"
+  usage: "&c用法：&f/{command} config reload|check"
+
+# ── 資料夾監看 ────────────────────────────────────────────────────────
+watch:
+  added: "新增 {jar}"
+  changed: "更新 {jar}"
+  removed: "移除 {jar}"
+
+# ── 稽核 ──────────────────────────────────────────────────────────────
+# header/row/empty 是玩家看得到的；其餘是寫進稽核紀錄的 detail 文字，
+# 會被去掉色碼後存檔，所以不要加色碼。
+audit:
+  header: "&b稽核紀錄尾端 &7（{count} 行）"
+  row: "&7{entry}"
+  empty: "&e稽核紀錄目前是空的。"
+  no-notes: "無附註"
+  enable: "已啟用已載入的插件"
+  load-null: "伺服器載入時回傳 null"
+  enable-plugin: "插件已啟用"
+  disable-plugin: "插件已停用"
+  config-reload: "所有 YAML 設定已重新載入"
+  protect-add: "已加入受保護清單"
+  protect-remove: "已從受保護清單移除"
+  protect-remove-still-locked: "已從清單移除，但仍屬受保護群組"
+  auto-load-unreadable: "jar 尚無法讀取，等待下一輪掃描"
+  auto-load-unstable: "jar 仍在寫入或剛變更，等待檔案穩定"
+  auto-load-changed: "jar 內容仍在變更，等待下一輪掃描"
+  auto-load-no-name: "插件描述缺少 name"
+  auto-load-present: "插件已載入"
+  auto-load-not-region-safe: "分區核心略過未宣告 folia-supported 的插件"
+  auto-load-gave-up: "檔案持續變更,已達重試上限而放棄"
+
+# ── GUI ───────────────────────────────────────────────────────────────
+# 圖示材質在 gui.yml,這裡只有文字。
+gui:
+  opening: "&a正在開啟插件管理介面。"
+  players-only: "&cGUI 只能由玩家開啟;主控台請用指令。"
+  unavailable-no-core: "&cGUI 需要 AelornLib 的選單框架,目前不可用。指令功能不受影響。"
+  unavailable-failed: "&cGUI 初始化失敗,請看伺服器 log。指令功能不受影響。"
+  close: "&c關閉"
+  back: "&7返回"
+  previous: "&7上一頁"
+  next: "&7下一頁"
+
+  overview:
+    title: "&8插件管理 &7({count})"
+    entry-name: "&f{plugin}"
+    entry-lore:
+      - "&7版本 &f{version}"
+      - "&7狀態 {state}"
+      - "&7受保護 &f{protected}"
+      - ""
+      - "&8點擊查看詳情與操作"
+
+  detail:
+    title: "&8{plugin}"
+    info-name: "&b{plugin}"
+    info-lore:
+      - "&7版本 &f{version}"
+      - "&7主類別 &f{main}"
+      - "&7API &f{api}"
+      - "&7狀態 {state}"
+      - "&7受保護 &f{protected}"
+
+  action:
+    enable-name: "&a啟用"
+    enable-lore:
+      - "&7啟用 &f{plugin}&7。"
+    disable-name: "&c停用"
+    disable-lore:
+      - "&7停用 &f{plugin}&7。"
+      - "&8有插件相依它時會被擋下。"
+    reload-name: "&e重載"
+    reload-lore:
+      - "&7停用後重新啟用 &f{plugin}&7。"
+      - "&8不會重讀 jar;換 jar 要用卸載再載入。"
+    unload-name: "&4卸載"
+    unload-lore:
+      - "&7把 &f{plugin} &7從伺服器註冊表移除。"
+      - "&8會關閉它的類別載入器,風險最高的操作。"
+    archive-name: "&6保存版本"
+    archive-lore:
+      - "&7複製 &f{plugin} &7目前的 jar 到保存目錄。"
+
+  confirm:
+    title: "&4確認：{action}"
+    accept: "&a確認執行"
+    accept-lore:
+      - "&7對 &f{plugin} &7執行這個操作。"
+      - "&8這一步取代指令的 --confirm。"
+    decline: "&c取消"
+
+# ── 說明 ──────────────────────────────────────────────────────────────
+help:
+  lines:
+    - "&b指令 &8/ &f{command}"
+    - "&7/{command} status &8- &f平台、核心、介接層與統計"
+    - "&7/{command} list [關鍵字] [頁碼] &8- &f列出已載入插件"
+    - "&7/{command} find <關鍵字> &8- &f搜尋插件"
+    - "&7/{command} info <插件> &8- &f插件詳情與相依關係"
+    - "&7/{command} scan [關鍵字] &8- &f掃描 plugins 資料夾"
+    - "&7/{command} audit [行數] &8- &f查看稽核紀錄"
+    - "&7/{command} enable|disable|reload|load|unload <目標> --confirm"
+    - "&8  加 --force 會先停用相依的插件"
+    - "&7/{command} protect list|add|remove <插件>"
+    - "&7/{command} group list|info|enable|disable|reload <群組>"
+    - "&7/{command} commands [關鍵字] &8- &f指令索引與衝突"
+    - "&7/{command} command unregister <指令> --confirm"
+    - "&7/{command} archive <插件或jar> [備註] &8- &f保存目前的 jar"
+    - "&7/{command} versions <插件> &8- &f列出已保存版本"
+    - "&7/{command} restore <插件> <版本檔|latest> --confirm"
+    - "&7/{command} config reload|check"

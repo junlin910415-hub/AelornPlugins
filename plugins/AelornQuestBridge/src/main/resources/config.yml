@@ -1,0 +1,11 @@
+# AelornQuestBridge — 把 RPGCore 任務資料暴露為 PlaceholderAPI 變數
+#
+# 唯讀橋接：不會寫入 RPGCore 的任何檔案。
+
+# RPGCore 的資料夾名稱（相對於 plugins/）
+rpgcore-folder: RPGCore
+
+# 快照更新間隔（tick）。placeholder 只讀記憶體快取，
+# 這個值決定記分板上的任務進度最慢多久會更新。
+# 40 tick = 2 秒，對任務進度而言足夠即時，磁碟負擔也低。
+refresh-interval-ticks: 40

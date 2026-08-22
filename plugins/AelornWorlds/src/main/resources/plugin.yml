@@ -1,0 +1,102 @@
+name: AelornWorlds
+version: '2.0.0_26.2'
+main: tw.linsy.aelorn.worlds.AelornWorldsPlugin
+api-version: '26.2'
+folia-supported: true
+load: POSTWORLD
+author: LinSy
+description: 艾洛恩多世界管理:世界規則、邊界、傳送門、實體負載與非同步世界傳送。
+
+# 共用文字/設定/排程/NMS 都來自核心,沒有它就不該啟用。
+depend: [AelornLib]
+
+commands:
+  aelornworlds:
+    description: 艾洛恩世界狀態、規則、邊界、負載與傳送管理。
+    # worldloaderx / wx / zworlds 保留為遷移別名,舊的指令與巨集不會失效。
+    aliases: [aw, wx, worldloaderx, zworlds, worldsx]
+    usage: /aelornworlds <menu|status|tp|spawn|info|who|chunks|health|rules|border|purge|save|setspawn|apply|reload>
+    permission: aelorn.worlds.use
+
+permissions:
+  aelorn.worlds.use:
+    description: 允許查詢世界狀態、資訊、規則與區塊統計(唯讀,不含實體普查)。
+    default: true
+
+  # /aw health 會對世界的每個已載入區塊各送一個任務,無世界參數時對所有世界一起做。
+  # 這是唯一「唯讀但很貴」的指令,留在 default: true 等於給每位玩家一個 DoS 開關。
+  aelorn.worlds.inspect:
+    description: 允許執行 /aw health 實體普查(掃描每個已載入區塊,成本高)。
+    default: op
+
+  aelorn.worlds.transfer:
+    description: 允許使用傳送介面與 /aw tp、/aw spawn 傳送自己。
+    default: op
+  aelorn.worlds.transfer.others:
+    description: 允許 /aw tp <world> <player> 傳送其他玩家。
+    default: op
+
+  aelorn.worlds.entry.bypass:
+    description: 略過世界人數上限、來源世界限制、entry.permission 與每世界傳送權限。
+    default: op
+  aelorn.worlds.rules.bypass:
+    description: 略過每世界的遊戲模式、飛行與封鎖指令。節點名稱可在 config.yml 變更。
+    default: op
+
+  # 以下三個依「造成的破壞範圍」拆開:清實體不可復原、存檔只是 IO、
+  # 邊界與出生點會立刻改變玩家看到的世界。以前全部綁在 admin 底下,
+  # 想讓管理員清一次怪就得連 reload 一起給。
+  aelorn.worlds.purge:
+    description: 允許 /aw purge 大量移除實體(不可復原)。
+    default: op
+  aelorn.worlds.save:
+    description: 允許 /aw save 立即寫出世界區域檔。
+    default: op
+  aelorn.worlds.edit:
+    description: 允許 /aw border 調整與 /aw setspawn 變更出生點。
+    default: op
+
+  aelorn.worlds.admin:
+    description: 允許重新載入設定與套用世界設定,並涵蓋上述所有權限。
+    default: op
+    children:
+      aelorn.worlds.use: true
+      aelorn.worlds.inspect: true
+      aelorn.worlds.transfer: true
+      aelorn.worlds.transfer.others: true
+      aelorn.worlds.entry.bypass: true
+      aelorn.worlds.rules.bypass: true
+      aelorn.worlds.purge: true
+      aelorn.worlds.save: true
+      aelorn.worlds.edit: true
+
+  # ── 改名前的節點 ────────────────────────────────────────────
+  # 宣告成新節點的父節點,現有的 LuckPerms 授權不必動就繼續有效。
+  # 程式碼另外還有一層執行期回退(見 Permissions),兩者都在是為了不讓
+  # 換一支 JAR 就把管理員的權限默默收走。
+  # 權限全部遷移到 aelorn.worlds.* 之後,這一段可以整塊刪掉。
+  worldloaderx.use:
+    description: '[已改名] 請改用 aelorn.worlds.use'
+    default: false
+    children:
+      aelorn.worlds.use: true
+  worldloaderx.transfer:
+    description: '[已改名] 請改用 aelorn.worlds.transfer'
+    default: false
+    children:
+      aelorn.worlds.transfer: true
+  worldloaderx.entry.bypass:
+    description: '[已改名] 請改用 aelorn.worlds.entry.bypass'
+    default: false
+    children:
+      aelorn.worlds.entry.bypass: true
+  worldloaderx.rules.bypass:
+    description: '[已改名] 請改用 aelorn.worlds.rules.bypass'
+    default: false
+    children:
+      aelorn.worlds.rules.bypass: true
+  worldloaderx.admin:
+    description: '[已改名] 請改用 aelorn.worlds.admin'
+    default: false
+    children:
+      aelorn.worlds.admin: true

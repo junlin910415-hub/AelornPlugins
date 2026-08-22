@@ -1,0 +1,89 @@
+schema-version: 1
+
+# Original clean-room world discoveries. Coordinates are starter content and are
+# expected to be aligned with the production map before release.
+discoveries:
+  wayfarer_crossing:
+    display-name: '<green>旅人渡口</green>'
+    description: '兩條舊商路在此交會，殘留的路標仍指向已被遺忘的聚落。'
+    category: REGION
+    icon: OAK_BOAT
+    minimum-level: 1
+    location:
+      world: world
+      x: 32.0
+      y: 68.0
+      z: -24.0
+      radius: 10.0
+    reward-experience: 35
+    prerequisites: []
+    required-quests: []
+    hidden-until-discovered: false
+
+  raider_watchpost:
+    display-name: '<aqua>荒路瞭望臺</aqua>'
+    description: '廢棄木臺俯視整段商道，也解釋了掠奪者為何總能提前設伏。'
+    category: LANDMARK
+    icon: SPYGLASS
+    minimum-level: 3
+    location:
+      world: world
+      x: 88.0
+      y: 74.0
+      z: 40.0
+      radius: 8.0
+    reward-experience: 75
+    prerequisites: [wayfarer_crossing]
+    required-quests: [road_patrol]
+    hidden-until-discovered: false
+
+  ashen_observatory:
+    display-name: '<gold>灰燼觀測站</gold>'
+    description: '燒灼的測量器仍朝向東方，記錄著週期性出現的火光。'
+    category: LANDMARK
+    icon: RECOVERY_COMPASS
+    minimum-level: 8
+    location:
+      world: world
+      x: 160.0
+      y: 76.0
+      z: -80.0
+      radius: 9.0
+    reward-experience: 180
+    prerequisites: [raider_watchpost]
+    required-quests: [broken_blockade]
+    hidden-until-discovered: false
+
+  whispering_grove:
+    display-name: '<green>低語林環</green>'
+    description: '石環讓林間聲響反覆共鳴，吟唱者似乎正利用這種特性。'
+    category: REGION
+    icon: FLOWERING_AZALEA
+    minimum-level: 20
+    location:
+      world: world
+      x: 256.0
+      y: 70.0
+      z: 112.0
+      radius: 12.0
+    reward-experience: 520
+    prerequisites: [ashen_observatory]
+    required-quests: [silence_the_ritual]
+    hidden-until-discovered: false
+
+  echo_vault:
+    display-name: '<light_purple>回聲秘庫</light_purple>'
+    description: '被岩層掩埋的石門保存著鎮守者循環失控前的最後紀錄。'
+    category: SECRET
+    icon: ECHO_SHARD
+    minimum-level: 28
+    location:
+      world: world
+      x: 320.0
+      y: 42.0
+      z: 192.0
+      radius: 7.0
+    reward-experience: 900
+    prerequisites: [whispering_grove]
+    required-quests: [resonant_fragments]
+    hidden-until-discovered: true

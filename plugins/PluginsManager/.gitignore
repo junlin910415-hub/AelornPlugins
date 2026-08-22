@@ -1,0 +1,15 @@
+# 建置產物：由 build-all.ps1 產生，可離線重現，不進版控。
+build/
+
+# 執行期資料：稽核紀錄與版本保存是實機狀態，不是原始碼。
+audit.log
+audit.db
+VC/
+
+# 編輯器
+.idea/
+.vscode/
+*.iml
+
+# 你手動 clone 進來的另一個 repo,不屬於這個專案。
+PluginManager/

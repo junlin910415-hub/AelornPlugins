@@ -1,0 +1,43 @@
+# ─────────────────────────────────────────────────────────────
+#  vip.yml — VIP 等級定義
+# ─────────────────────────────────────────────────────────────
+#  weight 決定「哪一級比較高」。買到更高 weight 時依 config.yml 的
+#  vip.upgrade-policy 處理：
+#    UPGRADE — 直接升級，舊等級剩餘天數按 price-ratio 折算後加進新等級
+#    STACK   — 只延長現有等級，不升級
+#
+#  on-grant / on-expire 用的動作語法與 shop.yml 的 actions 相同。
+#  VIP 的權限一律由這裡發放與回收，商品的 actions 只負責呼叫 vip:。
+# ─────────────────────────────────────────────────────────────
+
+tiers:
+  bronze:
+    weight: 10
+    display-name: "&c青銅 VIP"
+    # 折算基準：升級時用 (舊等級 price-ratio / 新等級 price-ratio) 換算剩餘天數。
+    price-ratio: 300
+    on-grant:
+      - "console: lp user {player} parent add vip_bronze"
+    on-expire:
+      - "console: lp user {player} parent remove vip_bronze"
+      - "message: &c你的青銅 VIP 已到期。"
+
+  silver:
+    weight: 20
+    display-name: "&f白銀 VIP"
+    price-ratio: 600
+    on-grant:
+      - "console: lp user {player} parent add vip_silver"
+    on-expire:
+      - "console: lp user {player} parent remove vip_silver"
+      - "message: &c你的白銀 VIP 已到期。"
+
+  gold:
+    weight: 30
+    display-name: "&6黃金 VIP"
+    price-ratio: 1200
+    on-grant:
+      - "console: lp user {player} parent add vip_gold"
+    on-expire:
+      - "console: lp user {player} parent remove vip_gold"
+      - "message: &c你的黃金 VIP 已到期。"

@@ -1,0 +1,68 @@
+name: AelornLib
+version: '1.0.0_26.2'
+main: tw.linsy.aelorn.lib.AelornLibPlugin
+api-version: '1.21'
+folia-supported: true
+load: STARTUP
+author: LinSy
+website: https://github.com/junlin910415-hub/AelornLib
+description: 艾洛恩共用函式庫：平台識別、執行緒守衛、排程、文字、設定解析、多層 NMS 介接與自建封包管線。
+
+# 版本號帶 Minecraft 家族後綴（1.0.0_26.2）。理由是這支插件的相容性有兩個獨立的軸:
+# API 相容性由 1.0.0 表示,伺服器相容性由 _26.2 表示。只寫其中一個,「這個 jar 能不能
+# 放上這台伺服器」就只能靠檔名或記憶回答 —— 而檔名跟 plugin.yml 已經漂移過一次了。
+#
+# 舊名 AelornCore 列在 provides,所以既有插件的 depend: [AelornCore] 不必同時改就能解析。
+# 這是遷移期的橋,不是永久相容層:Java 那一側的 tw.linsy.aelorn.core 套件已經不存在,
+# 沒有一起重建的舊插件會在第一次呼叫時 NoClassDefFoundError,而不是安靜地跑錯。
+provides:
+  - AelornCore
+
+# 封包函式庫是備援,不是必需 —— 核心自建的後端不需要任何一個就能攔截、注入與讀寫欄位。
+# 兩者仍列在 softdepend 是為了載入順序:它們也是 STARTUP,萬一設定改用它們,
+# 核心必須在它們之後啟用才拿得到 API。
+softdepend:
+  - packetevents
+  - ProtocolLib
+
+# api-version 刻意不寫 26.2:那會讓這支插件在 26.2 以下的核心直接被拒絕載入。
+# 這份設計本來就不綁版本 —— 能力在啟動時逐項解析,缺 adapter 只是慢一點。
+# folia-supported 在 Purpur/Paper 上會被忽略,寫著不影響。
+
+# 執行期函式庫。Paper 會在啟動時解析,已下載過的會直接用 libraries\ 裡的快取。
+#
+# 這兩個都是核心自己 import 的,不是選配的裝飾:
+#   HikariCP — internal.data.HikariDatabase 直接 new HikariConfig(),沒有它會
+#              在第一個插件呼叫 data().open(...) 時 NoClassDefFoundError。
+#   caffeine — internal.data.CaffeineCache;缺了會退回 BuiltinCache,不會壞。
+libraries:
+  - com.zaxxer:HikariCP:6.3.2
+  - com.github.ben-manes.caffeine:caffeine:3.2.4
+  # MongoDB 儲存後端。核心是用反射碰它的,所以缺席不會讓核心壞掉 ——
+  # 但列在這裡代表 Paper 會在第一次啟動時去下載它,而下載失敗會讓整個插件載入失敗。
+  # 這是刻意的取捨:沒有它 MongoDB 後端等於無法啟用,而一旦下載過就進 libraries\ 快取,
+  # 之後離線啟動照常。若你的伺服器第一次啟動時沒有網路,把這一行註解掉,
+  # MongoDB 後端會回報「驅動未安裝」,其餘功能不受影響。
+  - org.mongodb:mongodb-driver-sync:5.2.1
+
+commands:
+  aelornlib:
+    description: 顯示平台資訊與 NMS 能力解析、封包型別與欄位版面,執行自我檢測,或重新載入設定。
+    usage: /aelornlib [info|nms|packets|fields|selftest|metrics|data|store|reload]
+    aliases: [alib, acore, aelorncore]
+    # 程式碼裡本來就檢查了,這行是為了另外兩件事:
+    # 沒有它,這個指令會出現在每個玩家的 /help 與 tab 補全裡,
+    # 而且 LuckPerms 的管理員在節點清單裡看不到它。
+    permission: aelorn.lib.admin
+
+permissions:
+  aelorn.lib.admin:
+    description: 使用 /aelornlib 診斷指令。
+    default: op
+  # 改名前發出去的節點。宣告成父節點而不是留著舊名,是因為 children 是單向的:
+  # 已經被授予 aelorn.core.admin 的管理員自動得到新節點,而新裝的伺服器只會看到新名字。
+  aelorn.core.admin:
+    description: 舊名，等同 aelorn.lib.admin。
+    default: false
+    children:
+      aelorn.lib.admin: true

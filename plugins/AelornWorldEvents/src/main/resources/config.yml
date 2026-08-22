@@ -1,0 +1,210 @@
+# ─────────────────────────────────────────────────────────────
+# AelornWorldEvents — 玩家接近觸發的野外遭遇
+#
+# 遭遇本身由 RPGCore 生成;這支插件只負責「什麼時候、在哪裡、觸發哪一個」。
+# 接近判定由玩家移動事件驅動(Folia 沒有全服統一 tick 可以掃全部玩家)。
+#
+# 文字全部在 messages.yml。改完執行 /awe reload(非同步)。
+# ─────────────────────────────────────────────────────────────
+
+# 沿用舊版的欄位標記,目前僅供辨識,不影響載入。
+schema-version: 1
+
+settings:
+  enabled: true
+
+  # 同一位玩家每隔多少 tick 才做一次接近判定。數字越小越即時、成本越高。
+  check-interval-ticks: 20
+
+  # 事件未自訂 activation-radius 時的預設觸發半徑(格)。
+  activation-radius: 96.0
+
+  # 事件啟動後對多遠的玩家廣播。小於 activation-radius 會自動提高到相同值,
+  # 否則觸發事件的本人反而收不到通知。
+  announce-radius: 1200.0
+
+  # 全服與單一 region 同時進行的事件數上限。
+  maximum-active-global: 3
+  maximum-active-per-region: 1
+
+  # 線上人數低於此值就不觸發。
+  minimum-online-players: 1
+
+  # 一個事件啟動後,算「進行中」多久(佔用上述名額)。
+  active-window-seconds: 600
+
+  # 啟動指令被拒絕時,最多多久後可以重試。
+  # 讓失敗的節點不必空等完整 cooldown。
+  dispatch-failure-cooldown-seconds: 60
+
+  # 空間索引的格子邊長(格)。查詢只掃 3x3 鄰域,
+  # 所以這個值要明顯大於最大的 activation-radius。
+  spatial-grid-size: 256
+
+  # 交給 RPGCore 的啟動指令。
+  # 可用佔位符:{encounter} {event} {region} {world} {x} {y} {z} {level}
+  start-command: rpg encounter startat {encounter} {world} {x} {y} {z} {level}
+
+  # 啟動時檢查上面的指令是否包含這些佔位符,缺少就在 console 警告。
+  # 設成 [] 可完全關閉這項檢查。
+  start-command-tokens: ['{encounter}', '{world}', '{x}', '{y}', '{z}', '{level}']
+
+# ─────────────────────────────────────────────────────────────
+# 事件節點。
+#   id            — 區段名稱,只能用小寫英數、底線、連字號
+#   display-name  — 廣播用名稱,可含顏色碼
+#   region        — 用於 maximum-active-per-region 的分組
+#   encounter     — 傳給 RPGCore 的遭遇 id
+#   location      — world / x / y / z
+#   level         — 遭遇等級
+#   cooldown-minutes    — 這個節點自己的冷卻
+#   activation-radius   — 覆寫預設觸發半徑(選填)
+#
+# 單一節點設定錯誤只會略過該節點並在 console 說明原因,
+# 其餘事件照常載入。
+# ─────────────────────────────────────────────────────────────
+events:
+  first_breach:
+    display-name: <gold>第一裂痕守衛戰</gold>
+    region: dawncrown
+    encounter: first_breach
+    location:
+      world: world
+      x: -1450
+      y: 75
+      z: 2100
+    level: 8
+    cooldown-minutes: 18
+    activation-radius: 96.0
+  root_memory:
+    display-name: <dark_green>黑根記憶</dark_green>
+    region: greenoath
+    encounter: root_memory
+    location:
+      world: world
+      x: -2450
+      y: 63
+      z: 1350
+    level: 22
+    cooldown-minutes: 22
+    activation-radius: 96.0
+  stopped_forge:
+    display-name: <gold>停擺鐘爐</gold>
+    region: forgeward
+    encounter: stopped_forge
+    location:
+      world: world
+      x: 1350
+      y: 78
+      z: 1250
+    level: 38
+    cooldown-minutes: 24
+    activation-radius: 96.0
+  kiln_uprising:
+    display-name: <red>窯區暴動</red>
+    region: forgeward
+    encounter: kiln_uprising
+    location:
+      world: world
+      x: 1800
+      y: 74
+      z: -450
+    level: 47
+    cooldown-minutes: 26
+    activation-radius: 96.0
+  ancestor_echo:
+    display-name: <red>祖聲回返</red>
+    region: cinderreach
+    encounter: ancestor_echo
+    location:
+      world: world
+      x: 3350
+      y: 147
+      z: -4100
+    level: 60
+    cooldown-minutes: 28
+    activation-radius: 96.0
+  whiteout_siege:
+    display-name: <aqua>長垣白災</aqua>
+    region: frostwall
+    encounter: whiteout_siege
+    location:
+      world: world
+      x: -1500
+      y: 137
+      z: -3700
+    level: 76
+    cooldown-minutes: 30
+    activation-radius: 96.0
+  missing_page:
+    display-name: <light_purple>缺頁天象</light_purple>
+    region: starwood
+    encounter: missing_page
+    location:
+      world: world
+      x: -3150
+      y: 71
+      z: -4800
+    level: 92
+    cooldown-minutes: 32
+    activation-radius: 96.0
+  glass_revenants:
+    display-name: <gold>琉砂亡軍</gold>
+    region: sunscar
+    encounter: glass_revenants
+    location:
+      world: world
+      x: -4450
+      y: 67
+      z: -750
+    level: 99
+    cooldown-minutes: 34
+    activation-radius: 96.0
+  tomb_procession:
+    display-name: <gold>無名王巡行</gold>
+    region: sunscar
+    encounter: tomb_procession
+    location:
+      world: world
+      x: -650
+      y: 63
+      z: 4900
+    level: 104
+    cooldown-minutes: 36
+    activation-radius: 96.0
+  season_collision:
+    display-name: <dark_aqua>三季相撞</dark_aqua>
+    region: duskfen
+    encounter: season_collision
+    location:
+      world: world
+      x: 2900
+      y: 63
+      z: 900
+    level: 113
+    cooldown-minutes: 38
+    activation-radius: 96.0
+  blank_patrol:
+    display-name: <gray>空頁巡獵</gray>
+    region: riftcrown
+    encounter: blank_patrol
+    location:
+      world: world
+      x: 3550
+      y: 83
+      z: 5750
+    level: 119
+    cooldown-minutes: 40
+    activation-radius: 96.0
+  margin_collapse:
+    display-name: <dark_red><bold>原典頁邊崩落</bold></dark_red>
+    region: riftcrown
+    encounter: margin_collapse
+    location:
+      world: world
+      x: 3350
+      y: 63
+      z: 6200
+    level: 120
+    cooldown-minutes: 45
+    activation-radius: 96.0

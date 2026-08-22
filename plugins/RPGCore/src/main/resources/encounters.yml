@@ -1,0 +1,78 @@
+schema-version: 1
+
+# Short, repeatable combat encounters. Kill rewards are granted per contribution;
+# completion-experience is an additional objective reward for active participants.
+encounters:
+  raider_roadblock:
+    display-name: '<gold>荒路封鎖線</gold>'
+    levels: { minimum: 3, maximum: 10 }
+    arena-radius: 10.0
+    wave-delay-ticks: 60
+    timeout-ticks: 3600
+    cooldown-seconds: 180
+    completion-experience: 120
+    waves:
+      scouts:
+        display-name: '<gray>斥候試探</gray>'
+        spawns:
+          raiders: { monster: roadside_raider, amount: 3, level-offset: 0 }
+      blockade:
+        display-name: '<yellow>封路隊伍</yellow>'
+        spawns:
+          raiders: { monster: roadside_raider, amount: 4, level-offset: 0 }
+          guardian: { monster: mossbound_guardian, amount: 1, level-offset: 2 }
+      captain:
+        display-name: '<gold>守路者反擊</gold>'
+        spawns:
+          raiders: { monster: roadside_raider, amount: 2, level-offset: 1 }
+          guardians: { monster: mossbound_guardian, amount: 2, level-offset: 2 }
+
+  ember_ritual:
+    display-name: '<red>餘燼儀式</red>'
+    levels: { minimum: 13, maximum: 25 }
+    arena-radius: 12.0
+    wave-delay-ticks: 70
+    timeout-ticks: 4800
+    cooldown-seconds: 300
+    completion-experience: 420
+    waves:
+      sentries:
+        display-name: '<gold>火痕哨衛</gold>'
+        spawns:
+          guardians: { monster: mossbound_guardian, amount: 3, level-offset: -2 }
+          adepts: { monster: ember_adept, amount: 2, level-offset: 0 }
+      channeling:
+        display-name: '<red>儀式共鳴</red>'
+        spawns:
+          adepts: { monster: ember_adept, amount: 4, level-offset: 1 }
+          chanter: { monster: grove_chanter, amount: 1, level-offset: 3 }
+      collapse:
+        display-name: '<dark_red>餘火潰散</dark_red>'
+        spawns:
+          adepts: { monster: ember_adept, amount: 5, level-offset: 2 }
+          chanters: { monster: grove_chanter, amount: 2, level-offset: 3 }
+
+  ruin_trial:
+    display-name: '<dark_red><bold>失序遺跡試煉</bold></dark_red>'
+    levels: { minimum: 28, maximum: 42 }
+    arena-radius: 14.0
+    wave-delay-ticks: 80
+    timeout-ticks: 7200
+    cooldown-seconds: 600
+    completion-experience: 1800
+    waves:
+      outer_seal:
+        display-name: '<aqua>外環封印</aqua>'
+        spawns:
+          chanters: { monster: grove_chanter, amount: 3, level-offset: -2 }
+          adepts: { monster: ember_adept, amount: 3, level-offset: -4 }
+      fractured_guard:
+        display-name: '<light_purple>破碎守陣</light_purple>'
+        spawns:
+          guardians: { monster: mossbound_guardian, amount: 4, level-offset: -6 }
+          chanters: { monster: grove_chanter, amount: 3, level-offset: 0 }
+      warden:
+        display-name: '<dark_red><bold>鎮守者甦醒</bold></dark_red>'
+        spawns:
+          warden: { monster: ruin_warden, amount: 1, level-offset: 0 }
+          chanters: { monster: grove_chanter, amount: 2, level-offset: 1 }

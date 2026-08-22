@@ -1,0 +1,117 @@
+# PluginsManager — 行為設定
+#
+# 玩家與管理員看得到的每一句話都在 messages.yml，這裡只放行為與門檻。
+# 改動後執行 /zpm config reload，不需要重啟。
+
+# 破壞性操作是否需要 --confirm（或 -y）。
+require-confirmation: true
+
+# 是否允許 /zpm unload。
+# 舊名 allow-reflective-unload 仍會被讀取當預設值：卸載已經不是靠反射 Bukkit 內部，
+# 舊鍵名描述的是實作而不是權限，但把它關掉的人升級後應該維持關閉。
+allow-unload: true
+
+# 是否把 PluginsManager 自己列入保護。
+protect-self: true
+
+# 這份清單加上「所有標了 protected: true 的群組成員」構成實際的保護範圍。
+# 比對會用插件宣告的名稱與它 provides 的每一個別名。
+protected-plugins:
+  - PluginsManager
+  - AelornLib
+  - LuckPerms
+  - Vault
+  - ProtocolLib
+  - WorldEdit
+  - WorldGuard
+  - CoreProtect
+  - CMI
+
+danger:
+  # 有已啟用的插件相依於目標時，擋下操作（可用 --force 覆寫）。
+  block-disable-when-hard-dependents-enabled: true
+
+  # 停用或重載後，提示哪些軟相依插件可能需要跟著重載。
+  warn-soft-dependents: true
+
+  # 相依判定是否向伺服器查詢「遞移」相依。
+  # true：使用伺服器自己維護的相依圖，間接相依也會被偵測到。
+  # false：只看各插件 plugin.yml 宣告的直接相依（舊行為，會漏掉間接相依）。
+  # 伺服器內部介接層不可用時會自動退回 false 並在 log 說明。
+  use-transitive-dependents: true
+
+  # 註冊或反註冊指令後，重建並重送指令樹給線上玩家。
+  # 關掉的話客戶端會繼續補全已經不存在的指令，直到重連。
+  # 玩家數很多時這個重送不是免費的，所以留成可調。
+  sync-command-tree: true
+
+display:
+  # 每頁列出幾個插件。
+  page-size: 12
+
+  # 多行報告是否每一行都加上前綴。false 只加在第一行。
+  prefix-every-line: true
+
+scanner:
+  # 是否監看 plugins 資料夾。
+  watch-enabled: true
+
+  # 是否額外使用檔案系統事件（幾毫秒內就偵測到），定時掃描仍然作為保險。
+  # 網路磁碟或某些容器掛載上的事件不可靠，所以兩者並用而不是二選一。
+  use-file-events: true
+
+  # 定時掃描間隔（秒）。最小 5。
+  watch-interval-seconds: 10
+
+  # 偵測到新 jar 時自動載入。
+  auto-load-new-jars: true
+
+  # 只在分區核心（Folia / Luminol 系）上生效：
+  # 略過沒有宣告 folia-supported: true 的插件。
+  # 單執行緒核心（Purpur 系）上這個宣告沒有意義，因此不會擋。
+  # 舊名 auto-load-folia-only 仍會被讀取當預設值。
+  auto-load-region-safe-only: true
+
+  # jar 內容雜湊一致、且最後修改時間超過這個秒數才載入。
+  # 檔案還在複製時就載入會得到「壓縮檔損毀」，看起來像插件壞了。
+  auto-load-stable-seconds: 3
+
+  # /zpm scan 一次最多列幾行。
+  max-scan-lines: 12
+
+audit:
+  enabled: true
+
+  # /zpm audit 一次最多回幾行。
+  max-tail-lines: 20
+
+  # file：JSON 每行一筆寫進 audit.log，每筆立即 flush。預設。
+  # sql ：批次寫入資料表，可查詢，但批次未寫出前的紀錄會在硬當時遺失。
+  #
+  # 預設是 file 有理由：稽核紀錄的可用性不該取決於資料庫有沒有活著——
+  # 你需要查稽核的時候，往往正是出事的時候。
+  storage: file
+
+  sql:
+    # 空白代表不啟用（會退回 file）。
+    # SQLite：jdbc:sqlite:plugins/PluginsManager/audit.db
+    # MySQL ：jdbc:mysql://127.0.0.1:3306/aelorn?useUnicode=true&characterEncoding=utf8
+    url: ""
+
+    # 留空讓驅動自己透過 ServiceLoader 註冊。
+    # SQLite：org.sqlite.JDBC   MySQL：com.mysql.cj.jdbc.Driver
+    driver-class: ""
+
+    # 只允許英數與底線，且需以字母或底線開頭（會被寫進 SQL 語句）。
+    table: pluginsmanager_audit
+
+    username: ""
+    password: ""
+
+    # 累積幾筆才執行一次 INSERT。同時也是硬當時最多會遺失的筆數。
+    batch-size: 50
+
+    # 沒滿也每隔這麼多秒寫出一次，免得安靜的伺服器一直押著一筆。
+    flush-seconds: 15
+
+    connection-timeout-millis: 5000

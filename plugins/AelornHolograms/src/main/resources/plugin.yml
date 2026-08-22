@@ -1,0 +1,57 @@
+name: AelornHolograms
+version: '1.1.0_26.2'
+main: tw.linsy.aelornholograms.AelornHologramsPlugin
+api-version: '26.2'
+author: LinSy
+description: Folia-native MMORPG holograms with DecentHolograms-style compatibility.
+folia-supported: true
+provides:
+  - DecentHolograms
+softdepend:
+  - PlaceholderAPI
+  - HeadDatabase
+  - ItemsAdder
+  - Nexo
+  - AeloriaHUD
+  - MythicMobs
+  - MythicCrucible
+  - AelornItems
+  - CMI
+  - CMILib
+  - Vault
+  - ProtocolLib
+  - PacketEvents
+  - TAB
+  - Multiverse-Core
+  - WorldGuard
+  - WorldEdit
+  - RPGCore
+  - ExcellentShop
+  - GPS
+
+commands:
+  aelornholograms:
+    description: Main AelornHolograms command.
+    aliases: [ah, vh, decentholograms, dh, holograms, hologram, holo]
+    usage: /aelornholograms help
+    permission: aelornholograms.command
+
+permissions:
+  aelornholograms.command:
+    description: Allows using AelornHolograms commands.
+    default: op
+  aelornholograms.admin:
+    description: Allows all AelornHolograms management actions.
+    default: op
+    children:
+      aelornholograms.command: true
+      dh.admin: true
+  dh.admin:
+    description: DecentHolograms compatibility permission.
+    default: op
+  dh.command:
+    description: DecentHolograms compatibility command permission.
+    default: op
+
+# AelornLib 提供文字與排程。
+depend: [AelornLib]

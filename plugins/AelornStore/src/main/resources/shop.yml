@@ -1,0 +1,341 @@
+# ─────────────────────────────────────────────────────────────
+#  shop.yml — 商店目錄與介面版面
+# ─────────────────────────────────────────────────────────────
+#  這個檔案是商品的唯一事實來源。新增商品不需要改程式、不需要重啟，
+#  改完 /astore reload 即可。任何一項商品解析失敗只會被記錄並跳過，
+#  不會讓整份目錄載入失敗。
+#
+#  ⚠ Mojang 商用準則：付費內容不得影響遊戲平衡（pay-to-win）。
+#     安全範圍是外觀、稱號、名字顏色、寵物外觀、表情、稱號欄位。
+#     下面的範例刻意全部走外觀 / 便利性，不含屬性與戰力。
+# ─────────────────────────────────────────────────────────────
+
+menu:
+  # 主選單：列出分類。
+  root:
+    rows: 5
+    # 背景填充物。填 NONE 或留白代表不填。
+    filler: GRAY_STAINED_GLASS_PANE
+    buttons:
+      balance: 4
+      topup: 40
+      close: 44
+  # 分類頁：列出該分類商品，超過格數自動分頁。
+  category:
+    rows: 6
+    filler: BLACK_STAINED_GLASS_PANE
+    # 商品格位。改這裡就等於改版面，程式不預設任何排列。
+    content-slots: [10, 11, 12, 13, 14, 15, 16,
+                    19, 20, 21, 22, 23, 24, 25,
+                    28, 29, 30, 31, 32, 33, 34,
+                    37, 38, 39, 40, 41, 42, 43]
+    buttons:
+      back: 45
+      prev: 48
+      balance: 49
+      next: 50
+      close: 53
+  # 購買確認頁。
+  confirm:
+    rows: 3
+    filler: GRAY_STAINED_GLASS_PANE
+    item-slot: 13
+    yes-slot: 11
+    no-slot: 15
+  # 儲值選單。
+  topup:
+    rows: 5
+    filler: GRAY_STAINED_GLASS_PANE
+    content-slots: [10, 11, 12, 13, 14, 15, 16,
+                    19, 20, 21, 22, 23, 24, 25]
+    buttons:
+      back: 36
+      balance: 40
+      close: 44
+  # 付款方式選擇頁（建立訂單後選管道）。
+  provider:
+    rows: 3
+    filler: GRAY_STAINED_GLASS_PANE
+    content-slots: [11, 12, 13, 14, 15]
+    buttons:
+      back: 18
+      close: 26
+
+# ── 儲值方案 ──────────────────────────────────────────────────
+# amount-minor 是真實貨幣「分」。100 = NT$1。
+# 實得儲值金 = amount-minor / economy.credit.minor-units-per-credit + bonus-credit
+topup-packages:
+  nt100:
+    slot: 10
+    icon: GOLD_NUGGET
+    name: "&6NT$100"
+    amount-minor: 10000
+    bonus-credit: 0
+    lore:
+      - "&7獲得 &6◈100 &7儲值金"
+      - ""
+      - "&8點擊建立訂單"
+  nt300:
+    slot: 11
+    icon: GOLD_INGOT
+    name: "&6NT$300"
+    amount-minor: 30000
+    bonus-credit: 15
+    lore:
+      - "&7獲得 &6◈300 &7儲值金"
+      - "&a額外贈送 &6◈15"
+      - ""
+      - "&8點擊建立訂單"
+  nt500:
+    slot: 12
+    icon: GOLD_BLOCK
+    name: "&6NT$500"
+    amount-minor: 50000
+    bonus-credit: 40
+    lore:
+      - "&7獲得 &6◈500 &7儲值金"
+      - "&a額外贈送 &6◈40"
+      - ""
+      - "&8點擊建立訂單"
+  nt1000:
+    slot: 13
+    icon: NETHER_STAR
+    name: "&6NT$1000"
+    amount-minor: 100000
+    bonus-credit: 120
+    lore:
+      - "&7獲得 &6◈1000 &7儲值金"
+      - "&a額外贈送 &6◈120"
+      - ""
+      - "&8點擊建立訂單"
+
+# ── 分類 ─────────────────────────────────────────────────────
+categories:
+  vip:
+    slot: 20
+    icon: NETHER_STAR
+    name: "&6&lVIP 會員"
+    lore:
+      - "&7專屬稱號、聊天前綴與外觀特權。"
+      - ""
+      - "&8點擊瀏覽"
+    permission: ""
+  cosmetic:
+    slot: 22
+    icon: LEATHER_CHESTPLATE
+    name: "&d&l外觀時裝"
+    lore:
+      - "&7披風、時裝、粒子特效。"
+      - "&7純外觀，不影響任何數值。"
+      - ""
+      - "&8點擊瀏覽"
+    permission: ""
+  convenience:
+    slot: 24
+    icon: ENDER_CHEST
+    name: "&b&l便利機能"
+    lore:
+      - "&7額外傳送點、寵物外觀、表情動作。"
+      - ""
+      - "&8點擊瀏覽"
+    permission: ""
+
+# ── 商品 ─────────────────────────────────────────────────────
+#  currency        : CREDIT（儲值金）或 VAULT（遊戲幣）
+#  stock           : -1 代表無限；正整數為全服總量
+#  limit-per-player: 0 代表不限；正整數為每人終身上限
+#  limit-per-day   : 0 代表不限；正整數為每人每日上限
+#  permission      : 留白代表所有人可買
+#  discount-permission / discount-percent : 命中權限者套用折扣
+#  actions         : 付款成功後執行，順序即為執行順序
+#  revoke-actions  : 退款時執行（無法自動反轉的動作必須在此明寫）
+#
+#  actions 支援的動作型別：
+#    console: <指令>          以主控台身分執行
+#    player:  <指令>          以玩家身分執行
+#    credit:  <點數>          發放儲值金
+#    vault:   <金額>          發放遊戲幣（需 Vault）
+#    vip:     tier=<id> days=<n>   授予 / 延長 VIP
+#    item:    <MATERIAL> <數量>    給原版物品（AelornItems / Nexo 請用 console）
+#    message: <文字>          私訊購買者
+#    broadcast: <文字>        全服公告
+#    sound:   <SOUND> <音量> <音調>
+#  可用佔位符：{player} {uuid} {order} {product} {quantity} {amount} {credit}
+products:
+
+  # ── VIP ──────────────────────────────────────────────────
+  vip_bronze:
+    category: vip
+    slot: 10
+    icon: COPPER_INGOT
+    name: "&c&l青銅 VIP &7— 30 天"
+    lore:
+      - "&7• 聊天專屬前綴"
+      - "&7• 進場公告"
+      - "&7• 專屬稱號一枚"
+      - ""
+      - "&8純外觀與社群特權，不影響戰鬥數值。"
+    price: 300
+    currency: CREDIT
+    stock: -1
+    limit-per-player: 0
+    limit-per-day: 0
+    permission: ""
+    actions:
+      - "vip: tier=bronze days=30"
+      - "sound: ENTITY_PLAYER_LEVELUP 1.0 1.2"
+    revoke-actions:
+      - "console: lp user {player} parent remove vip_bronze"
+
+  vip_silver:
+    category: vip
+    slot: 11
+    icon: IRON_INGOT
+    name: "&f&l白銀 VIP &7— 30 天"
+    lore:
+      - "&7• 青銅全部特權"
+      - "&7• 專屬聊天顏色"
+      - "&7• 兩枚額外稱號"
+      - ""
+      - "&8純外觀與社群特權。"
+    price: 600
+    currency: CREDIT
+    stock: -1
+    limit-per-player: 0
+    limit-per-day: 0
+    permission: ""
+    actions:
+      - "vip: tier=silver days=30"
+      - "sound: ENTITY_PLAYER_LEVELUP 1.0 1.2"
+    revoke-actions:
+      - "console: lp user {player} parent remove vip_silver"
+
+  vip_gold:
+    category: vip
+    slot: 12
+    icon: GOLD_INGOT
+    name: "&6&l黃金 VIP &7— 30 天"
+    lore:
+      - "&7• 白銀全部特權"
+      - "&7• 專屬進場粒子"
+      - "&7• 名字彩色漸層"
+      - ""
+      - "&8純外觀與社群特權。"
+    price: 1200
+    currency: CREDIT
+    stock: -1
+    limit-per-player: 0
+    limit-per-day: 0
+    permission: ""
+    actions:
+      - "vip: tier=gold days=30"
+      - "broadcast: &6{player} &f成為了黃金 VIP，感謝支持！"
+      - "sound: ENTITY_PLAYER_LEVELUP 1.0 1.2"
+    revoke-actions:
+      - "console: lp user {player} parent remove vip_gold"
+
+  # ── 外觀時裝 ──────────────────────────────────────────────
+  cape_tide:
+    category: cosmetic
+    slot: 10
+    icon: LEATHER_HORSE_ARMOR
+    name: "&b&l潮汐披風"
+    lore:
+      - "&7海浪紋樣的背飾。"
+      - "&8純外觀，無任何屬性。"
+    price: 250
+    currency: CREDIT
+    stock: -1
+    limit-per-player: 1
+    limit-per-day: 0
+    permission: ""
+    discount-permission: "aelornstore.discount.vip"
+    discount-percent: 15
+    actions:
+      - "console: lp user {player} permission set cosmetic.cape.tide true"
+      - "message: &b潮汐披風已解鎖，於 &f/cosmetic &b套用。"
+    revoke-actions:
+      - "console: lp user {player} permission unset cosmetic.cape.tide"
+
+  particle_bloom:
+    category: cosmetic
+    slot: 11
+    icon: PINK_PETALS
+    name: "&d&l花雨粒子"
+    lore:
+      - "&7行走時撒落花瓣。"
+      - "&8純外觀，無任何屬性。"
+    price: 180
+    currency: CREDIT
+    stock: -1
+    limit-per-player: 1
+    limit-per-day: 0
+    permission: ""
+    discount-permission: "aelornstore.discount.vip"
+    discount-percent: 15
+    actions:
+      - "console: lp user {player} permission set cosmetic.particle.bloom true"
+      - "message: &d花雨粒子已解鎖。"
+    revoke-actions:
+      - "console: lp user {player} permission unset cosmetic.particle.bloom"
+
+  # ── 便利機能 ──────────────────────────────────────────────
+  home_slot:
+    category: convenience
+    slot: 10
+    icon: RED_BED
+    name: "&a額外家園點 &7×1"
+    lore:
+      - "&7永久增加一個 &f/home &7傳送點。"
+      - ""
+      - "&8最多可購買 3 次。"
+    price: 200
+    currency: CREDIT
+    stock: -1
+    limit-per-player: 3
+    limit-per-day: 0
+    permission: ""
+    actions:
+      - "console: cmi togglehomelimit {player} 1"
+      - "message: &a家園點 +1。"
+    revoke-actions:
+      - "console: cmi togglehomelimit {player} -1"
+
+  name_color:
+    category: convenience
+    slot: 11
+    icon: NAME_TAG
+    name: "&e改名卡"
+    lore:
+      - "&7變更你的顯示暱稱一次。"
+    price: 150
+    currency: CREDIT
+    stock: -1
+    limit-per-player: 0
+    limit-per-day: 2
+    permission: ""
+    actions:
+      - "console: lp user {player} permission settemp nickname.use true 7d"
+      - "message: &e七天內可使用 &f/nick &e變更暱稱。"
+    revoke-actions:
+      - "console: lp user {player} permission unset nickname.use"
+
+  emote_pack:
+    category: convenience
+    slot: 12
+    icon: JUKEBOX
+    name: "&6表情動作包"
+    lore:
+      - "&7解鎖 12 組表情動作。"
+      - "&8純外觀。"
+    price: 320
+    currency: CREDIT
+    stock: 500
+    limit-per-player: 1
+    limit-per-day: 0
+    permission: ""
+    actions:
+      - "console: lp user {player} parent add emote_pack"
+      - "message: &6表情動作包已解鎖，輸入 &f/emote &6查看。"
+    revoke-actions:
+      - "console: lp user {player} parent remove emote_pack"

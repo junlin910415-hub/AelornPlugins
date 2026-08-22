@@ -1,0 +1,19 @@
+name: AelornLibKt
+version: '1.0.0_26.2'
+main: tw.linsy.aelorn.kt.AelornLibKtPlugin
+api-version: '1.21'
+folia-supported: true
+author: LinSy
+description: AelornLib 的 Kotlin 擴充面：文件儲存 DSL、查詢 DSL、型別推導的具名讀取。
+
+# 核心必須先在。這裡是 depend 而不是 softdepend —— 這個外掛沒有自己的功能,
+# 它整份存在的意義就是替核心的 API 加上 Kotlin 語法,核心不在就沒有東西可以擴充。
+depend:
+  - AelornLib
+
+# Kotlin 執行期。刻意留在這裡而不是核心的 plugin.yml:
+# 核心是純 Java,不該讓每一台伺服器(包括所有插件都是 Java 的那些)為了一個用不到的
+# 功能去解析一個函式庫,而解析失敗會讓整個艾洛恩堆疊載入失敗。
+# 版本對齊 libraries\ 裡既有的那一份,所以正常情況下不需要下載。
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib:2.3.0

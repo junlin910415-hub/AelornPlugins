@@ -1,0 +1,29 @@
+name: AelornBackpack
+version: '1.5.0_26.2'
+main: tw.linsy.aelornbackpack.AelornBackpackPlugin
+api-version: '26.2'
+author: LinSy
+description: 艾洛恩自訂背包：裝備列、持久化背包空間與資源包介面。
+folia-supported: true
+softdepend: [RPGCore, AelornItems, Nexo, AeloriaHUD, PlaceholderAPI]
+commands:
+  backpack:
+    description: 開啟自訂背包。
+    usage: /backpack [reload|info]
+    aliases: [bag, bp, 背包]
+    permission: aelornbackpack.use
+permissions:
+  aelornbackpack.use:
+    default: true
+  aelornbackpack.admin:
+    default: op
+  # 背包分頁權限：預設 1 頁，可依權限擴充到 4 頁
+  aelornbackpack.pages.2:
+    default: false
+  aelornbackpack.pages.3:
+    default: false
+  aelornbackpack.pages.4:
+    default: false
+
+# AelornLib 提供 Folia 排程。
+depend: [AelornLib]

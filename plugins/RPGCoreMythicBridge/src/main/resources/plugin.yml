@@ -1,0 +1,35 @@
+name: RPGCoreMythicBridge
+main: com.xuzhihuanjing.rpgbridge.RpgCoreMythicBridgePlugin
+version: '0.2.0_26.2'
+api-version: '1.21'
+folia-supported: true
+depend:
+  - MythicCore
+  - AelornItems
+  - RPGCore
+softdepend:
+  - Nexo
+  - AeloriaHUD
+  - MythicMobs
+  - PlaceholderAPI
+authors:
+  - LinSy
+description: 串接艾洛恩 RPGCore、MythicCore 屬性與 AelornItems 物品資料。
+commands:
+  rpgbridge:
+    description: 檢查 RPGCore、MythicCore 與 AelornItems 的整合狀態。
+    usage: /rpgbridge [status|item|snapshot|reload]
+    aliases:
+      - rpgmb
+      - rpgsync
+    # 程式碼裡每條路徑本來就檢查這個節點,這行是為了另外兩件事:
+    # 沒有它,指令會出現在每個玩家的 /help 與 tab 補全裡,
+    # 而且 LuckPerms 的管理員在節點清單裡看不到它。
+    # 這支只有一個節點,掛在指令層不犧牲任何授權粒度 ——
+    # PluginsManager 的 /zpm 刻意不這樣做,那邊是逐子指令各自的節點,
+    # 掛總節點會把只被授予其中一個的人整個擋在門外。
+    permission: rpgbridge.admin
+permissions:
+  rpgbridge.admin:
+    description: 允許使用 RPGCoreMythicBridge 整合診斷。
+    default: op

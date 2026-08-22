@@ -1,0 +1,162 @@
+# AelornStore 全部玩家可見文字。留白（"" 或空清單）等於「不顯示這則訊息」。
+# 佔位符為 {name} 形式，{prefix} 在任何一行都可用。
+prefix: "&8[&6艾洛恩商店&8]&r "
+
+general:
+  no-permission: "{prefix}&c你沒有權限這麼做。"
+  player-only: "{prefix}&c這個指令只能由玩家執行。"
+  unknown-subcommand: "{prefix}&c未知的子指令。輸入 &e/{label} help &c查看用法。"
+  cooldown: "{prefix}&c太快了，請稍候再試。"
+  storage-unavailable: "{prefix}&c商店資料庫目前無法連線，請稍後再試或聯繫管理員。"
+  internal-error: "{prefix}&c處理時發生錯誤，已記錄。請聯繫管理員並提供時間。"
+  player-not-found: "{prefix}&c找不到玩家 &e{player}&c。"
+  invalid-number: "{prefix}&c「&e{value}&c」不是有效的數字。"
+  reloaded: "{prefix}&a設定已重新載入。&7（商品 {products} 項、VIP {tiers} 級、金流 {providers} 個）"
+  reload-failed: "{prefix}&c重新載入失敗：{error}"
+
+wallet:
+  balance: "{prefix}&f你的{credit}餘額：&6{symbol}{balance}"
+  balance-other: "{prefix}&f{player} 的{credit}餘額：&6{symbol}{balance}"
+  insufficient: "{prefix}&c{credit}不足。需要 &6{symbol}{need}&c，你只有 &6{symbol}{have}&c。"
+  insufficient-vault: "{prefix}&c{vault}不足。需要 &6{need}&c，你只有 &6{have}&c。"
+  credited: "{prefix}&a已獲得 &6{symbol}{amount} {credit}&a。目前餘額：&6{symbol}{balance}"
+  debited: "{prefix}&7已扣除 &6{symbol}{amount} {credit}&7。目前餘額：&6{symbol}{balance}"
+  admin-credited: "{prefix}&a已給予 &e{player} &6{symbol}{amount} {credit}&a。新餘額：&6{symbol}{balance}"
+  admin-took: "{prefix}&a已扣除 &e{player} &6{symbol}{amount} {credit}&a。新餘額：&6{symbol}{balance}"
+  admin-set: "{prefix}&a已將 &e{player} &a的{credit}設為 &6{symbol}{balance}&a。"
+  max-balance: "{prefix}&c此筆操作會超過{credit}餘額上限 &6{symbol}{max}&c。"
+
+topup:
+  disabled: "{prefix}&c儲值功能目前關閉中。"
+  usage: "{prefix}&7用法：&e/{label} topup <金額>&7，或直接輸入 &e/{label} topup &7開啟選單。"
+  amount-too-low: "{prefix}&c單筆最低金額為 &e{min}&c。"
+  amount-too-high: "{prefix}&c單筆最高金額為 &e{max}&c。"
+  not-whole-units: "{prefix}&c金額必須為整數元（金流商不接受小數）。"
+  daily-limit: "{prefix}&c已達今日儲值上限 &e{limit}&c。今日已儲值 &e{used}&c。"
+  account-too-new: "{prefix}&c帳號需在本伺服器遊玩滿 &e{hours} &c小時後才能儲值。"
+  too-many-pending: "{prefix}&c你還有 &e{count} &c筆未付款訂單，請先完成或取消。輸入 &e/{label} orders &c查看。"
+  provider-unavailable: "{prefix}&c付款管道 &e{provider} &c目前無法使用。"
+  provider-not-implemented: "{prefix}&c付款管道 &e{provider} &c尚未完成串接，請改用其他方式。"
+  created: "{prefix}&a訂單已建立：&e{order}"
+  created-amount: "&7  金額：&f{amount}　&7獲得：&6{symbol}{credit} {credit_name}"
+  created-expires: "&7  有效期限至 &f{expires}&7，逾期自動取消。"
+  pay-link: "&7  付款連結：&b&n{url}"
+  cancelled: "{prefix}&7訂單 &e{order} &7已取消。"
+  cancel-not-allowed: "{prefix}&c訂單 &e{order} &c目前狀態為 &e{status}&c，無法取消。"
+
+order:
+  not-found: "{prefix}&c找不到訂單 &e{order}&c。"
+  not-yours: "{prefix}&c這不是你的訂單。"
+  list-header: "{prefix}&f你的訂單（最近 {count} 筆）："
+  list-empty: "{prefix}&7你目前沒有任何訂單。"
+  list-entry: "&8 • &e{order} &7| &f{status} &7| &f{amount} &7| &8{created}"
+  info-header: "{prefix}&f訂單 &e{order}"
+  info-lines:
+    - "&7  玩家：&f{player}"
+    - "&7  類型：&f{type}　狀態：&f{status}"
+    - "&7  內容：&f{summary}"
+    - "&7  金額：&f{amount}"
+    - "&7  管道：&f{provider}　交易序號：&f{trade_no}"
+    - "&7  建立：&f{created}　付款：&f{paid}　發貨：&f{delivered}"
+  approved: "{prefix}&a訂單 &e{order} &a已核銷，發貨作業已排入佇列。"
+  approve-not-allowed: "{prefix}&c訂單 &e{order} &c目前狀態為 &e{status}&c，無法核銷。"
+  refunded: "{prefix}&a訂單 &e{order} &a已退款，發放內容已回收。"
+  refund-not-allowed: "{prefix}&c訂單 &e{order} &c目前狀態為 &e{status}&c，無法退款。"
+  refund-notice: "{prefix}&c你的訂單 &e{order} &c已退款，相關內容已回收。"
+  expired-notice: "{prefix}&7訂單 &e{order} &7已逾期自動取消。"
+  paid-notice: "{prefix}&a訂單 &e{order} &a付款成功！"
+  redelivered: "{prefix}&a訂單 &e{order} &a已重新排入發貨佇列。"
+
+delivery:
+  success: "{prefix}&a已送達：&f{summary}"
+  queued-offline: "{prefix}&7你有 &e{count} &7筆待領取的訂單，已自動發放。"
+  pending-on-join: "{prefix}&e你有 {count} 筆訂單尚未領取，輸入 &6/{label} claim &e領取。"
+  claim-none: "{prefix}&7目前沒有待領取的內容。"
+  claim-done: "{prefix}&a已領取 &e{count} &a筆訂單。"
+  failed: "{prefix}&c發貨失敗，已通知管理員處理。訂單：&e{order}"
+  needs-attention: "{prefix}&c訂單 &e{order} &c連續 {attempts} 次發貨失敗，已轉人工處理。"
+  broadcast: "&8[&6商店&8] &e{player} &f剛剛完成了一筆儲值，感謝支持！"
+
+shop:
+  title-root: "&8艾洛恩商店"
+  title-category: "&8商店 &7» &8{category}"
+  title-confirm: "&8確認購買"
+  title-topup: "&8儲值"
+  closed: "{prefix}&c商店目前關閉中。"
+  category-locked: "{prefix}&c你尚未解鎖這個分類。"
+  purchase-confirm: "{prefix}&e確認以 &6{price} &e購買 &f{item} &e嗎？&c購買後不可退換。"
+  purchased: "{prefix}&a購買成功：&f{item} &7（花費 &6{price}&7）"
+  purchase-failed: "{prefix}&c購買失敗：{reason}"
+  out-of-stock: "{prefix}&c&l{item} &c已售罄。"
+  limit-reached: "{prefix}&c你已達 &f{item} &c的購買上限（{limit}）。"
+  daily-limit-reached: "{prefix}&c你今天已達 &f{item} &c的購買上限（{limit}）。"
+  requires-permission: "{prefix}&c你沒有購買 &f{item} &c的資格。"
+  discount-applied: "&7（已套用 &a{percent}% &7折扣）"
+
+vip:
+  none: "{prefix}&7你目前沒有 VIP。"
+  status: "{prefix}&f你的 VIP：&6{tier}&f，到期時間 &e{expires}&f（剩餘 {days} 天）"
+  status-permanent: "{prefix}&f你的 VIP：&6{tier}&f（永久）"
+  status-other: "{prefix}&f{player} 的 VIP：&6{tier}&f，到期 &e{expires}"
+  # 注意：{tier} 是 vip.yml 的 display-name，本身通常已含「VIP」字樣，
+  # 所以下列訊息不要再補一個字面上的「VIP」，否則會變成「黃金 VIP VIP」。
+  granted: "{prefix}&a已獲得 &6{tier}&a，期限 &e{days} &a天，到期時間 &e{expires}&a。"
+  extended: "{prefix}&6{tier} &a已延長 &e{days} &a天，新到期時間 &e{expires}&a。"
+  upgraded: "{prefix}&a已升級為 &6{tier}&a，到期時間 &e{expires}&a。"
+  expired: "{prefix}&c你的 &6{tier} &c已到期。"
+  expiring-soon: "{prefix}&e你的 &6{tier} &e將於 &c{days} &e天後（{expires}）到期。"
+  admin-set: "{prefix}&a已將 &e{player} &a設為 &6{tier}&a，到期 &e{expires}&a。"
+  admin-cleared: "{prefix}&a已清除 &e{player} &a的 VIP。"
+  unknown-tier: "{prefix}&c未知的 VIP 等級 &e{tier}&c。可用：&f{available}"
+
+gui:
+  # 通用按鈕。名稱與 lore 都可留白代表不顯示。
+  back-name: "&e« 返回"
+  back-lore: []
+  close-name: "&c關閉"
+  close-lore: []
+  next-page-name: "&e下一頁 »"
+  prev-page-name: "&e« 上一頁"
+  page-indicator: "&7第 {page} / {pages} 頁"
+  balance-name: "&6你的{credit}"
+  balance-lore:
+    - "&f{symbol}{balance}"
+    - ""
+    - "&7VIP：&f{vip}"
+    - "&8點擊查看訂單"
+  confirm-yes-name: "&a&l確認購買"
+  # 「購買後不可退換」必須出現在按下去的那顆按鈕上，只寫在條款頁不算事先告知。
+  confirm-yes-lore:
+    - "&7花費 &6{price}"
+    - "&7餘額將剩 &6{after}"
+    - ""
+    - "&c&l購買後不可退換"
+    - "&8按下即表示你已了解並同意"
+  confirm-no-name: "&c&l取消"
+  confirm-no-lore: []
+  price-line: "&7價格：&6{price}"
+  price-line-discounted: "&7價格：&m{original}&r &6{price} &a({percent}% off)"
+  stock-line: "&7庫存：&f{stock}"
+  limit-line: "&7限購：&f{bought}&7/&f{limit}"
+  locked-line: "&c需要：{requirement}"
+  click-to-buy: "&8點擊購買"
+
+admin:
+  usage-header: "{prefix}&f管理指令："
+  usage-lines:
+    - "&e/{label} reload &7— 重新載入設定與商品"
+    - "&e/{label} status &7— 資料庫、金流、佇列狀態"
+    - "&e/{label} credit <玩家> <give|take|set> <數量> [原因] &7— 調整儲值金"
+    - "&e/{label} order <info|approve|cancel|refund> <訂單號> &7— 訂單處理"
+    - "&e/{label} redeliver <訂單號> &7— 重新發貨"
+    - "&e/{label} vip <set|clear> <玩家> [等級] [天數] &7— 手動設定 VIP"
+    - "&e/{label} audit <玩家> [筆數] &7— 查詢稽核紀錄"
+  status-header: "{prefix}&f系統狀態："
+  status-lines:
+    - "&7  資料庫：&f{storage} &7（{db_status}）"
+    - "&7  商品：&f{products} &7項　分類：&f{categories}　VIP：&f{tiers} &7級"
+    - "&7  金流管道：&f{providers}"
+    - "&7  待付款：&f{pending} &7筆　待發貨：&f{awaiting} &7筆　待人工：&c{attention} &7筆"
+  audit-header: "{prefix}&f{player} 的稽核紀錄（最近 {count} 筆）："
+  audit-entry: "&8 • &7{time} &f{action} &7{detail}"
+  audit-empty: "{prefix}&7查無稽核紀錄。"

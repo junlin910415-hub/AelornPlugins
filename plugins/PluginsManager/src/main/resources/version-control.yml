@@ -1,0 +1,27 @@
+# jar 版本保存 — 換 jar 是唯一沒有 undo 的插件操作。
+#
+# 保存目錄在 plugins/PluginsManager/<archive-folder>/<插件名>/，
+# 檔名是 <時間戳>__[備註__]<原始檔名>，還原時會還原成原始檔名。
+#
+# 路徑安全：插件名、備註、archive-folder 都會被縮成 [A-Za-z0-9._-]，
+# 每次刪除前也會再確認目標仍在保存根目錄內。
+
+version-control:
+  enabled: true
+
+  # 相對於 plugins/PluginsManager/。只允許英數、點、底線與減號。
+  archive-folder: "VC"
+
+  # 每個插件保留幾份，超過的從最舊的開始刪。
+  max-archives-per-plugin: 8
+
+  # 手動 /zpm load 前自動保存一份。
+  archive-before-manual-load: false
+
+  # 還原前要求插件已經卸載。
+  # 建議保持 true：Windows 上載入中的 jar 會被鎖住，複製會中途失敗；
+  # 就算成功，執行中的插件仍會從舊 jar 提供類別，看起來像還原沒有作用。
+  restore-requires-plugin-unloaded: true
+
+  # java.time 的格式字串。無法解析時會退回 yyyyMMdd-HHmmss 並在 log 說明。
+  timestamp-pattern: "yyyyMMdd-HHmmss"

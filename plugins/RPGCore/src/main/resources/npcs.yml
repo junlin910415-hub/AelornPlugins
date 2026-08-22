@@ -1,0 +1,178 @@
+# ─────────────────────────────────────────────────────────────
+# 艾洛恩 — Citizens NPC 設定
+#
+# 需要安裝 Citizens(2.0.43 已宣告 folia-supported)。Citizens 未安裝時整組功能
+# 靜默停用,RPGCore 其餘部分不受影響。
+#
+# ▼ NPC 以「名稱」對應而非數字 id
+#   設定裡寫顯示名稱比寫 id 好維護,而且重建 NPC 後 id 會變、名稱不會。
+#   比對時會去掉 MiniMessage 標記與顏色碼並忽略大小寫。
+#   ★ citizens-name 必須與遊戲內 /npc create 時取的名字一致。
+#
+# ▼ 右鍵 NPC 的處理順序
+#   交付任務物品 → 播放對話 → 給予新任務 → 一般談話
+#
+# ▼ 頭頂任務指示符(Wynncraft 式)
+#   只有 quests 非空的 NPC 才會有。每個玩家看到的狀態不同:
+#     金色 !  有可接的新任務
+#     灰色 ?  任務進行中,目標未完成
+#     金色 ?  目標已完成,可回來回報
+#   實作上每個任務 NPC 會生成三個隱形 TextDisplay,再依玩家狀態逐一顯示。
+#   純場景公民不會生成標記,不付這個成本。
+#
+# ▼ role
+#   QUEST_GIVER     任務給予者
+#   AMBIENT         場景 NPC
+#   COMPANION       同伴,會跟隨玩家
+#   TOWN_CITIZEN    城鎮居民
+#   CASTLE_CITIZEN  城堡居民
+#
+# ▼ behavior.type
+#   STATIONARY   原地不動(預設。無任務時完全不排程,零成本)
+#   WANDER       以生成點為圓心隨機漫步,中間穿插停頓 ← 公民用這個
+#   PATROL       依 waypoints 循環巡邏,至少兩個點
+#   ESCORT       跟隨玩家前往 escort-target
+#   COMBAT_ALLY  跟隨玩家並攻擊附近敵對生物
+#
+#   wander-radius  漫步半徑(上限 32,過大公民會走出城鎮)
+#   idle-ticks     停頓長度。一直走的公民像機器人,偶爾站著才像在生活
+#
+# ★ 以下座標是以主世界出生點附近估算的範例,務必依你的實際城鎮位置修改。
+# ─────────────────────────────────────────────────────────────
+schema-version: 1
+
+npcs:
+
+  # ═══ 任務給予者 ═══════════════════════════════════════════
+
+  quartermaster:
+    citizens-name: '軍需官 賽拉'
+    display-name: '<gold>軍需官 賽拉</gold>'
+    role: QUEST_GIVER
+    quests:
+      - frontline_supplies
+      - ashen_investigation
+    behavior:
+      type: STATIONARY
+
+  # ═══ 城鎮公民 ═════════════════════════════════════════════
+  # 讓鎮上有人在生活。全部用 WANDER,半徑與停頓各自不同,
+  # 避免所有人同步移動看起來很假。
+
+  town_merchant:
+    citizens-name: '商人 多倫'
+    display-name: '<yellow>商人 多倫</yellow>'
+    role: TOWN_CITIZEN
+    behavior:
+      type: WANDER
+      speed: 0.7
+      wander-radius: 6
+      idle-ticks: 160
+
+  town_blacksmith:
+    citizens-name: '鐵匠 葛倫'
+    display-name: '<gray>鐵匠 葛倫</gray>'
+    role: TOWN_CITIZEN
+    behavior:
+      # 鐵匠守著鐵砧,只在很小的範圍內動
+      type: WANDER
+      speed: 0.6
+      wander-radius: 3
+      idle-ticks: 220
+
+  town_farmer:
+    citizens-name: '農夫 艾拉'
+    display-name: '<green>農夫 艾拉</green>'
+    role: TOWN_CITIZEN
+    behavior:
+      type: WANDER
+      speed: 0.8
+      wander-radius: 12
+      idle-ticks: 80
+
+  town_child:
+    citizens-name: '孩童 小米'
+    display-name: '<light_purple>孩童 小米</light_purple>'
+    role: TOWN_CITIZEN
+    behavior:
+      # 小孩跑得快、停得少、跑得遠
+      type: WANDER
+      speed: 1.3
+      wander-radius: 14
+      idle-ticks: 40
+
+  town_elder:
+    citizens-name: '長老 瑟琳'
+    display-name: '<gold>長老 瑟琳</gold>'
+    role: TOWN_CITIZEN
+    behavior:
+      type: WANDER
+      speed: 0.5
+      wander-radius: 4
+      idle-ticks: 300
+
+  # ═══ 城堡公民 ═════════════════════════════════════════════
+
+  castle_gate_guard:
+    citizens-name: '城門衛兵'
+    display-name: '<dark_gray>城門衛兵</dark_gray>'
+    role: CASTLE_CITIZEN
+    behavior:
+      # 衛兵走固定路線,不是隨機漫步
+      type: PATROL
+      speed: 0.9
+      waypoints:
+        - {world: world, x: -200.5, y: -18.0, z: 140.5}
+        - {world: world, x: -180.5, y: -18.0, z: 140.5}
+        - {world: world, x: -180.5, y: -18.0, z: 160.5}
+        - {world: world, x: -200.5, y: -18.0, z: 160.5}
+
+  castle_hall_guard:
+    citizens-name: '大廳衛兵'
+    display-name: '<dark_gray>大廳衛兵</dark_gray>'
+    role: CASTLE_CITIZEN
+    behavior:
+      # 立崗不動
+      type: STATIONARY
+
+  castle_steward:
+    citizens-name: '侍從 卡爾'
+    display-name: '<white>侍從 卡爾</white>'
+    role: CASTLE_CITIZEN
+    behavior:
+      type: WANDER
+      speed: 0.9
+      wander-radius: 10
+      idle-ticks: 100
+
+  castle_scribe:
+    citizens-name: '書記 米蘭'
+    display-name: '<aqua>書記 米蘭</aqua>'
+    role: CASTLE_CITIZEN
+    behavior:
+      type: WANDER
+      speed: 0.6
+      wander-radius: 5
+      idle-ticks: 260
+
+  # ═══ 同伴與護送 ═══════════════════════════════════════════
+
+  scout_companion:
+    citizens-name: '斥候 凱恩'
+    display-name: '<aqua>斥候 凱恩</aqua>'
+    role: COMPANION
+    behavior:
+      type: COMBAT_ALLY
+      speed: 1.2
+      follow-range: 8
+      target-range: 12
+
+  refugee_elder:
+    citizens-name: '流亡長者'
+    display-name: '<yellow>流亡長者</yellow>'
+    role: COMPANION
+    behavior:
+      type: ESCORT
+      speed: 0.8
+      follow-range: 6
+      escort-target: {world: world, x: -204.5, y: -18.0, z: 146.5}

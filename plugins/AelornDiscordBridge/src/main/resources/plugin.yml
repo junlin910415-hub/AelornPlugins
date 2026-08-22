@@ -1,0 +1,31 @@
+name: AelornDiscordBridge
+version: '3.0.0_26.2'
+main: tw.linsy.aelorn.discordbridge.AelornDiscordBridgePlugin
+description: Secure DiscordSRV, InteractiveChat, and AELORN resource-pack integration.
+author: LinSy
+website: https://github.com/DiscordSRV/DiscordSRV
+api-version: '1.21'
+folia-supported: true
+depend:
+  - DiscordSRV
+softdepend:
+  - InteractiveChat
+  - Nexo
+  - AeloriaHUD
+loadbefore:
+  - InteractiveChatDiscordSrvAddon
+
+commands:
+  aelornbridge:
+    aliases: [alb, adb]
+    description: AELORN Discord bridge status and administration.
+    usage: /aelornbridge <status|audit|reload|syncpack>
+    permission: aelorn.discordbridge.admin
+
+permissions:
+  aelorn.discordbridge.admin:
+    description: Allows bridge status, audit, and reload commands.
+    default: op
+  aelorn.discordbridge.bypass:
+    description: Bypasses Minecraft-side bridge rate limits.
+    default: op

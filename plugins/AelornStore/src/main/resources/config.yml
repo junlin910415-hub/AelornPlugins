@@ -1,0 +1,159 @@
+# ─────────────────────────────────────────────────────────────
+#  AelornStore — 艾洛恩儲值金 / 商店 / VIP 系統
+# ─────────────────────────────────────────────────────────────
+#  設計原則：所有金額一律以「整數最小單位」記帳，永遠不用浮點數。
+#    * 真實貨幣 amount-minor  = 新台幣「分」（100 = NT$1）
+#    * 儲值金   credit        = 整數「點」
+#  程式碼不內建任何數值或文案；本檔與 shop.yml / vip.yml / messages.yml
+#  是唯一的事實來源。任何欄位填錯只會被記錄並回退到本檔的預設值，
+#  不會讓 reload 中斷。
+# ─────────────────────────────────────────────────────────────
+
+# 文字格式：AUTO（偵測 <tag> 用 MiniMessage，否則 & 色碼）/ LEGACY / MINIMESSAGE / PLAIN
+text-format: AUTO
+
+# 顯示用時區與時間格式（訂單、VIP 到期）。
+time:
+  zone: "Asia/Taipei"
+  pattern: "yyyy-MM-dd HH:mm"
+
+storage:
+  # SQLITE：單機最省事。與 Web 後端同一台主機時可共用同一個檔案（已啟用 WAL）。
+  # MYSQL ：MC 伺服器與 Web 後端不同機時必須用這個。
+  type: SQLITE
+  table-prefix: "store_"
+  sqlite:
+    # 相對路徑以插件資料夾為基準；要與 Web 後端共用就填絕對路徑。
+    file: "store.db"
+  mysql:
+    host: "127.0.0.1"
+    port: 3306
+    database: "aelorn_store"
+    user: "aelorn"
+    password: ""
+    properties: "useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Taipei"
+  pool:
+    # 商店流量極低，連線數不需要開大。
+    max-connections: 4
+    connection-timeout-seconds: 10
+    # 借出前若閒置超過這個秒數就先驗證連線活著（防 MySQL wait_timeout 斷線）。
+    validate-after-idle-seconds: 30
+
+economy:
+  credit:
+    display-name: "儲值金"
+    symbol: "◈"
+    # 1 點儲值金等於多少「分」。100 = 1 點儲值金售價 NT$1。
+    minor-units-per-credit: 100
+    # 單一帳戶餘額上限，防溢位與異常灌點。
+    max-balance: 100000000
+  vault:
+    # 商品可用 currency: VAULT 以遊戲幣計價（需要 Vault + 經濟插件）。
+    enabled: true
+    display-name: "金幣"
+  money:
+    # 真實貨幣的顯示方式。{amount} 是 amount-minor 除以 100 後、
+    # 依 decimals 格式化的字串。台幣實務上不用小數，所以預設 0。
+    display: "NT${amount}"
+    decimals: 0
+    # 金流商（綠界 / 藍新）的金額欄位都只收整數「元」，因此所有
+    # amount-minor 必須是 100 的倍數；不是的話建單會被擋下並記錄。
+    require-whole-units: true
+
+topup:
+  enabled: true
+  currency: "TWD"
+  # 訂單多久沒付款就自動失效（分鐘）。
+  order-expire-minutes: 60
+  # 同一玩家同時可存在的未付款訂單數。
+  max-pending-orders: 3
+  # 單筆金額上下限（分）。3000 = NT$30，2000000 = NT$20000。
+  min-amount-minor: 3000
+  max-amount-minor: 2000000
+  # ── 風險控管 ──────────────────────────────────────────────
+  # MC 玩家年齡層低，未成年盜刷後家長申訴 chargeback 是最實際的財務風險。
+  # 單一玩家每日累計儲值上限（分）。0 = 不限。
+  daily-limit-minor: 1000000
+  # 新玩家首次登入後多久才能儲值（小時）。0 = 不限。
+  # 盜刷者慣用手法是註冊即刷、刷完即棄；要求帳號存在滿一天，成本就高到不划算。
+  # 代價是新玩家當天不能課金——若辦活動想暫時放寬，改這裡再 /astore reload 即可。
+  account-age-hours: 24
+  # 訂單號前綴。只能英數，且完整訂單號需 ≤ 20 碼（綠界 MerchantTradeNo 上限）。
+  order-prefix: "AE"
+
+payment:
+  # 玩家未指定時使用的管道。manual 永遠可用，不需要任何金流商。
+  default-provider: "manual"
+  # 訂單建立後交給哪個管道，由玩家在 GUI 選擇；此處控制有哪些可選。
+  providers:
+    manual:
+      enabled: true
+      display-name: "人工核銷（匯款 / 超商代收）"
+      icon: PAPER
+      # 人工管道不產生付款連結，只顯示這幾行說明給玩家。
+      instructions:
+        - "&7請將款項匯至公告帳戶，並於備註填寫訂單編號："
+        - "&e{order}"
+        - "&7完成後於 Discord 開單，管理員核銷後系統自動發放。"
+    ecpay:
+      # ── 尚未實作：適配層介面已備妥，簽章與導轉待補（見 web/src/providers/ecpay.js）──
+      enabled: false
+      display-name: "綠界 ECPay（信用卡 / ATM / 超商 / 街口 / 悠遊付 / TWQR）"
+      icon: GOLD_INGOT
+      # 插件不直接呼叫金流商。它只把訂單寫進資料庫，並把這個網址給玩家；
+      # 真正的簽章、導轉與 callback 驗證都在 Web 後端。{order} 會被替換成訂單號。
+      checkout-url: "https://store.example.com/pay/{order}"
+      instructions:
+        - "&7點擊下方連結於瀏覽器完成付款。"
+    newebpay:
+      # ── 尚未實作：適配層介面已備妥（見 web/src/providers/newebpay.js）──
+      enabled: false
+      display-name: "藍新 NewebPay（信用卡 / ATM / 超商 / LINE Pay）"
+      icon: IRON_INGOT
+      checkout-url: "https://store.example.com/pay/{order}"
+      instructions:
+        - "&7點擊下方連結於瀏覽器完成付款。"
+
+delivery:
+  # 多久掃一次資料庫裡「已付款但未發貨」的訂單（秒）。
+  # Web 後端收到 callback 後只改狀態，實際發貨一律由這個輪詢觸發。
+  poll-seconds: 10
+  # 每輪最多處理幾筆，避免大量補發塞爆一個 tick。
+  batch-size: 20
+  # 玩家不在線時排入佇列，上線後補發。
+  queue-on-offline: true
+  # 發貨失敗重試上限，超過即標記為 NEEDS_ATTENTION 等待人工處理。
+  max-attempts: 5
+  retry-backoff-seconds: 30
+  # 補發成功時是否私訊玩家。
+  notify-player: true
+  # 高額訂單全服公告（分）。0 = 不公告。
+  broadcast-above-minor: 50000
+
+shop:
+  # 購買前跳出確認介面。關掉會少一次點擊，但誤觸就直接扣款。
+  confirm-purchase: true
+  close-on-purchase: false
+  # 玩家自助退貨視窗（分鐘）。0 = 不開放，一律走管理員退款。
+  self-refund-minutes: 0
+
+vip:
+  # 到期掃描間隔（秒）。
+  check-seconds: 60
+  # 到期前幾天提醒玩家（上線時檢查一次）。
+  expire-warn-days: [7, 3, 1]
+  # 同一玩家買更高等級時：UPGRADE = 直接升級並保留剩餘天數換算；STACK = 只延長現有等級。
+  upgrade-policy: UPGRADE
+
+audit:
+  enabled: true
+  # 稽核紀錄保留天數，超過自動清理。0 = 永久保留。
+  keep-days: 365
+  # 除了資料庫，另外寫一份純文字稽核檔（金流爭議時最好查）。
+  file: "audit.log"
+
+limits:
+  # 指令冷卻（毫秒），擋連點重複建單。
+  command-cooldown-ms: 500
+  # GUI 點擊冷卻（毫秒），擋連點重複扣款。
+  gui-click-cooldown-ms: 250

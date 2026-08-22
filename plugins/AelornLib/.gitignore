@@ -1,0 +1,7 @@
+# 建置產物：由 build.ps1（或上一層的 build-all.ps1）產生，可離線重現，不進版控。
+build/
+
+# 編輯器
+.idea/
+.vscode/
+*.iml

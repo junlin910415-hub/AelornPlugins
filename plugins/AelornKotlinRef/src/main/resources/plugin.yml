@@ -1,0 +1,15 @@
+name: AelornKotlinRef
+version: '1.0.0_26.2'
+main: tw.linsy.aelorn.ktref.KotlinRefPlugin
+api-version: '1.21'
+folia-supported: true
+author: LinSy
+description: 純 Kotlin 插件參考實作。整個專案沒有任何 .java 檔。
+
+# 這裡沒有 libraries: 區段,是刻意的。
+# kotlin-stdlib 由 AelornLibKt 宣告,而 Paper 的插件 classloader 看得到相依插件的
+# classpath —— 所以純 Kotlin 插件只要 depend 它就有 Kotlin 執行期,
+# 不必自己再宣告一次版本號,啟動時也少一次解析。
+depend:
+  - AelornLib
+  - AelornLibKt

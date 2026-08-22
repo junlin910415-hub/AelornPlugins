@@ -1,0 +1,282 @@
+schema-version: 2
+
+abilities:
+  vanguard_charge:
+    class: vanguard
+    display-name: '<gold>破陣衝鋒</gold>'
+    input: [RIGHT, LEFT, RIGHT]
+    mana: 18.0
+    cooldown-seconds: 4.0
+    effect: DASH_STRIKE
+    coefficient: 1.35
+    flat-power: 4.0
+    radius: 2.5
+    range: 6.0
+    duration-ticks: 0
+    description: 向前突進並傷害沿途敵人。
+
+  vanguard_war_cry:
+    class: vanguard
+    display-name: '<red>震懾戰吼</red>'
+    input: [RIGHT, RIGHT, RIGHT]
+    mana: 24.0
+    cooldown-seconds: 7.0
+    effect: WAR_CRY
+    coefficient: 1.10
+    flat-power: 3.0
+    radius: 5.0
+    range: 0.0
+    duration-ticks: 40
+    description: 震退周圍敵人並短暫削弱其行動。
+
+  vanguard_ground_slam:
+    class: vanguard
+    display-name: '<yellow>裂地重擊</yellow>'
+    input: [RIGHT, LEFT, LEFT]
+    mana: 28.0
+    cooldown-seconds: 6.0
+    effect: GROUND_SLAM
+    coefficient: 1.65
+    flat-power: 6.0
+    radius: 4.0
+    range: 0.0
+    duration-ticks: 60
+    description: 重擊地面，造成範圍傷害與緩速。
+
+  vanguard_bulwark:
+    class: vanguard
+    display-name: '<green>不屈壁壘</green>'
+    input: [RIGHT, RIGHT, LEFT]
+    mana: 32.0
+    cooldown-seconds: 12.0
+    effect: BULWARK
+    coefficient: 0.0
+    flat-power: 0.0
+    radius: 0.0
+    range: 0.0
+    duration-ticks: 100
+    description: 暫時獲得抗性與額外生命。
+
+  arcanist_blink:
+    class: arcanist
+    display-name: '<aqua>相位瞬步</aqua>'
+    input: [RIGHT, LEFT, RIGHT]
+    mana: 16.0
+    cooldown-seconds: 3.0
+    effect: BLINK
+    coefficient: 0.0
+    flat-power: 0.0
+    radius: 0.0
+    range: 8.0
+    duration-ticks: 0
+    description: 穿越短距離並停在最近的安全位置。
+
+  arcanist_bolt:
+    class: arcanist
+    display-name: '<light_purple>奧術射線</light_purple>'
+    input: [RIGHT, RIGHT, RIGHT]
+    mana: 20.0
+    cooldown-seconds: 2.5
+    effect: ARCANE_BOLT
+    coefficient: 1.70
+    flat-power: 5.0
+    radius: 0.6
+    range: 18.0
+    duration-ticks: 0
+    description: 射出精準的奧術能量攻擊第一個目標。
+
+  arcanist_restore:
+    class: arcanist
+    display-name: '<green>生命回響</green>'
+    input: [RIGHT, LEFT, LEFT]
+    mana: 30.0
+    cooldown-seconds: 8.0
+    effect: RESTORE
+    coefficient: 0.0
+    flat-power: 6.0
+    radius: 4.0
+    range: 0.0
+    duration-ticks: 0
+    description: 恢復自身生命；隊伍治療會在隊伍系統完成後開放。
+
+  arcanist_frost_nova:
+    class: arcanist
+    display-name: '<blue>霜環新星</blue>'
+    input: [RIGHT, RIGHT, LEFT]
+    mana: 34.0
+    cooldown-seconds: 9.0
+    effect: FROST_NOVA
+    coefficient: 1.25
+    flat-power: 4.0
+    radius: 5.0
+    range: 0.0
+    duration-ticks: 80
+    description: 凍結周圍空間，傷害並緩速敵人。
+
+  ranger_backstep:
+    class: ranger
+    display-name: '<aqua>疾風退躍</aqua>'
+    input: [RIGHT, LEFT, RIGHT]
+    mana: 14.0
+    cooldown-seconds: 3.0
+    effect: BACKSTEP
+    coefficient: 0.0
+    flat-power: 0.0
+    radius: 0.0
+    range: 0.0
+    duration-ticks: 0
+    description: 借助風勢向後躍開，快速拉開射擊距離。
+
+  ranger_rapid_volley:
+    class: ranger
+    display-name: '<yellow>連矢風暴</yellow>'
+    input: [RIGHT, RIGHT, RIGHT]
+    mana: 22.0
+    cooldown-seconds: 4.0
+    effect: RAPID_VOLLEY
+    coefficient: 1.75
+    flat-power: 5.0
+    radius: 0.7
+    range: 22.0
+    duration-ticks: 0
+    description: 朝準星方向連續射出五道高速箭擊。
+
+  ranger_explosive_shot:
+    class: ranger
+    display-name: '<red>爆裂箭</red>'
+    input: [RIGHT, LEFT, LEFT]
+    mana: 28.0
+    cooldown-seconds: 6.0
+    effect: EXPLOSIVE_SHOT
+    coefficient: 1.55
+    flat-power: 7.0
+    radius: 3.5
+    range: 20.0
+    duration-ticks: 0
+    description: 引爆落點並傷害小範圍內的所有敵人。
+
+  ranger_arrow_guard:
+    class: ranger
+    display-name: '<green>護衛箭陣</green>'
+    input: [RIGHT, RIGHT, LEFT]
+    mana: 30.0
+    cooldown-seconds: 11.0
+    effect: ARROW_GUARD
+    coefficient: 0.0
+    flat-power: 0.0
+    radius: 0.0
+    range: 0.0
+    duration-ticks: 100
+    description: 暫時取得吸收生命與移動速度，爭取重新定位。
+
+  shadowblade_shadow_dash:
+    class: shadowblade
+    display-name: '<light_purple>影襲</light_purple>'
+    input: [RIGHT, LEFT, RIGHT]
+    mana: 16.0
+    cooldown-seconds: 3.5
+    effect: SHADOW_DASH
+    coefficient: 1.20
+    flat-power: 3.0
+    radius: 2.2
+    range: 7.0
+    duration-ticks: 0
+    description: 穿越短距離並斬擊落點周圍的敵人。
+
+  shadowblade_whirlwind:
+    class: shadowblade
+    display-name: '<red>迴旋斬</red>'
+    input: [RIGHT, RIGHT, RIGHT]
+    mana: 20.0
+    cooldown-seconds: 4.0
+    effect: WHIRLWIND
+    coefficient: 1.45
+    flat-power: 4.0
+    radius: 3.2
+    range: 0.0
+    duration-ticks: 0
+    description: 旋身斬擊近身敵人並將其擊退。
+
+  shadowblade_multi_hit:
+    class: shadowblade
+    display-name: '<gold>百刃連擊</gold>'
+    input: [RIGHT, LEFT, LEFT]
+    mana: 30.0
+    cooldown-seconds: 6.0
+    effect: MULTI_HIT
+    coefficient: 2.10
+    flat-power: 8.0
+    radius: 2.8
+    range: 0.0
+    duration-ticks: 10
+    description: 在短時間內快速造成五段近距離傷害。
+
+  shadowblade_smoke_field:
+    class: shadowblade
+    display-name: '<dark_gray>夜幕煙陣</dark_gray>'
+    input: [RIGHT, RIGHT, LEFT]
+    mana: 34.0
+    cooldown-seconds: 12.0
+    effect: SMOKE_FIELD
+    coefficient: 0.65
+    flat-power: 2.0
+    radius: 4.0
+    range: 0.0
+    duration-ticks: 80
+    description: 隱匿自身並使附近敵人短暫失去視野。
+
+  warden_field:
+    class: warden
+    display-name: '<green>守望領域</green>'
+    input: [RIGHT, LEFT, RIGHT]
+    mana: 24.0
+    cooldown-seconds: 8.0
+    effect: WARDEN_FIELD
+    coefficient: 1.50
+    flat-power: 5.0
+    radius: 4.5
+    range: 0.0
+    duration-ticks: 100
+    description: 在腳下建立領域，持續傷害踏入範圍的敵人。
+
+  warden_resonance_wave:
+    class: warden
+    display-name: '<aqua>共鳴震波</aqua>'
+    input: [RIGHT, RIGHT, RIGHT]
+    mana: 22.0
+    cooldown-seconds: 5.0
+    effect: RESONANCE_WAVE
+    coefficient: 1.35
+    flat-power: 4.0
+    radius: 5.0
+    range: 0.0
+    duration-ticks: 0
+    description: 釋放環形震波並推離周圍敵人。
+
+  warden_anchor_leap:
+    class: warden
+    display-name: '<blue>牽引躍遷</blue>'
+    input: [RIGHT, LEFT, LEFT]
+    mana: 18.0
+    cooldown-seconds: 4.5
+    effect: ANCHOR_LEAP
+    coefficient: 0.90
+    flat-power: 2.0
+    radius: 3.0
+    range: 0.0
+    duration-ticks: 0
+    description: 震開近身敵人並向視線方向躍起。
+
+  warden_renewal_pulse:
+    class: warden
+    display-name: '<light_purple>復甦脈動</light_purple>'
+    input: [RIGHT, RIGHT, LEFT]
+    mana: 36.0
+    cooldown-seconds: 10.0
+    effect: RENEWAL_PULSE
+    coefficient: 0.70
+    flat-power: 8.0
+    radius: 6.0
+    range: 0.0
+    duration-ticks: 0
+    description: 治療自身，以及附近同隊玩家的部分生命。

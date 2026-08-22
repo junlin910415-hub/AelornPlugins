@@ -1,0 +1,27 @@
+# 建置產物
+build/
+out/
+*.class
+*.jar
+
+# 第三方二進位檔一律不進版控。它們是別人的著作，而且很大。
+libraries/
+versions/
+lib/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.settings/
+.classpath
+.project
+
+# 作業系統
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# 本機設定（可能含連線字串或憑證）
+*.local.*
+launcher.properties

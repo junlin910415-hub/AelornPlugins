@@ -1,0 +1,170 @@
+schema-version: 2
+
+# Equipment templates are clean-room RPGCore data. Monsters, chests, quests,
+# and crafting can all reference the same template ids.
+templates:
+  frontier_blade:
+    display-name: '<white>邊境長劍</white>'
+    material: IRON_SWORD
+    custom-item: aeloria_unidentified_weapon
+    slot: WEAPON
+    level: { minimum: 1, maximum: 14 }
+    requirements:
+      classes: [vanguard, shadowblade]
+      skills:
+        strength: 5
+      quests: [road_patrol]
+    base-stats:
+      attack: { minimum: 7, maximum: 11 }
+      main_attack_damage_percent: { minimum: 2, maximum: 5 }
+    affix-count: { minimum: 1, maximum: 2 }
+    affixes:
+      health: { minimum: 8, maximum: 18 }
+      defense: { minimum: 2, maximum: 5 }
+      speed: { minimum: 1, maximum: 3 }
+      strength: { minimum: 1, maximum: 3 }
+      dexterity: { minimum: 1, maximum: 2 }
+      knockback: { minimum: 2, maximum: 8 }
+      critical_strike_chance: { minimum: 1, maximum: 4 }
+    rarity-weights: { common: 50, uncommon: 26, rare: 13, epic: 6, legendary: 3, vast: 1.5, mythic: 0.5 }
+
+  ashwood_bow:
+    display-name: '<green>梣木長弓</green>'
+    material: BOW
+    custom-item: aeloria_unidentified_weapon
+    slot: WEAPON
+    level: { minimum: 1, maximum: 16 }
+    requirements:
+      classes: [ranger]
+      skills:
+        dexterity: 8
+        agility: 4
+      quests: [road_patrol]
+    base-stats:
+      attack: { minimum: 8, maximum: 13 }
+      range: { minimum: 2, maximum: 5 }
+    affix-count: { minimum: 1, maximum: 2 }
+    affixes:
+      speed: { minimum: 2, maximum: 5 }
+      mana: { minimum: 4, maximum: 10 }
+      resistance: { minimum: 1, maximum: 3 }
+      dexterity: { minimum: 1, maximum: 4 }
+      agility: { minimum: 1, maximum: 3 }
+      projectile_damage: { minimum: 3, maximum: 9 }
+      critical_strike_power: { minimum: 5, maximum: 18 }
+    rarity-weights: { common: 48, uncommon: 27, rare: 14, epic: 6, legendary: 3, vast: 1.5, mythic: 0.5 }
+
+  ember_scepter:
+    display-name: '<gold>餘燼權杖</gold>'
+    material: BLAZE_ROD
+    custom-item: aeloria_unidentified_weapon
+    slot: WEAPON
+    level: { minimum: 12, maximum: 30 }
+    requirements:
+      classes: [arcanist, warden]
+      skills:
+        intelligence: 18
+      quests: [ember_warning]
+    major-identification:
+      id: ember_echo
+      display-name: '餘燼回響'
+      description:
+        - '施放能力後保留一縷餘火，強化下一次主攻擊。'
+    base-stats:
+      attack: { minimum: 10, maximum: 16 }
+      mana: { minimum: 8, maximum: 16 }
+      fire_damage: { minimum: 5, maximum: 12 }
+      spell_damage_percent: { minimum: 4, maximum: 10 }
+    affix-count: { minimum: 1, maximum: 3 }
+    affixes:
+      mana_regen: { minimum: 1, maximum: 3 }
+      resistance: { minimum: 3, maximum: 8 }
+      speed: { minimum: 1, maximum: 4 }
+      intelligence: { minimum: 2, maximum: 6 }
+      health_regen: { minimum: 1, maximum: 3 }
+      cooldown_reduction: { minimum: 2, maximum: 6 }
+    rarity-weights: { common: 38, uncommon: 29, rare: 17, epic: 8, legendary: 5, vast: 2, mythic: 1 }
+
+  mossguard_plate:
+    display-name: '<green>苔衛胸甲</green>'
+    material: IRON_CHESTPLATE
+    custom-item: aeloria_unidentified_armor
+    slot: ARMOR
+    level: { minimum: 7, maximum: 24 }
+    requirements:
+      classes: [vanguard, warden]
+      skills:
+        defence: 10
+        strength: 5
+      quests: [frontline_supplies]
+    base-stats:
+      health: { minimum: 30, maximum: 58 }
+      defense: { minimum: 8, maximum: 16 }
+    affix-count: { minimum: 1, maximum: 2 }
+    affixes:
+      resistance: { minimum: 4, maximum: 10 }
+      mana: { minimum: 3, maximum: 9 }
+      health: { minimum: 12, maximum: 26 }
+      defence: { minimum: 2, maximum: 8 }
+      health_regen: { minimum: 1, maximum: 3 }
+      damage_reduction: { minimum: 1, maximum: 4 }
+      thorns: { minimum: 2, maximum: 7 }
+    rarity-weights: { common: 44, uncommon: 28, rare: 15, epic: 7, legendary: 4, vast: 1.5, mythic: 0.5 }
+
+  shadowstep_wraps:
+    display-name: '<dark_purple>影步護帶</dark_purple>'
+    material: LEATHER_BOOTS
+    custom-item: aeloria_unidentified_armor
+    slot: ARMOR
+    level: { minimum: 8, maximum: 26 }
+    requirements:
+      classes: [shadowblade, ranger]
+      skills:
+        dexterity: 12
+        agility: 12
+      quests: [broken_blockade]
+    base-stats:
+      defense: { minimum: 4, maximum: 10 }
+      speed: { minimum: 3, maximum: 7 }
+    affix-count: { minimum: 1, maximum: 3 }
+    affixes:
+      attack: { minimum: 3, maximum: 8 }
+      resistance: { minimum: 2, maximum: 6 }
+      mana_regen: { minimum: 1, maximum: 2 }
+      agility: { minimum: 2, maximum: 7 }
+      dexterity: { minimum: 1, maximum: 4 }
+      dodge_rating: { minimum: 4, maximum: 12 }
+      sprint_regen: { minimum: 3, maximum: 9 }
+    rarity-weights: { common: 40, uncommon: 28, rare: 16, epic: 8, legendary: 5, vast: 2, mythic: 1 }
+
+  ruin_focus:
+    display-name: '<light_purple>遺跡聚能核心</light_purple>'
+    material: AMETHYST_SHARD
+    custom-item: aeloria_unidentified_accessory
+    slot: ACCESSORY
+    level: { minimum: 24, maximum: 44 }
+    requirements:
+      classes: []
+      skills:
+        intelligence: 25
+      quests: [resonant_fragments]
+    major-identification:
+      id: ruin_resonance
+      display-name: '遺跡共振'
+      description:
+        - '元素傷害會累積共振，供能力樹效果消耗。'
+    base-stats:
+      mana: { minimum: 16, maximum: 30 }
+      resistance: { minimum: 8, maximum: 18 }
+    affix-count: { minimum: 2, maximum: 3 }
+    affixes:
+      attack: { minimum: 5, maximum: 12 }
+      health: { minimum: 24, maximum: 48 }
+      defense: { minimum: 5, maximum: 12 }
+      mana_regen: { minimum: 1, maximum: 4 }
+      strength: { minimum: 1, maximum: 4 }
+      intelligence: { minimum: 1, maximum: 5 }
+      defence: { minimum: 1, maximum: 5 }
+      loot_quality: { minimum: 2, maximum: 6 }
+      elemental_penetration_percent: { minimum: 3, maximum: 8 }
+    rarity-weights: { common: 25, uncommon: 27, rare: 22, epic: 12, legendary: 8, vast: 4, mythic: 2 }

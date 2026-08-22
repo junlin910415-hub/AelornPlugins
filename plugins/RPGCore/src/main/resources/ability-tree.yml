@@ -1,0 +1,367 @@
+schema-version: 3
+
+nodes:
+  vanguard_bulwark_root:
+    class: vanguard
+    archetype: bulwark
+    display-name: '<yellow>堅定架勢</yellow>'
+    icon: SHIELD
+    slot: 20
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: MANA_EFFICIENCY
+    value: 0.08
+    description: 所有技能的魔力消耗降低 8%。
+  vanguard_bulwark_mastery:
+    class: vanguard
+    archetype: bulwark
+    display-name: '<gold>壁壘精通</gold>'
+    icon: IRON_CHESTPLATE
+    slot: 29
+    cost: 1
+    minimum-level: 5
+    requires: [vanguard_bulwark_root]
+    effect: COOLDOWN_REDUCTION
+    value: 0.07
+    description: 所有技能的冷卻時間縮短 7%。
+  vanguard_onslaught_root:
+    class: vanguard
+    archetype: onslaught
+    display-name: '<red>猛烈攻勢</red>'
+    icon: IRON_AXE
+    slot: 22
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: ABILITY_POWER
+    value: 0.08
+    description: 所有技能造成的傷害提高 8%。
+  vanguard_onslaught_mastery:
+    class: vanguard
+    archetype: onslaught
+    display-name: '<dark_red>攻勢精通</dark_red>'
+    icon: NETHERITE_AXE
+    slot: 31
+    cost: 1
+    minimum-level: 5
+    requires: [vanguard_onslaught_root]
+    effect: ABILITY_POWER
+    value: 0.07
+    description: 所有技能造成的傷害再提高 7%。
+  vanguard_commander_root:
+    class: vanguard
+    archetype: commander
+    display-name: '<aqua>戰場節奏</aqua>'
+    icon: CLOCK
+    slot: 24
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: COOLDOWN_REDUCTION
+    value: 0.08
+    description: 所有技能的冷卻時間縮短 8%。
+  vanguard_commander_mastery:
+    class: vanguard
+    archetype: commander
+    display-name: '<blue>統御精通</blue>'
+    icon: BELL
+    slot: 33
+    cost: 1
+    minimum-level: 5
+    requires: [vanguard_commander_root]
+    effect: MANA_EFFICIENCY
+    value: 0.07
+    description: 所有技能的魔力消耗再降低 7%。
+
+  arcanist_elemental_root:
+    class: arcanist
+    archetype: elemental
+    display-name: '<red>元素增幅</red>'
+    icon: FIRE_CHARGE
+    slot: 20
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: ABILITY_POWER
+    value: 0.08
+    description: 所有技能造成的傷害提高 8%。
+  arcanist_elemental_mastery:
+    class: arcanist
+    archetype: elemental
+    display-name: '<gold>元素精通</gold>'
+    icon: MAGMA_CREAM
+    slot: 29
+    cost: 1
+    minimum-level: 5
+    requires: [arcanist_elemental_root]
+    effect: ABILITY_POWER
+    value: 0.07
+    description: 所有技能造成的傷害再提高 7%。
+  arcanist_chronomancy_root:
+    class: arcanist
+    archetype: chronomancy
+    display-name: '<yellow>時間壓縮</yellow>'
+    icon: CLOCK
+    slot: 22
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: COOLDOWN_REDUCTION
+    value: 0.08
+    description: 所有技能的冷卻時間縮短 8%。
+  arcanist_chronomancy_mastery:
+    class: arcanist
+    archetype: chronomancy
+    display-name: '<aqua>時序精通</aqua>'
+    icon: RECOVERY_COMPASS
+    slot: 31
+    cost: 1
+    minimum-level: 5
+    requires: [arcanist_chronomancy_root]
+    effect: COOLDOWN_REDUCTION
+    value: 0.07
+    description: 所有技能的冷卻時間再縮短 7%。
+  arcanist_mystic_root:
+    class: arcanist
+    archetype: mystic
+    display-name: '<light_purple>魔力循環</light_purple>'
+    icon: LAPIS_LAZULI
+    slot: 24
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: MANA_EFFICIENCY
+    value: 0.08
+    description: 所有技能的魔力消耗降低 8%。
+  arcanist_mystic_mastery:
+    class: arcanist
+    archetype: mystic
+    display-name: '<dark_purple>秘法精通</dark_purple>'
+    icon: AMETHYST_SHARD
+    slot: 33
+    cost: 1
+    minimum-level: 5
+    requires: [arcanist_mystic_root]
+    effect: MANA_EFFICIENCY
+    value: 0.07
+    description: 所有技能的魔力消耗再降低 7%。
+
+  ranger_marksman_root:
+    class: ranger
+    archetype: marksman
+    display-name: '<yellow>弱點瞄準</yellow>'
+    icon: TARGET
+    slot: 20
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: ABILITY_POWER
+    value: 0.08
+    description: 所有技能造成的傷害提高 8%。
+  ranger_marksman_mastery:
+    class: ranger
+    archetype: marksman
+    display-name: '<gold>神射精通</gold>'
+    icon: SPECTRAL_ARROW
+    slot: 29
+    cost: 1
+    minimum-level: 5
+    requires: [ranger_marksman_root]
+    effect: ABILITY_POWER
+    value: 0.07
+    description: 所有技能造成的傷害再提高 7%。
+  ranger_windrunner_root:
+    class: ranger
+    archetype: windrunner
+    display-name: '<aqua>順風步伐</aqua>'
+    icon: FEATHER
+    slot: 22
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: COOLDOWN_REDUCTION
+    value: 0.08
+    description: 所有技能的冷卻時間縮短 8%。
+  ranger_windrunner_mastery:
+    class: ranger
+    archetype: windrunner
+    display-name: '<blue>風行精通</blue>'
+    icon: WIND_CHARGE
+    slot: 31
+    cost: 1
+    minimum-level: 5
+    requires: [ranger_windrunner_root]
+    effect: COOLDOWN_REDUCTION
+    value: 0.07
+    description: 所有技能的冷卻時間再縮短 7%。
+  ranger_trapper_root:
+    class: ranger
+    archetype: trapper
+    display-name: '<green>機關節流</green>'
+    icon: TRIPWIRE_HOOK
+    slot: 24
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: MANA_EFFICIENCY
+    value: 0.08
+    description: 所有技能的魔力消耗降低 8%。
+  ranger_trapper_mastery:
+    class: ranger
+    archetype: trapper
+    display-name: '<dark_green>陷阱精通</dark_green>'
+    icon: COBWEB
+    slot: 33
+    cost: 1
+    minimum-level: 5
+    requires: [ranger_trapper_root]
+    effect: ABILITY_POWER
+    value: 0.07
+    description: 所有技能造成的傷害提高 7%。
+
+  shadowblade_duelist_root:
+    class: shadowblade
+    archetype: duelist
+    display-name: '<red>決鬥節奏</red>'
+    icon: IRON_SWORD
+    slot: 20
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: COOLDOWN_REDUCTION
+    value: 0.08
+    description: 所有技能的冷卻時間縮短 8%。
+  shadowblade_duelist_mastery:
+    class: shadowblade
+    archetype: duelist
+    display-name: '<dark_red>決鬥精通</dark_red>'
+    icon: NETHERITE_SWORD
+    slot: 29
+    cost: 1
+    minimum-level: 5
+    requires: [shadowblade_duelist_root]
+    effect: ABILITY_POWER
+    value: 0.07
+    description: 所有技能造成的傷害提高 7%。
+  shadowblade_venom_root:
+    class: shadowblade
+    archetype: venom
+    display-name: '<green>淬毒利刃</green>'
+    icon: SPIDER_EYE
+    slot: 22
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: ABILITY_POWER
+    value: 0.08
+    description: 所有技能造成的傷害提高 8%。
+  shadowblade_venom_mastery:
+    class: shadowblade
+    archetype: venom
+    display-name: '<dark_green>毒影精通</dark_green>'
+    icon: FERMENTED_SPIDER_EYE
+    slot: 31
+    cost: 1
+    minimum-level: 5
+    requires: [shadowblade_venom_root]
+    effect: MANA_EFFICIENCY
+    value: 0.07
+    description: 所有技能的魔力消耗降低 7%。
+  shadowblade_mirage_root:
+    class: shadowblade
+    archetype: mirage
+    display-name: '<light_purple>殘影步法</light_purple>'
+    icon: ENDER_PEARL
+    slot: 24
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: MANA_EFFICIENCY
+    value: 0.08
+    description: 所有技能的魔力消耗降低 8%。
+  shadowblade_mirage_mastery:
+    class: shadowblade
+    archetype: mirage
+    display-name: '<dark_purple>幻步精通</dark_purple>'
+    icon: ECHO_SHARD
+    slot: 33
+    cost: 1
+    minimum-level: 5
+    requires: [shadowblade_mirage_root]
+    effect: COOLDOWN_REDUCTION
+    value: 0.07
+    description: 所有技能的冷卻時間縮短 7%。
+
+  warden_guardian_root:
+    class: warden
+    archetype: guardian
+    display-name: '<green>穩固領域</green>'
+    icon: TURTLE_SCUTE
+    slot: 20
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: MANA_EFFICIENCY
+    value: 0.08
+    description: 所有技能的魔力消耗降低 8%。
+  warden_guardian_mastery:
+    class: warden
+    archetype: guardian
+    display-name: '<dark_green>守護精通</dark_green>'
+    icon: TOTEM_OF_UNDYING
+    slot: 29
+    cost: 1
+    minimum-level: 5
+    requires: [warden_guardian_root]
+    effect: COOLDOWN_REDUCTION
+    value: 0.07
+    description: 所有技能的冷卻時間縮短 7%。
+  warden_tempest_root:
+    class: warden
+    archetype: tempest
+    display-name: '<aqua>風暴增幅</aqua>'
+    icon: LIGHTNING_ROD
+    slot: 22
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: ABILITY_POWER
+    value: 0.08
+    description: 所有技能造成的傷害提高 8%。
+  warden_tempest_mastery:
+    class: warden
+    archetype: tempest
+    display-name: '<blue>風暴精通</blue>'
+    icon: TRIDENT
+    slot: 31
+    cost: 1
+    minimum-level: 5
+    requires: [warden_tempest_root]
+    effect: ABILITY_POWER
+    value: 0.07
+    description: 所有技能造成的傷害再提高 7%。
+  warden_resonance_root:
+    class: warden
+    archetype: resonance
+    display-name: '<light_purple>回響循環</light_purple>'
+    icon: AMETHYST_SHARD
+    slot: 24
+    cost: 1
+    minimum-level: 1
+    requires: []
+    effect: COOLDOWN_REDUCTION
+    value: 0.08
+    description: 所有技能的冷卻時間縮短 8%。
+  warden_resonance_mastery:
+    class: warden
+    archetype: resonance
+    display-name: '<dark_purple>共鳴精通</dark_purple>'
+    icon: SCULK_CATALYST
+    slot: 33
+    cost: 1
+    minimum-level: 5
+    requires: [warden_resonance_root]
+    effect: MANA_EFFICIENCY
+    value: 0.07
+    description: 所有技能的魔力消耗再降低 7%。

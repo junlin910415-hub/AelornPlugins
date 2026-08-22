@@ -1,0 +1,175 @@
+schema-version: 2
+
+# Base values are measured at level.base. Runtime scaling is configured in config.yml.
+monsters:
+  roadside_raider:
+    display-name: '<gray>荒路掠奪者</gray>'
+    entity-type: PILLAGER
+    mythic-mob: RPGCore_RoadsideRaider
+    model:
+      id: rpgcore_roadside_raider
+      animations: { idle: idle, attack: attack, hurt: hurt, death: death }
+    rank: COMMON
+    archetype: SKIRMISHER
+    level: { base: 3, minimum: 1, maximum: 10 }
+    stats: { health: 28.0, damage: 3.5, defense: 5.0, resistance: 2.0 }
+    experience: 34
+    behavior:
+      movement-speed: 0.30
+      follow-range: 24.0
+      ability-cooldown-ticks: 90
+      ability-power: 0.90
+    drops:
+      worn_token:
+        material: COPPER_NUGGET
+        display-name: '<gray>磨損的傭兵徽記</gray>'
+        chance: 0.45
+        minimum: 1
+        maximum: 2
+    equipment-drops:
+      blade:
+        template: frontier_blade
+        chance: 0.085
+        level-offset: { minimum: -1, maximum: 1 }
+      bow:
+        template: ashwood_bow
+        chance: 0.070
+        level-offset: { minimum: -1, maximum: 2 }
+
+  mossbound_guardian:
+    display-name: '<green>苔甲守衛</green>'
+    entity-type: HUSK
+    mythic-mob: RPGCore_MossboundGuardian
+    model:
+      id: rpgcore_mossbound_guardian
+      animations: { idle: idle, attack: attack, hurt: hurt, death: death }
+    rank: VETERAN
+    archetype: BRUISER
+    level: { base: 10, minimum: 7, maximum: 18 }
+    stats: { health: 92.0, damage: 8.5, defense: 24.0, resistance: 12.0 }
+    experience: 105
+    behavior:
+      movement-speed: 0.22
+      follow-range: 28.0
+      ability-cooldown-ticks: 110
+      ability-power: 1.25
+    drops:
+      moss_fragment:
+        material: MOSS_BLOCK
+        display-name: '<green>活性苔甲碎片</green>'
+        chance: 0.32
+        minimum: 1
+        maximum: 2
+    equipment-drops:
+      plate:
+        template: mossguard_plate
+        chance: 0.105
+        level-offset: { minimum: -1, maximum: 2 }
+        rarity-weights: { common: 40, uncommon: 31, rare: 16, epic: 7, legendary: 4, vast: 1.5, mythic: 0.5 }
+
+  ember_adept:
+    display-name: '<gold>燼火學徒</gold>'
+    entity-type: STRAY
+    mythic-mob: RPGCore_EmberAdept
+    model:
+      id: rpgcore_ember_adept
+      animations: { idle: idle, attack: cast, hurt: hurt, death: death }
+    rank: VETERAN
+    archetype: CASTER
+    level: { base: 17, minimum: 13, maximum: 25 }
+    stats: { health: 78.0, damage: 11.0, defense: 10.0, resistance: 28.0 }
+    experience: 185
+    behavior:
+      movement-speed: 0.25
+      follow-range: 32.0
+      ability-cooldown-ticks: 80
+      ability-power: 1.15
+    drops:
+      ember_dust:
+        material: BLAZE_POWDER
+        display-name: '<gold>餘燼粉末</gold>'
+        chance: 0.38
+        minimum: 1
+        maximum: 3
+    equipment-drops:
+      scepter:
+        template: ember_scepter
+        chance: 0.115
+        level-offset: { minimum: -2, maximum: 2 }
+        rarity-weights: { common: 37, uncommon: 31, rare: 17, epic: 8, legendary: 4, vast: 2, mythic: 1 }
+
+  grove_chanter:
+    display-name: '<aqua>林地吟唱者</aqua>'
+    entity-type: EVOKER
+    mythic-mob: RPGCore_GroveChanter
+    model:
+      id: rpgcore_grove_chanter
+      animations: { idle: idle, attack: cast, hurt: hurt, death: death }
+    rank: ELITE
+    archetype: SUPPORT
+    level: { base: 24, minimum: 20, maximum: 32 }
+    stats: { health: 165.0, damage: 10.5, defense: 18.0, resistance: 42.0 }
+    experience: 360
+    behavior:
+      movement-speed: 0.24
+      follow-range: 32.0
+      ability-cooldown-ticks: 100
+      ability-power: 0.16
+    drops:
+      resonant_leaf:
+        material: FLOWERING_AZALEA
+        display-name: '<aqua>共鳴之葉</aqua>'
+        chance: 0.26
+        minimum: 1
+        maximum: 1
+    equipment-drops:
+      wraps:
+        template: shadowstep_wraps
+        chance: 0.125
+        level-offset: { minimum: -2, maximum: 2 }
+      focus:
+        template: ruin_focus
+        chance: 0.045
+        level-offset: { minimum: -1, maximum: 3 }
+
+  ruin_warden:
+    display-name: '<dark_red><bold>遺跡鎮守者</bold></dark_red>'
+    entity-type: WITHER_SKELETON
+    mythic-mob: RPGCore_RuinWarden
+    model:
+      id: rpgcore_ruin_warden
+      animations: { idle: idle, attack: attack, hurt: hurt, death: death }
+    rank: BOSS
+    archetype: BRUISER
+    level: { base: 32, minimum: 28, maximum: 42 }
+    stats: { health: 720.0, damage: 22.0, defense: 58.0, resistance: 48.0 }
+    experience: 1450
+    behavior:
+      movement-speed: 0.27
+      follow-range: 40.0
+      ability-cooldown-ticks: 75
+      ability-power: 1.50
+    drops:
+      warden_core:
+        material: ECHO_SHARD
+        display-name: '<light_purple>失序核心</light_purple>'
+        chance: 0.18
+        minimum: 1
+        maximum: 1
+      ancient_alloy:
+        material: IRON_INGOT
+        display-name: '<gray>古代合金</gray>'
+        chance: 0.72
+        minimum: 1
+        maximum: 3
+    equipment-drops:
+      focus:
+        template: ruin_focus
+        chance: 0.220
+        level-offset: { minimum: -2, maximum: 3 }
+        rarity-weights: { common: 20, uncommon: 28, rare: 24, epic: 14, legendary: 8, vast: 4, mythic: 2 }
+      scepter:
+        template: ember_scepter
+        chance: 0.080
+        level-offset: { minimum: -4, maximum: 2 }
+        rarity-weights: { common: 25, uncommon: 30, rare: 22, epic: 12, legendary: 7, vast: 3, mythic: 1 }

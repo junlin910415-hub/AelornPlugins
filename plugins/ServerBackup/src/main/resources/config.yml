@@ -1,0 +1,259 @@
+# Main backup folder. Relative paths are resolved from the server root.
+backup:
+  root: "Server/Backup"
+
+  # Optional additional plugin save hook. Worlds and online players are always
+  # flushed through the Folia API before the async copy starts.
+  save-command: ""
+
+  # Keeps the categorized folder beside the zip archive.
+  # When false, only the zip file and manifest inside it are kept.
+  keep-categorized-folder: true
+
+  # Empty directories are preserved in the categorized folder and zip.
+  include-empty-directories: true
+
+  # Timestamp format used in folder and zip names.
+  date-format: "yyyy-MM-dd_HH-mm-ss"
+
+  archive-folder: "archives"
+
+  # These rules are matched against paths relative to the server root.
+  excludes:
+    - "Server/Backup/**"
+    - ".git/**"
+    - "**/*.tmp"
+    - "**/*.lock"
+    - "**/session.lock"
+    # 此 MapDB 記憶映射快取每次啟停都會由插件自行刪除並重建，不是持久資料。
+    - "plugins/InteractiveChatDiscordSrvAddon/cache/**"
+    # H2 主檔由 LuckPerms 鎖定；下方 luckperms-export 會建立官方可還原匯出。
+    - "plugins/LuckPerms/luckperms-h2-v2.mv.db"
+
+schedule:
+  enabled: true
+  interval-hours: 12
+  initial-delay-minutes: 720
+
+# RPG 系統更新前的可回復基準。快照會保存所有插件 JAR、版本、
+# SHA-256、Folia 核心與啟動設定，再串接一份完整 ZIP 備份。
+update-guard:
+  enabled: true
+  keep-last: 20
+
+  # 稽核時缺少下列插件會直接報錯，避免更新後漏裝核心模組。
+  tracked-plugins:
+    - "RPGCore"
+    - "MythicCore"
+    - "AelornItems"
+    - "RPGCoreMythicBridge"
+    - "ServerBackup"
+    - "LuckPerms"
+    - "Nexo"
+    - "AeloriaHUD"
+    - "PlaceholderAPI"
+    - "MythicMobs"
+    - "MythicCrucible"
+    - "VioletHolograms"
+
+  # 發現已整合或舊核心殘留時禁止建立更新基準。
+  legacy-jar-patterns:
+    - "*folia-26.1*.jar"
+    - "MMOItemsBrowserFix*.jar"
+    - "MMOItems-*.jar"
+
+  protected-server-files:
+    - "Start Server.bat"
+    - "server.properties"
+    - "config/paper-global.yml"
+    - "config/paper-world-defaults.yml"
+
+performance:
+  auto-tune:
+    enabled: true
+
+    # conservative, balanced, or aggressive.
+    # balanced is recommended for live servers.
+    profile: "balanced"
+
+    # Auto tune will stay inside these safety limits.
+    min-mb-per-second: 6
+    max-mb-per-second: 32
+
+    # Lightweight disk probe used to estimate safe backup throughput.
+    disk-probe-enabled: true
+    disk-probe-mb: 8
+
+    # Re-check host performance before every backup, not only on startup/reload.
+    refresh-before-backup: true
+
+  # Manual fallback values used when auto-tune.enabled is false.
+  max-mb-per-second: 16
+  buffer-kb: 256
+  pause-between-files-ms: 1
+
+  # 1 is fast and light on CPU, 6 is Java's default, 9 is smallest but heavier.
+  zip-compression-level: 1
+  progress-log-interval-seconds: 60
+
+progress:
+  console:
+    # Low-frequency CMD progress data. Set enabled to false for silent backups.
+    enabled: true
+    interval-seconds: 10
+
+  op-display:
+    # Only OP players can see the in-game backup progress display by default.
+    # BossBar is preferred so RPGCore can keep using the ActionBar HUD.
+    enabled: true
+    op-only: true
+    permission: "serverbackup.progress"
+    bossbar: true
+    actionbar: false
+    update-interval-ticks: 20
+    hide-delay-seconds: 5
+
+integrity:
+  enabled: true
+
+  # Verifies every copied target file size after writing through a temp file.
+  verify-copied-file-size: true
+
+  # Reads the finished zip back, validates entries/CRC, and writes an integrity report.
+  verify-zip-after-create: true
+
+  # Retries files that change while being copied. Live logs may still warn after retry.
+  retry-changed-files: 1
+
+  material-safe-mode:
+    enabled: true
+    # Critical material/resource files must be backed up safely; warning = failed backup.
+    fail-on-warning: true
+    paths:
+      - "plugins/Nexo/**"
+      - "plugins/AeloriaHUD/**"
+      - "plugins/ItemsAdder/**"
+      - "plugins/MythicMobs/**"
+      - "plugins/MythicCrucible/**"
+      - "resourcepack/**"
+      - "resourcepacks/**"
+      - "resources/**"
+      - "assets/**"
+      - "**/assets/**"
+      - "**/resourcepack/**"
+      - "**/resourcepacks/**"
+      - "**/pack/**"
+    extensions:
+      - "png"
+      - "mcmeta"
+      - "json"
+      - "properties"
+      - "ogg"
+      - "wav"
+      - "bbmodel"
+      - "jem"
+      - "jpm"
+      - "ttf"
+      - "otf"
+      - "yml"
+      - "yaml"
+
+  database-safe-mode:
+    enabled: true
+
+    # 使用 LuckPerms 官方 export 流程建立一致性 JSON GZIP，再排除線上鎖定的 H2 主檔。
+    # ServerBackup 會等待檔案穩定並完整讀回 GZIP CRC，失敗就取消本次備份。
+    luckperms-export:
+      enabled: true
+      file-name: "serverbackup-latest"
+      timeout-seconds: 60
+      stability-ms: 1000
+
+    # 關鍵插件 data/database 不可靜默漏掉；複製期間若內容變動，本次備份直接失敗。
+    fail-on-warning: true
+
+    # Java、robocopy、esentutl、VSS 全部無法取得檔案時，不產生缺資料的「成功」備份。
+    fail-on-copy-failure: true
+
+    # Total attempts for hot database/data files. These files are copied first.
+    retry-attempts: 5
+    retry-delay-ms: 500
+
+    # Wait for a short stable window before copying database files.
+    # This reduces inconsistent SQLite/H2/LevelDB snapshots without freezing the server.
+    stability-check-ms: 300
+    max-stability-wait-ms: 3000
+
+    # Windows fallback for files that fail normal Java copy because another process locks part of the file.
+    # Uses robocopy only for locked database/data files, so normal backup performance is not affected.
+    windows-locked-file-fallback:
+      enabled: true
+      backup-mode: true
+      retries: 1
+      wait-seconds: 1
+      timeout-seconds: 30
+
+    # Second Windows fallback. Helpful for some files that are partially locked by another process.
+    windows-esentutl-fallback:
+      enabled: true
+      timeout-seconds: 30
+
+    # Final Windows fallback for fully locked files. Requires permission to create Volume Shadow Copies.
+    # It is only used after normal copy, robocopy, and esentutl fail.
+    windows-vss-fallback:
+      enabled: true
+      timeout-seconds: 90
+
+    paths:
+      - "plugins/**/data/**"
+      - "plugins/**/database/**"
+      - "plugins/**/databases/**"
+      - "plugins/**/storage/**"
+      - "plugins/**/userdata/**"
+      - "plugins/**/playerdata/**"
+      - "plugins/**/players/**"
+      - "plugins/**/profiles/**"
+      - "plugins/**/cache/*.dat"
+      - "plugins/**/cache/**/*.dat"
+      - "plugins/InteractiveChatDiscordSrvAddon/cache/data.dat"
+      - "plugins/LuckPerms/serverbackup-latest.json.gz"
+      - "**/leveldb/**"
+    file-names:
+      - "data.dat"
+      - "database.db"
+      - "storage.db"
+      - "data.db"
+      - "CURRENT"
+      - "MANIFEST"
+      - "LOG"
+    extensions:
+      - "db"
+      - "sqlite"
+      - "sqlite3"
+      - "sqlite-wal"
+      - "sqlite-shm"
+      - "sqlite-journal"
+      - "db-journal"
+      - "mv.db"
+      - "h2.db"
+      - "ldb"
+      - "sst"
+      - "dat"
+
+retention:
+  enabled: true
+  keep-last: 10
+
+categories:
+  worlds: "Worlds"
+  plugins: "Plugins"
+  configs: "Configs"
+  logs: "Logs"
+  libraries: "Libraries"
+  versions: "Versions"
+  cache: "Cache"
+  server-files: "ServerFiles"
+  other: "Other"
+
+classification:
+  world-marker-file: "level.dat"

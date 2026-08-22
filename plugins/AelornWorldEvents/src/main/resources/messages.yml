@@ -1,0 +1,46 @@
+# ─────────────────────────────────────────────────────────────
+# AelornWorldEvents — 所有面向玩家的文字
+#
+# 程式碼裡沒有任何玩家可見字串。缺少的鍵值會自動沿用 JAR 內建版本,
+# 升版新增訊息時不需要刪掉自己的 messages.yml。
+# 把值設成空字串 '' 即可完全不顯示該訊息。
+#
+# 顏色格式由 AelornLib 的 text-format 決定(預設 AUTO:
+# 含 <標籤> 走 MiniMessage,否則視為 & 色碼)。
+# ─────────────────────────────────────────────────────────────
+
+prefix: '&8[&d裂境&8] '
+
+command:
+  # {label} = 玩家輸入的指令別名,{subcommands} = 由程式碼產生
+  usage: '&e用法: /{label} <{subcommands}>'
+  no-permission: '&c你沒有此權限。'
+
+# 事件在附近甦醒時,對範圍內玩家廣播。
+# 可用:{event} 顯示名稱(保留其顏色碼) {region} {level} {world}
+# 設成 '' 可完全關閉廣播。
+event:
+  announce: '{prefix}&6{event} &7已在附近甦醒。&8(等級 {level})'
+
+  # 啟動判定結果。目前只有 log 會用到,保留鍵值供未來對玩家顯示。
+  result:
+    started: '&a事件已啟動。'
+    already-active: '&e這個事件正在進行中。'
+    cooldown: '&e這個事件還在冷卻。'
+    global-limit: '&e同時進行的事件已達上限。'
+    region-limit: '&e這個區域同時進行的事件已達上限。'
+
+status:
+  # {nodes} {active} {cooling} {started} {failed} {tracked}
+  summary: '{prefix}&7節點 &f{nodes} &8| &7進行中 &f{active} &8| &7冷卻 &f{cooling} &8| &7累計啟動 &f{started} &8| &7失敗 &f{failed} &8| &7追蹤玩家 &f{tracked}'
+  region: '  &8{region}: &7{count} 個進行中'
+
+list:
+  header: '{prefix}&7共 &f{nodes} &7個事件節點:'
+  # {event} {name} {region} {encounter} {world} {level} {x} {y} {z}
+  line: '&7- &f{event} &8| {name} &8| &7{region}/{encounter} &8| &7{world} &f{x},{y},{z} &8| &7Lv&f{level}'
+
+reload:
+  start: '&e正在重新載入世界事件…'
+  done: '{prefix}&a已重新載入:&e {nodes} &a個事件節點。'
+  failed: '&c重新載入失敗（{error}）,已維持原有設定;詳情請看主控台。'

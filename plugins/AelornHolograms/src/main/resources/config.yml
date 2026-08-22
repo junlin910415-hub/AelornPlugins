@@ -1,0 +1,26 @@
+defaults:
+  display-range: 48
+  update-range: 48
+  update-interval: 20
+  line-height: 0.30
+  line-width: 240
+  billboard: CENTER
+  shadowed: true
+  see-through: false
+  text-opacity: 255
+  background-alpha: 64
+
+performance:
+  refresh-visible-holograms-only: true
+  min-update-interval: 10
+  spawn-batch-size: 16
+
+compatibility:
+  register-decentholograms-aliases: true
+  import-decentholograms-on-first-start: true
+  placeholderapi: true
+  legacy-color-codes: true
+  minimessage: true
+
+messages:
+  prefix: "<gradient:#d78cff:#7fd7ff>AelornHolograms</gradient> <dark_gray>»</dark_gray> "

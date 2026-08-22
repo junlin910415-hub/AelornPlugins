@@ -1,0 +1,44 @@
+name: RPGCore
+version: '0.25.0-SNAPSHOT-AELORN-Nexo_26.2'
+main: com.xuzhihuanjing.rpgcore.RpgCorePlugin
+api-version: '1.21'
+folia-supported: true
+author: LinSy
+description: Folia-ready fantasy MMORPG core with MythicMobs monsters, characters, classes, quests, discoveries, encounters, progression, HUD, and abilities.
+depend: [Nexo, MythicMobs, AeloriaHUD]
+softdepend: [MythicCore, ModelEngine, PlaceholderAPI, Citizens]
+commands:
+  rpg:
+    description: Open the RPG character menu.
+    usage: /rpg [menu|character|skills|abilities|professions|journal|book|party|weapon|profile|hud|mob|encounter|quest|discovery|reload|selftest]
+    aliases: [character, characters]
+permissions:
+  rpgcore.player:
+    description: Use RPGCore player features.
+    default: true
+  rpgcore.admin:
+    description: Reload and administer RPGCore.
+    default: op
+    children:
+      rpgcore.characters.slots.9: true
+  rpgcore.equipment.bypass:
+    description: Ignore all RPGCore and MMOItems equipment requirements.
+    default: op
+  rpgcore.characters.slots.4:
+    description: Unlock four character slots.
+    default: false
+  rpgcore.characters.slots.5:
+    description: Unlock five character slots.
+    default: false
+  rpgcore.characters.slots.6:
+    description: Unlock six character slots.
+    default: false
+  rpgcore.characters.slots.7:
+    description: Unlock seven character slots.
+    default: false
+  rpgcore.characters.slots.8:
+    description: Unlock eight character slots.
+    default: false
+  rpgcore.characters.slots.9:
+    description: Unlock all nine character slots.
+    default: false

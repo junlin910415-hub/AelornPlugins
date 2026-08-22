@@ -1,0 +1,79 @@
+# AelornLib 的管理端訊息。
+# 這支插件沒有玩家可見的功能,以下只有 /aelornlib 診斷指令會用到。
+# 佔位符寫成 {名稱},{prefix} 隨時可用。
+
+prefix: "&8[&b艾洛恩函式庫&8] &r"
+
+no-permission: "{prefix}&c你沒有權限使用這個指令。"
+
+usage:
+  - "{prefix}&f用法:"
+  - "  &b/{label} info &7— 平台與核心狀態"
+  - "  &b/{label} nms &7— 各項伺服器內部能力由哪一層提供"
+  - "  &b/{label} packets [out|in] [關鍵字] &7— 這台伺服器的封包型別實際叫什麼"
+  - "  &b/{label} fields <out|in> <型別> &7— 某個封包的欄位版面（寫封包前先看這個）"
+  - "  &b/{label} selftest &7— 實際跑一遍各子系統，不是只印設定值"
+  - "  &b/{label} metrics [reset] &7— 封包層的實測失誤率與樣本數"
+  - "  &b/{label} data &7— 已開啟的資料庫連線池與快取"
+  - "  &b/{label} reload &7— 重新載入 config.yml 與 messages.yml"
+
+info:
+  header: "{prefix}&f核心狀態"
+  platform: "  &7伺服器: &f{flavor} &7(&f{brand}&7) &f{version} &7— &f{threading}"
+  core: "  &7核心: &fv{version} &7守衛 &f{guard} &7文字 &f{format}"
+  nms: "  &7NMS 能力: &f{summary}"
+  packet: "  &7封包: &f{provider} &7攔截 &f{listen} &7注入 &f{inject} &7送出 &f{send}"
+  # 「否」代表換頁會關閉重開介面（會閃一下），不是壞掉。
+  ui: "  &7選單: &7即時換標題 &f{retitle}"
+
+nms:
+  header: "{prefix}&fNMS 能力解析 &7({summary})"
+  note: "  &e· &7{note}"
+  missing: "  &c· 「{capability}」({id}) 在此伺服器不可用,依賴它的功能應自行降級。"
+
+packets:
+  # 名稱現在是從伺服器自己的封包類別推導出來的,別名欄位列的是另外兩個函式庫的拼法,
+  # 兩種寫法在監聽時都收。關鍵字會同時比對正規名稱與別名。
+  header: "{prefix}&f封包型別 &7({provider}／{direction}) &f{matched}&7/{total}"
+  entry: "  &7· &f{name}"
+  entry-aliased: "  &7· &f{name} &8(別名 {aliases})"
+  truncated: "  &7… 只顯示前 {shown} 筆,共 {matched} 筆符合。請加上關鍵字縮小範圍。"
+  source: "  &8來源: {source}"
+  note: "  &e· &7{note}"
+  none: "{prefix}&c目前的封包提供者（{provider}）無法列舉型別。"
+
+fields:
+  # 寫封包欄位前先看這裡:PacketStructure 用「型別 + 同型別序號」定址,
+  # 那個序號猜錯就是靜默寫到別的欄位。
+  usage: "{prefix}&f用法: &b/aelornlib fields <out|in> <封包型別>"
+  header: "{prefix}&f{name} &7({class}) &f{count} &7個欄位 &8· {mode}"
+  entry: "  &7#{index} &f{name} &7: &b{type} &8(同型別序號 {ordinal})"
+  unknown: "{prefix}&c這台伺服器沒有 {direction} 方向的封包型別 {name}。可用 /aelornlib packets 查詢。"
+
+metrics:
+  # 只給比率不給樣本數是沒辦法被反駁的。0 次失誤時報的是「上界」（rule of three:
+  # n 次試驗零事件，95% 信賴上界是 3/n），會隨著伺服器跑越久越小。
+  header: "{prefix}&f封包層失誤率 &7{summary}"
+  entry: "  &7· {line}"
+  reset: "{prefix}&a計數已歸零，從這裡開始重新量測。"
+
+selftest:
+  header: "{prefix}&f自我檢測 &7（實際執行，非讀取設定）"
+  pass: "  &a✔ &f{what} &7— {detail}"
+  # 降級不是失敗。把「能跑但走的是備援路徑」也標成 ✘,只會訓練管理員忽略這個指令。
+  warn: "  &e• &f{what} &7— {detail}"
+  fail: "  &c✘ &f{what} &7— {detail}"
+  note: "  &7  註: {note}"
+  ok: "{prefix}&a全部通過。"
+  failed: "{prefix}&c有 {failures} 項未通過，依賴它們的功能應自行降級。"
+
+data:
+  header: "{prefix}&f資料層 &7執行緒 &f{threads} &7快取 &f{cache}"
+
+reload:
+  done: "{prefix}&a設定已重新載入。"
+  # 說清楚重載沒做什麼,比讓管理員以為改了 nms.strategies 就生效要好。
+  nms-note: "  &7註: NMS 解析層在啟用時就固定了,更動 nms.strategies 需要重新啟動伺服器。"
+
+store:
+  header: "{prefix}&b儲存層 &7（可用後端：{backends}）"

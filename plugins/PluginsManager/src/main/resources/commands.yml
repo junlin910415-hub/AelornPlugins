@@ -1,0 +1,25 @@
+# 指令索引與衝突處理。
+#
+# 為什麼要有這個：兩個插件註冊同一個指令名稱時伺服器不會報錯，
+# 誰贏由載入順序決定。這裡讓衝突看得見，也讓你在不刪 jar 的前提下拔掉錯的那一個。
+#
+# 反註冊會連同該指令的所有別名與 plugin:command 形式一起移除，
+# 並重建指令樹重送給線上玩家（受 config.yml 的 danger.sync-command-tree 控制）。
+# 這個檔案獨立於 config.yml，因為它是唯一會刻意影響其他插件的功能。
+
+command-control:
+  enabled: true
+
+  # 是否允許 /zpm command unregister。
+  allow-unregister: true
+
+  # 反註冊是否需要 --confirm。
+  require-confirmation: true
+
+  # 清單中每個指令只顯示一次（隱藏別名列）。
+  hide-duplicates-in-list: true
+
+display:
+  max-command-lines: 30
+  show-aliases: true
+  show-permission: true

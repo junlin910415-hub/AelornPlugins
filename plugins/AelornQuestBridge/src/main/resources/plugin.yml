@@ -1,0 +1,18 @@
+name: AelornQuestBridge
+version: '3.1.0_26.2'
+main: tw.linsy.aelorn.quest.AelornQuestBridgePlugin
+api-version: '26.2'
+author: LinSy
+description: 將 RPGCore 的任務追蹤資料暴露為 PlaceholderAPI 變數，供 TAB 記分板使用。
+folia-supported: true
+depend: [PlaceholderAPI]
+softdepend: [RPGCore, TAB]
+commands:
+  aelornquest:
+    description: AelornQuestBridge 狀態與重載。
+    usage: /aelornquest [status|reload]
+    aliases: [aqb]
+    permission: aelornquest.admin
+permissions:
+  aelornquest.admin:
+    default: op

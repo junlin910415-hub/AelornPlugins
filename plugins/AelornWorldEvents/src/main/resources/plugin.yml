@@ -1,0 +1,23 @@
+name: AelornWorldEvents
+version: '2.0.0_26.2'
+main: tw.linsy.aelorn.worldevents.AelornWorldEventsPlugin
+api-version: '26.2'
+folia-supported: true
+load: POSTWORLD
+author: LinSy
+description: 艾洛恩世界事件:玩家接近觸發的野外遭遇。
+
+# AelornLib 提供文字/設定/排程;RPGCore 負責實際生成遭遇。
+depend: [AelornLib, RPGCore]
+
+commands:
+  aelornworldevents:
+    description: 查詢或重新載入艾洛恩世界事件節點。
+    aliases: [awe, awevents]
+    usage: /aelornworldevents <status|list|reload>
+    permission: aelorn.worldevents.admin
+
+permissions:
+  aelorn.worldevents.admin:
+    description: 管理艾洛恩世界事件。
+    default: op

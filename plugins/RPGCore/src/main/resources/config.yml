@@ -1,0 +1,105 @@
+schema-version: 15
+
+characters:
+  base-slots: 3
+  maximum-slots: 9
+  open-selector-on-first-join: true
+  deletion-grace-minutes: 10
+  backup-limit: 5
+
+storage:
+  type: yaml
+  directory: player-data
+
+party:
+  maximum-members: 6
+  invite-lifetime-seconds: 60
+  finder-enabled: true
+
+combat:
+  combo-timeout-ms: 900
+  mana-regeneration-per-second: 3.0
+  damage-to-minecraft-scale: 0.22
+  defense-constant-base: 80.0
+  defense-constant-per-level: 4.0
+  maximum-mitigation: 0.75
+  health-to-minecraft-scale: 0.20
+  critical-damage-multiplier: 1.75
+  ability-critical-efficiency: 0.70
+  dodge-damage-retained: 0.15
+  damage-variance: 0.08
+  base-health-regeneration-per-second: 0.45
+  minimum-minecraft-damage: 0.05
+
+hud:
+  update-interval-ticks: 2
+  notification-duration-ms: 1200
+  renderer: aeloriahud
+  internal:
+    enabled: true
+    wait-for-resource-pack: true
+    install-pack-on-startup: true
+    regenerate-pack-on-change: true
+    animation-frame-ticks: 4
+    smoothing:
+      health: 0.65
+      mana: 0.65
+      movement: 0.55
+    maximum-notification-codepoints: 26
+  native:
+    show-progression-on-experience-bar: true
+  aeloria-assets:
+    enabled: true
+  sidebar:
+    enabled: true
+    update-interval-ticks: 10
+    title: '<gold><bold>RPGCORE</bold></gold>'
+
+interface:
+  content-book:
+    hotbar-slot: 7
+    gui-glyph: rpgcore_content_book_gui
+    gui-width: 205
+    item-id: rpgcore_wayfinder_codex
+  character-selector:
+    gui-glyph: rpgcore_character_selector_gui
+    gui-width: 256
+
+ability-tree:
+  safe-zone-radius: 48.0
+
+progression:
+  maximum-level: 120
+  curve:
+    base: 80.0
+    linear: 22.0
+    power: 1.65
+    quadratic: 3.5
+  monster-scaling:
+    health-per-level: 0.065
+    damage-per-level: 0.045
+    experience-per-level: 0.055
+
+identification:
+  maximum-batch-items: 10
+  maximum-rerolls: 5
+  npc:
+    mythic-mob-id: RPGCore_Identifier
+  cost:
+    base: 4.0
+    level-factor: 1.35
+    level-exponent: 1.25
+    reroll-multiplier: 5.0
+    maximum: 1000000
+    rarity-multipliers:
+      common: 1.0
+      uncommon: 1.25
+      rare: 1.65
+      epic: 2.35
+      legendary: 2.8
+      vast: 3.2
+      mythic: 3.5
+    slot-multipliers:
+      weapon: 1.0
+      armor: 1.1
+      accessory: 0.85

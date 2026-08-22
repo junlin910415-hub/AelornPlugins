@@ -1,0 +1,187 @@
+schema-version: 4
+
+classes:
+  vanguard:
+    display-name: '<gold><bold>戰士</bold></gold>'
+    icon: IRON_SWORD
+    casting-material: IRON_SWORD
+    weapon: 長劍
+    role: 近戰防禦、控場、保護
+    description:
+      - '<gray>身披重甲堅守前線，承受攻勢並控制敵群。</gray>'
+      - '<dark_gray>攻守穩健，適合初次踏入冒險的玩家。</dark_gray>'
+    base-stats:
+      health: 140.0
+      mana: 100.0
+      attack: 12.0
+      defense: 18.0
+      resistance: 12.0
+      speed: 98.0
+    balance:
+      damage-taken-multiplier: 1.00
+      basic-attack-multiplier: 1.00
+    ratings:
+      difficulty: 2
+      damage: 3
+      defense: 5
+      range: 1
+      mobility: 2
+      support: 3
+    archetypes:
+      bulwark:
+        display-name: '<yellow>守護騎士</yellow>'
+        description: 強化格擋與護盾，替隊伍承受正面攻勢。
+      onslaught:
+        display-name: '<red>狂戰士</red>'
+        description: 犧牲部分防守，換取強勢的持續近戰輸出。
+      commander:
+        display-name: '<aqua>戰場統帥</aqua>'
+        description: 運用控制與群體增益，主導隊伍進攻節奏。
+
+  ranger:
+    display-name: '<green><bold>弓箭手</bold></green>'
+    icon: BOW
+    casting-material: BOW
+    weapon: 長弓
+    role: 遠程輸出、機動、陷阱
+    description:
+      - '<gray>以長弓從遠處精準狙擊，利用機動保持距離。</gray>'
+      - '<dark_gray>擅長持續輸出，適合重視走位與瞄準的玩家。</dark_gray>'
+    base-stats:
+      health: 100.0
+      mana: 110.0
+      attack: 16.0
+      defense: 7.0
+      resistance: 7.0
+      speed: 112.0
+    balance:
+      damage-taken-multiplier: 1.30
+      basic-attack-multiplier: 1.20
+    ratings:
+      difficulty: 3
+      damage: 5
+      defense: 2
+      range: 5
+      mobility: 4
+      support: 1
+    archetypes:
+      marksman:
+        display-name: '<yellow>神射手</yellow>'
+        description: 蓄勢瞄準弱點，強化遠距離單體爆發。
+      windrunner:
+        display-name: '<aqua>風行者</aqua>'
+        description: 強化位移與閃避，在移動中維持火力。
+      trapper:
+        display-name: '<green>獵人</green>'
+        description: 設置陷阱與阻礙，封鎖敵人的移動路線。
+
+  shadowblade:
+    display-name: '<dark_purple><bold>刺客</bold></dark_purple>'
+    icon: SHEARS
+    casting-material: SHEARS
+    weapon: 雙刃
+    role: 近戰爆發、連擊、閃避
+    description:
+      - '<gray>潛入敵陣鎖定弱點，以高速連擊造成爆發傷害。</gray>'
+      - '<dark_gray>風險與回報並存，適合追求操作深度的玩家。</dark_gray>'
+    base-stats:
+      health: 112.0
+      mana: 105.0
+      attack: 15.0
+      defense: 12.0
+      resistance: 9.0
+      speed: 110.0
+    balance:
+      damage-taken-multiplier: 1.00
+      basic-attack-multiplier: 1.10
+    ratings:
+      difficulty: 4
+      damage: 4
+      defense: 4
+      range: 1
+      mobility: 5
+      support: 1
+    archetypes:
+      duelist:
+        display-name: '<red>決鬥者</red>'
+        description: 把握反擊時機，以高速連擊壓制單一目標。
+      venom:
+        display-name: '<green>毒刃</green>'
+        description: 疊加毒素與負面狀態，持續削弱敵人。
+      mirage:
+        display-name: '<light_purple>幻影刺客</light_purple>'
+        description: 利用殘影與位移穿梭戰場，擾亂敵人。
+
+  arcanist:
+    display-name: '<aqua><bold>法師</bold></aqua>'
+    icon: BLAZE_ROD
+    casting-material: BLAZE_ROD
+    weapon: 法杖
+    role: 遠程法術、治療、控場
+    description:
+      - '<gray>操縱元素與秘術，在遠處施放強力範圍魔法。</gray>'
+      - '<dark_gray>能力全面，適合掌握魔力與施法時機的玩家。</dark_gray>'
+    base-stats:
+      health: 100.0
+      mana: 130.0
+      attack: 10.0
+      defense: 6.0
+      resistance: 11.0
+      speed: 102.0
+    balance:
+      damage-taken-multiplier: 1.20
+      basic-attack-multiplier: 0.75
+    ratings:
+      difficulty: 2
+      damage: 2
+      defense: 2
+      range: 4
+      mobility: 4
+      support: 5
+    archetypes:
+      elemental:
+        display-name: '<red>元素法師</red>'
+        description: 交替運用火焰、寒冰與雷電觸發連鎖效果。
+      chronomancy:
+        display-name: '<yellow>時間法師</yellow>'
+        description: 操控冷卻與加速，改變技能施放節奏。
+      mystic:
+        display-name: '<light_purple>秘術法師</light_purple>'
+        description: 強化護盾、治療與純粹魔法傷害。
+
+  warden:
+    display-name: '<blue><bold>薩滿</bold></blue>'
+    icon: HEART_OF_THE_SEA
+    casting-material: HEART_OF_THE_SEA
+    weapon: 圖騰
+    role: 範圍支援、圖騰、增益
+    description:
+      - '<gray>召喚靈魂圖騰改變戰場，兼顧傷害與隊伍支援。</gray>'
+      - '<dark_gray>重視布陣與團隊節奏，適合策略型玩家。</dark_gray>'
+    base-stats:
+      health: 95.0
+      mana: 120.0
+      attack: 14.0
+      defense: 5.0
+      resistance: 7.0
+      speed: 100.0
+    balance:
+      damage-taken-multiplier: 1.40
+      basic-attack-multiplier: 1.15
+    ratings:
+      difficulty: 4
+      damage: 4
+      defense: 1
+      range: 4
+      mobility: 2
+      support: 5
+    archetypes:
+      guardian:
+        display-name: '<green>靈魂守衛</green>'
+        description: 展開守護圖騰，減輕隊伍承受的傷害。
+      tempest:
+        display-name: '<aqua>風暴祭司</aqua>'
+        description: 召引風暴追擊敵人，造成連續範圍傷害。
+      resonance:
+        display-name: '<light_purple>圖騰先知</light_purple>'
+        description: 累積隊伍共鳴，釋放治療與強力增益。

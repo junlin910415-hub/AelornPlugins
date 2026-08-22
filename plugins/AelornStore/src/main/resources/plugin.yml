@@ -1,0 +1,64 @@
+name: AelornStore
+version: '1.1.0_26.2'
+main: tw.linsy.aelornstore.AelornStorePlugin
+api-version: '26.2'
+author: LinSy
+description: 艾洛恩儲值金 / 商店 / VIP 系統：訂單狀態機、冪等發貨、離線補發與金流抽象層。
+folia-supported: true
+# AelornLib 提供文字/設定/排程,沒有它不該啟用。
+depend: [AelornLib]
+softdepend: [Vault, LuckPerms, PlaceholderAPI, AelornItems, Nexo, AeloriaHUD, RPGCore, CMI]
+
+# JDBC 驅動由 Paper 的 library loader 提供。插件本身不與它們編譯期相依
+# （一律走 java.sql + Class.forName），所以建置階段完全離線。
+#
+# 但「首次啟動」需要網路：即使 JAR 已在 libraries/ 快取，解析器仍會去 Maven Central
+# 抓 .pom metadata（含 mysql-connector-j 的傳遞相依 protobuf-java）。POM 下載後一併
+# 快取，之後的啟動才真正離線。要完全離線佈署，就先在有網路的機器啟動一次，
+# 再把 libraries/ 整個帶過去。
+libraries:
+  - org.xerial:sqlite-jdbc:3.49.1.0
+  - com.mysql:mysql-connector-j:9.2.0
+
+commands:
+  store:
+    description: 開啟商店、查詢儲值金餘額與訂單。
+    usage: /store [balance|topup|orders|claim|vip]
+    aliases: [shop, 商店, 儲值]
+    permission: aelornstore.use
+  aelornstore:
+    description: 儲值 / 商店系統管理指令。
+    usage: /aelornstore <reload|credit|order|vip|redeliver|audit|status>
+    aliases: [astore, 商店管理]
+    permission: aelornstore.admin
+
+permissions:
+  aelornstore.use:
+    description: 使用商店與儲值功能。
+    default: true
+  aelornstore.topup:
+    description: 建立儲值訂單。
+    default: true
+  aelornstore.admin:
+    description: 管理儲值 / 商店系統。
+    default: op
+    children:
+      aelornstore.admin.credit: true
+      aelornstore.admin.order: true
+      aelornstore.admin.vip: true
+      aelornstore.admin.audit: true
+  aelornstore.admin.credit:
+    description: 手動增減玩家儲值金。
+    default: op
+  aelornstore.admin.order:
+    description: 人工核銷 / 取消 / 退款訂單。
+    default: op
+  aelornstore.admin.vip:
+    description: 手動設定玩家 VIP。
+    default: op
+  aelornstore.admin.audit:
+    description: 查詢稽核紀錄。
+    default: op
+  # 折扣權限：shop.yml 的商品可指定 discount-permission，命中者套用折扣。
+  aelornstore.discount.vip:
+    default: false

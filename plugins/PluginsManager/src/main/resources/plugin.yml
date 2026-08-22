@@ -1,0 +1,90 @@
+name: PluginsManager
+version: '2.0.0_26.2'
+main: tw.linsy.aelorn.plugins.PluginsManagerPlugin
+api-version: '26.2'
+folia-supported: true
+load: STARTUP
+author: LinSy
+description: 插件熱管理：安全護欄、稽核紀錄、版本保存，支援分區與單執行緒核心。
+
+# softdepend, not depend. AelornLib fails closed when no NMS adapter matches the
+# server, and a plugin manager must not inherit that: the moment an admin needs to
+# disable or roll back a plugin is right after an upgrade broke something, which is
+# exactly when the core is down. The core is used when present (scheduling and text
+# format) and replaced by built-in equivalents when absent.
+softdepend: [AelornLib]
+
+commands:
+  zpm:
+    description: 以安全護欄與稽核紀錄管理插件。
+    usage: /zpm help
+    aliases: [pluginsmanager, pm, zplug, violetpm]
+
+permissions:
+  # ── 節點切分的理由 ────────────────────────────────────────────────────
+  # 三個舊節點各自把「看」和「足以造成程式碼執行的動作」綁在同一個名字底下:
+  #   zpm.manage  —— 啟用只是一次 API 呼叫,卸載會動伺服器內部的插件註冊表
+  #   zpm.command —— 名字聽起來像看指令表,實際可以反註冊 /stop 與 /op
+  #   zpm.version —— 名字聽起來像版本紀錄,restore 會覆寫插件 jar,下次載入即執行
+  #
+  # 所以拆開。舊節點保留並宣告為新節點的「父節點」,既有的授權一個都不會失效
+  # (給了 zpm.manage 的人仍然同時擁有兩個子節點),管理員可以改成只授子節點來收緊。
+  # 這是 CONVENTIONS.md §7 講的三層相容裡的權限那一層。
+
+  zpm.view:
+    description: 查看插件狀態、清單、詳情、掃描結果與稽核紀錄。
+    default: op
+
+  zpm.manage:
+    description: 「插件生命週期」的總節點,同時授予下面兩個子節點。
+    default: op
+    children:
+      zpm.manage.state: true
+      zpm.manage.unload: true
+  zpm.manage.state:
+    description: 啟用、停用、重載與載入插件。
+    default: false
+  zpm.manage.unload:
+    description: 卸載插件。會動到伺服器內部的插件註冊表,風險高於其他生命週期操作。
+    default: false
+
+  zpm.protect:
+    description: 編輯受保護插件清單。
+    default: op
+  zpm.group:
+    description: 查看與批次操作 groups.yml 定義的插件群組。
+    default: op
+
+  zpm.command:
+    description: 「指令索引」的總節點,同時授予下面兩個子節點。
+    default: op
+    children:
+      zpm.command.view: true
+      zpm.command.unregister: true
+  zpm.command.view:
+    description: 查看指令索引與衝突。唯讀。
+    default: false
+  zpm.command.unregister:
+    description: 反註冊指令。可以移除任何指令,包含 /stop、/op 與其他插件的。
+    default: false
+
+  zpm.version:
+    description: 「版本保存」的總節點,同時授予下面三個子節點。
+    default: op
+    children:
+      zpm.version.view: true
+      zpm.version.archive: true
+      zpm.version.restore: true
+  zpm.version.view:
+    description: 列出已保存的 jar 版本。唯讀。
+    default: false
+  zpm.version.archive:
+    description: 保存目前的 jar 版本。只寫入自己的保存目錄。
+    default: false
+  zpm.version.restore:
+    description: 把保存的 jar 還原回 plugins/。覆寫插件 jar,下次載入即程式碼執行。
+    default: false
+
+  zpm.admin:
+    description: 重新載入 PluginsManager 設定。
+    default: op

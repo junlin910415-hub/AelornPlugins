@@ -1,0 +1,67 @@
+# 插件群組 — 讓管理員針對「一組插件」下指令，而不是一次打八個名字。
+#
+# protected: true 代表：
+#   1. 不能對這個群組批次 disable / reload
+#   2. 群組的每一個成員都自動視為受保護（不必再列進 config.yml 的 protected-plugins）
+#
+# 群組名稱可以用 @ 前綴，也支援唯一前綴與唯一子字串比對：
+#   /zpm group reload @cont  →  content
+# 比對到多個會回報不明確，不會亂猜。
+#
+# 批次順序：enable 照這裡寫的順序，disable / reload 反向，
+# 這樣相依的插件不會比它依賴的東西先被關掉。
+
+groups:
+  core:
+    enabled: true
+    description: "伺服器核心插件，預設列入保護。"
+    protected: true
+    plugins:
+      - AelornLib
+      - PluginsManager
+      - LuckPerms
+      - Vault
+      - ProtocolLib
+      - WorldEdit
+      - WorldGuard
+      - CoreProtect
+      - CMI
+
+  content:
+    enabled: true
+    description: "內容、物品、怪物與資源包相關插件。"
+    protected: false
+    plugins:
+      - MythicMobs
+      - MythicCrucible
+      - MythicCore
+      - AelornItems
+      - RPGCore
+      - Nexo
+      - AeloriaHUD
+      - nightcore
+
+  chat:
+    enabled: true
+    description: "聊天、Discord 與互動訊息插件。"
+    protected: false
+    plugins:
+      - DiscordSRV
+      - InteractiveChat
+      - InteractiveChatDiscordSrvAddon
+      - TAB
+      - AelornDiscordBridge
+
+  aelorn:
+    enabled: true
+    description: "艾洛恩自製插件（不含核心）。"
+    protected: false
+    plugins:
+      - AelornWorlds
+      - AelornWorldEvents
+      - AelornStore
+      - AelornBackpack
+      - AelornHolograms
+      - AelornQuestBridge
+      - AelornOps
+      - ServerBackup

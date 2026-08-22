@@ -1,0 +1,222 @@
+# ─────────────────────────────────────────────────────────────
+# AelornWorlds — 所有面向玩家的文字
+#
+# 這份檔案裡沒有任何字串寫死在程式碼裡:改這裡就會改變玩家看到的內容。
+# 缺少的鍵值會自動沿用 JAR 內建的這份檔案,所以插件升版新增訊息時
+# 不需要刪掉自己的 messages.yml。
+#
+# 佔位符寫成 {名稱},每個訊息可用的名稱列在它上方的註解。
+# {prefix} 在任何訊息中都可以使用。
+# 把值設成空字串 '' 即可完全不顯示該訊息。
+#
+# 顏色格式由 config.yml 的 text-format 決定:
+#   AUTO(預設)  含有 <標籤> 者以 MiniMessage 處理,否則視為 & 色碼
+#   LEGACY      一律 & 色碼      MINIMESSAGE 一律 MiniMessage
+#   PLAIN       完全不處理格式
+# ─────────────────────────────────────────────────────────────
+
+prefix: '&8[&b艾洛恩&8] '
+
+# ── 指令通用 ────────────────────────────────────────────────
+command:
+  # {label} = 玩家實際輸入的指令別名,{subcommands} = 由程式碼產生的子指令清單
+  usage: '&e用法: /{label} <{subcommands}>'
+  no-permission: '&c你沒有權限使用這個指令。'
+  player-only: '&c只有玩家可以使用這個指令,主控台請改用 /{label} status。'
+  # {world} = 玩家輸入的名稱
+  unknown-world: '&c設定中沒有這個世界: &f{world}'
+  # {player} = 玩家輸入的名稱
+  unknown-player: '&c找不到線上玩家: &f{player}'
+  # {value} = 無法解析的輸入
+  not-a-number: '&c需要數字,實際輸入: &f{value}'
+  # 世界的 rules.commands.blocked 擋下時。{command} {world}
+  blocked-in-world: '&c/{command} &c無法在 {world} &c使用。'
+
+world:
+  # {world} = 世界別名
+  not-loaded: '&c{world} &c目前未被 Folia 載入。'
+
+# ── /aw tp、傳送流程 ─────────────────────────────────────────
+tp:
+  usage: '&e用法: /{label} tp <世界名稱> [玩家]&8（指定玩家需要 aelorn.worlds.admin）'
+  # 管理員把別人送過去時給管理員的回覆。{player} {world}
+  sent-other: '&a已將 &f{player} &a傳送至 {world}&a。'
+
+portal:
+  # 世界的 portals.disabled 擋下時的預設訊息(世界可自訂 denied-message 覆蓋)
+  disabled: '&c{world} &c裡的傳送門已停用。'
+
+transfer:
+  started: '&a傳送準備中…'
+  # {world} = 目標世界別名,{ms} = 耗時毫秒
+  success: '&a已傳送至 {world} &7({ms}ms)'
+  failed: '&c傳送至 {world} &c失敗。'
+  disabled: '&c世界傳送功能已停用。'
+  not-transferable: '&c這個世界不開放傳送。'
+  no-permission: '&c你沒有傳送到這個世界的權限。'
+  already-there: '&e你已經在這個世界了。'
+  cooldown: '&e傳送冷卻中,請稍候再試。'
+  origin-blocked: '&c無法從你目前所在的世界前往該世界。'
+  world-full: '&c該世界人數已滿。'
+
+spawn:
+  unmanaged-world: '&c你目前所在的世界不在 AelornWorlds 的管理清單中。'
+
+# ── /aw status ──────────────────────────────────────────────
+status:
+  header: '&b{prefix}&7Folia 目前已載入世界:'
+  # {world} {alias} {environment} {players}
+  line: '&7- &f{world} &8| {alias} &8| &7{environment} &8| &7線上 &f{players}'
+  none: '&8  (無)'
+  pending-header: '&e{prefix}已複製但 Folia 未載入:'
+  pending-line: '&7- &f{world} &8| {alias} &8| &7{environment}'
+  # {live} {pending}
+  footer: '&a已確認 &e{live} &a個可用世界;&e{pending} &a個保留在磁碟等待相容方案。'
+
+# ── /aw info ────────────────────────────────────────────────
+info:
+  usage: '&e用法: /{label} info <世界名稱>'
+  # {world} {alias}
+  header: '&b── {alias} &8({world})&b ──'
+  environment: '&7環境: &f{environment} &8| &7狀態: {status}'
+  # {configured} = 設定值,{actual} = 世界目前實際值
+  difficulty: '&7設定難度: &f{configured} &8(實際 &f{actual}&8)'
+  pvp: '&7設定 PVP: &f{configured} &8(實際 &f{actual}&8)'
+  spawn: '&7傳送落點: &f{x}, {y}, {z}'
+  live: '&7線上玩家: &f{players} &8| &7已載入區塊: &f{chunks}'
+  distances: '&7視距: &f{view} &8| &7模擬距離: &f{simulation}'
+  border: '&7世界邊界: &f{size} &8| &7中心 &f{x}, {z}'
+  # {limit} {blocked} {allowed} {permission}
+  entry: '&7進入規則: &7人數上限 &f{limit} &8| &7禁止來源 &f{blocked} &8| &7限定來源 &f{allowed} &8| &7權限 &f{permission}'
+  spawn-control: '&7生怪覆寫: &f上限 {limits} 項 &8| &7頻率 &f{rates} 項'
+  # {interval} 秒,{keep} = 每區塊保留數
+  auto-purge: '&7自動清理: &f每 {interval} 秒 &8| &7每區塊保留 &f{keep}'
+
+# ── /aw rules ───────────────────────────────────────────────
+rules:
+  usage: '&e用法: /{label} rules <世界名稱>'
+  header: '&b── {alias} &8({world})&b 玩家規則 ──'
+  none: '&8  (此世界沒有任何玩家規則)'
+  game-mode: '&7遊戲模式: &f{value}'
+  flight: '&7允許飛行: &f{value}'
+  # {enabled} {y} {action} {target}
+  void: '&7虛空保護: &f{enabled} &8| &7高度 &f{y} &8| &7動作 &f{action} &8| &7目標 &f{target}'
+  void-auto: '世界底部'
+  # {world} {configured} {bed}
+  respawn: '&7重生世界: &f{world} &8| &7使用設定落點 &f{configured} &8| &7覆蓋床/錨點 &f{bed}'
+  # {commands} = 被封鎖的指令清單
+  commands: '&7封鎖指令: &f{commands}'
+  # {disabled} = 傳送門是否停用,{targets} = 環境→世界 的導向表
+  portals: '&7傳送門: &7停用 &f{disabled} &8| &7導向 &f{targets}'
+
+# ── /aw who ─────────────────────────────────────────────────
+who:
+  header: '&b{prefix}&7各世界線上玩家:'
+  # {alias} {count} {players}
+  line: '&7- {alias} &8({count})&7: &f{players}'
+  empty: '&8(無)'
+  separator: '&7, &f'
+  footer: '&7合計: &f{total} &7人'
+
+# ── /aw chunks ──────────────────────────────────────────────
+chunks:
+  disabled: '&e區塊統計已在設定中停用。'
+  # {window} 秒,{threshold} 重複載入門檻
+  header: '&b{prefix}&7區塊統計 &8(視窗 {window}s,重複載入門檻 {threshold})'
+  line: '&7- &f{world} &8| &7載入 &f{loads} &8/ &7卸載 &f{unloads} &8/ &7新生成 &f{generated}'
+  # {peak}/{current} 是「重複載入次數」而非載入次數:同一個區塊在同一個視窗內
+  # 第二次以後被載入才會計入。正常遊玩(上線、探索、預生成)兩者都應該接近 0。
+  line-detail: '  &8重複載入 峰值 &7{peak} &8目前視窗 &7{current} &8已清理掉落物 &7{culled}'
+  footer: '&8追蹤中的區塊計數器: &7{tracked}'
+
+# ── /aw health ──────────────────────────────────────────────
+health:
+  # {worlds} = 掃描世界數
+  start: '&e正在統計 {worlds} 個世界的實體負載…（跨區域掃描,結果稍後陸續送達）'
+  # {world} {alias} {entities} {items} {tiles} {chunks} {players} {density}
+  line: '&7- &f{alias} &8| &7實體 &f{entities} &8/ &7掉落物 &f{items} &8/ &7方塊實體 &f{tiles} &8/ &7區塊 &f{chunks} &8(&7每區塊 &f{density}&8)'
+  line-warn: '&c- &f{alias} &8| &c實體 &f{entities} &8/ &c掉落物 &f{items} &8/ &c方塊實體 &f{tiles} &8/ &c區塊 &f{chunks} &8(&c每區塊 &f{density}&8) &4← 超過門檻'
+  # {category} {count};設為 '' 可只看總量不看分類
+  category: '  &8{category}: &7{count}'
+  # {seconds} = health.census-cooldown-seconds
+  cooldown: '&e實體普查冷卻中（每 {seconds} 秒一次）。普查會掃過每個已載入區塊,連續執行只會互相排隊。'
+
+# ── /aw purge ───────────────────────────────────────────────
+purge:
+  # {label} {categories}
+  usage: '&e用法: /{label} purge <世界名稱> [生怪類別…]&8 預設: &7{categories}'
+  unknown-category: '&c未知的生怪類別: &f{category}'
+  start: '&e正在清除 {world} &e的實體（{categories}）…'
+  # {world} {count}
+  done: '&a已從 {world} &a清除 &e{count} &a個實體。'
+  # 自動清理完成時廣播給該世界玩家(需在世界的 purge.announce 開啟)
+  auto-announce: '&8[&7自動清理&8] &7{world} &7已清除 &f{count} &7個實體。'
+
+# ── /aw save ────────────────────────────────────────────────
+save:
+  usage: '&e用法: /{label} save <世界名稱|*>'
+  done: '&a已儲存 {world}&a。'
+  all-done: '&a已儲存 &e{count} &a個世界。'
+
+# ── /aw setspawn ────────────────────────────────────────────
+setspawn:
+  # {world} {x} {y} {z}
+  done: '&a已將 {world} &a的傳送落點設為 &f{x}, {y}, {z} &7並寫回 config.yml。'
+  failed: '&c寫入 config.yml 失敗,請查看主控台。'
+  wrong-world: '&c你必須站在 {world} &c裡面才能設定它的落點。'
+
+# ── /aw border ──────────────────────────────────────────────
+border:
+  usage: '&e用法: /{label} border <世界名稱> [size <大小> [秒數] | center <x> <z> | reset]'
+  # {world} {size} {x} {z} {warning} {damage}
+  info: '&7{world} &8| &7邊界 &f{size} &8| &7中心 &f{x}, {z} &8| &7警示距離 &f{warning} &8| &7傷害 &f{damage}'
+  updated: '&a已將 {world} &a的邊界設為 &f{size}&a（{seconds} 秒過渡）。'
+  centered: '&a已將 {world} &a的邊界中心設為 &f{x}, {z}&a。'
+  reset: '&a已重設 {world} &a的世界邊界。'
+
+# ── /aw apply、/aw reload ───────────────────────────────────
+apply:
+  done: '&a已排程重新套用所有世界設定。'
+
+reload:
+  start: '&e正在非同步重新載入設定…'
+  # {live} {pending}
+  done: '&a{prefix}設定已重新載入:&e {live} &a個世界可用,&e{pending} &a個待命。'
+  failed: '&c設定重新載入失敗（{error}）,已維持原有設定;詳情請看主控台。'
+
+# ── 傳送介面 ────────────────────────────────────────────────
+menu:
+  button:
+    previous-page: '&e← 上一頁'
+    next-page: '&e下一頁 →'
+    close: '&c關閉'
+    filler: ' '
+
+  # 圖示說明文字。可自由增減行數,佔位符:
+  #   {world} {alias} {environment} {difficulty} {pvp}
+  #   {players} {limit} {status} {click}
+  lore:
+    loaded:
+      - '&8{world}'
+      - '&7環境: &f{environment}'
+      - '&7難度: &f{difficulty} &8| &7PVP: {pvp}'
+      - '&7線上玩家: &f{players}&8/&7{limit}'
+      - '&7狀態: {status}'
+      - ''
+      - '{click}'
+    unloaded:
+      - '&8{world}'
+      - '&7環境: &f{environment}'
+      - '&7狀態: {status}'
+      - '&8Folia 無法於執行期動態載入世界'
+
+  # 插入到上面佔位符裡的片語
+  value:
+    unset: '&8未設定'
+    loaded: '&a已載入'
+    unloaded: '&c未載入'
+    pvp-on: '&c開啟'
+    pvp-off: '&a關閉'
+    unlimited: '&8∞'
+    click-allowed: '&e▶ 點擊傳送'
+    click-denied: '&c你沒有此世界的傳送權限'

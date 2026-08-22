@@ -1,0 +1,36 @@
+# GUI 圖示 —— 只有材質，文字全部在 messages.yml。
+#
+# 材質是設定而不是寫死的常數,理由跟訊息一樣:裝了資源包、或單純不喜歡淺綠色染料的
+# 管理員,不該為了換一個圖示重新編譯（CONVENTIONS.md §4）。
+#
+# 打錯材質名不會讓選單開不起來 —— 會退回內建預設值,並在 log 指出是哪一個鍵。
+# 一個看起來怪的按鈕，遠好過一個因為裝飾性設定有錯就打不開的畫面。
+
+# 邊框與留白
+filler: GRAY_STAINED_GLASS_PANE
+
+# 導覽
+close: BARRIER
+back: ARROW
+previous-page: ARROW
+next-page: ARROW
+info: BOOK
+
+# 確認畫面
+confirm: LIME_CONCRETE
+cancel: RED_CONCRETE
+
+# 插件狀態（總覽每一格的顏色）
+# 受保護優先於啟用/停用:那是操作會被擋下的原因,比當前狀態更需要一眼看見。
+state:
+  enabled: LIME_DYE
+  disabled: GRAY_DYE
+  protected: SHIELD
+
+# 動作按鈕
+action:
+  enable: LIME_DYE
+  disable: GRAY_DYE
+  reload: CLOCK
+  unload: TNT
+  archive: CHEST

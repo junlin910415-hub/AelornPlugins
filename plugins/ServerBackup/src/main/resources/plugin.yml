@@ -1,0 +1,28 @@
+name: ServerBackup
+version: '1.6.0_26.2'
+main: tw.linsy.serverbackup.ServerBackupPlugin
+api-version: '26.2'
+author: LinSy
+description: Folia 分類 ZIP 備份、完整性驗證與 RPG 更新前快照。
+folia-supported: true
+
+commands:
+  serverbackup:
+    description: 建立、檢查及管理伺服器備份。
+    aliases: [sbackup, backup]
+    usage: /serverbackup [start|snapshot <更新標籤>|audit|info|reload]
+    permission: serverbackup.use
+
+permissions:
+  serverbackup.use:
+    description: 允許執行及查看伺服器備份。
+    default: op
+  serverbackup.admin:
+    description: 允許建立更新快照、執行稽核及重新載入設定。
+    default: op
+  serverbackup.progress:
+    description: 允許查看僅限管理員的備份進度。
+    default: op
+
+# AelornLib 提供 Folia 排程。
+depend: [AelornLib]
