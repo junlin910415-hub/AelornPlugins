@@ -1,0 +1,134 @@
+RUNE_BURNING_STAR:
+  name: '&6灼星符文'
+  family: ON_HIT
+  material: BLAZE_POWDER
+  min-level: 10
+  stats:
+    fire-damage:
+      base: 3.0
+      scale: 0.25
+  ability:
+    on-hit:
+      type: BURN
+      chance: 20.0
+      power: 4.0
+
+RUNE_FROST_CHAIN:
+  name: '&b霜鏈符文'
+  family: CONTROL
+  material: PRISMARINE_CRYSTALS
+  min-level: 10
+  stats:
+    ice-damage:
+      base: 2.5
+      scale: 0.20
+    elemental-resistance:
+      base: 5.0
+      scale: 0.45
+  ability:
+    on-hit:
+      type: FROST
+      chance: 22.0
+      power: 1.0
+
+RUNE_THUNDER_CALL:
+  name: '&e引雷符文'
+  family: BURST
+  material: GUNPOWDER
+  min-level: 20
+  stats:
+    thunder-damage:
+      base: 4.0
+      scale: 0.35
+    critical-strike-rating:
+      base: 80.0
+      scale: 6.0
+  ability:
+    on-hit:
+      type: SHOCK
+      chance: 16.0
+      power: 5.0
+
+RUNE_VITAL_RESONANCE:
+  name: '&a生息共鳴符文'
+  family: SUPPORT
+  material: ECHO_SHARD
+  min-level: 18
+  stats:
+    max-health:
+      base: 10.0
+      scale: 0.8
+    wisdom:
+      base: 3.0
+      scale: 0.16
+  ability:
+    on-hit:
+      type: HEAL
+      chance: 18.0
+      power: 4.0
+
+RUNE_GALE_STEP:
+  name: '&a逐風符文'
+  family: MOBILITY
+  material: FEATHER
+  min-level: 14
+  stats:
+    wind-damage:
+      base: 2.5
+      scale: 0.22
+    movement-speed:
+      base: 0.010
+      scale: 0.00010
+    dodge-rating:
+      base: 3.0
+      scale: 0.16
+
+RUNE_STONEHEART:
+  name: '&6磐心符文'
+  family: GUARD
+  material: BRICK
+  min-level: 18
+  stats:
+    earth-damage:
+      base: 2.5
+      scale: 0.20
+    block-rating:
+      base: 4.0
+      scale: 0.20
+    max-health:
+      base: 8.0
+      scale: 0.55
+
+RUNE_ARCANE_SEAL:
+  name: '&d秘印符文'
+  family: CASTING
+  material: ENDER_PEARL
+  min-level: 20
+  stats:
+    arcane-damage:
+      base: 3.0
+      scale: 0.24
+    cooldown-reduction:
+      base: 2.0
+      scale: 0.08
+    max-mana:
+      base: 8.0
+      scale: 0.50
+
+RUNE_DUSK_EDGE:
+  name: '&5暮刃符文'
+  family: EXECUTION
+  material: FLINT
+  min-level: 20
+  stats:
+    darkness-damage:
+      base: 3.0
+      scale: 0.24
+    critical-strike-power:
+      base: 8.0
+      scale: 0.30
+  ability:
+    on-hit:
+      type: BLEED
+      chance: 14.0
+      power: 4.0

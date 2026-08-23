@@ -1,0 +1,58 @@
+schema-version: 1
+
+monsters:
+  fracture_gel:
+    display-name: '<green>裂晶膠靈</green>'
+    entity-type: SLIME
+    mythic-mob: Aelorn_FractureGel
+    model:
+      id: ''
+      animations: { idle: idle, attack: attack, hurt: hurt, death: death }
+    rank: COMMON
+    archetype: SKIRMISHER
+    level: { base: 2, minimum: 1, maximum: 7 }
+    stats: { health: 22.0, damage: 2.6, defense: 2.0, resistance: 5.0 }
+    experience: 24
+    behavior:
+      movement-speed: 0.23
+      follow-range: 18.0
+      ability-cooldown-ticks: 80
+      ability-power: 0.72
+    drops:
+      gel_jelly:
+        material: SLIME_BALL
+        display-name: '<green>凝露果凍</green>'
+        chance: 0.72
+        minimum: 1
+        maximum: 2
+      fracture_spark:
+        material: AMETHYST_SHARD
+        display-name: '<light_purple>裂晶微光</light_purple>'
+        chance: 0.08
+        minimum: 1
+        maximum: 1
+
+  thornback_boar:
+    display-name: '<gold>棘背野豬</gold>'
+    entity-type: HOGLIN
+    mythic-mob: Aelorn_ThornbackBoar
+    model:
+      id: ''
+      animations: { idle: idle, attack: attack, hurt: hurt, death: death }
+    rank: COMMON
+    archetype: BRUISER
+    level: { base: 5, minimum: 3, maximum: 10 }
+    stats: { health: 46.0, damage: 4.8, defense: 8.0, resistance: 3.0 }
+    experience: 52
+    behavior:
+      movement-speed: 0.27
+      follow-range: 22.0
+      ability-cooldown-ticks: 105
+      ability-power: 0.88
+    drops:
+      thorn_hide:
+        material: RABBIT_HIDE
+        display-name: '<gold>棘紋獸皮</gold>'
+        chance: 0.48
+        minimum: 1
+        maximum: 2

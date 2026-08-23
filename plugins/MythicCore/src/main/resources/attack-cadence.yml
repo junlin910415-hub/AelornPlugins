@@ -1,0 +1,157 @@
+schema-version: 1
+
+# 一秒為 20 tick。前搖結束時才真正判定命中，收招尾端可預先輸入下一擊。
+# ATTACK_SPEED 使用遞減收益，只縮短前搖與收招，不會壓縮命中窗或無限加速。
+profiles:
+  vanguard-blade:
+    display-name: 單手劍
+    windup-ticks: 5
+    active-ticks: 1
+    recovery-ticks: 7
+    input-buffer-ticks: 3
+    combo-reset-ticks: 18
+    maximum-combo-steps: 3
+    base-damage-multiplier: 1.00
+    combo-damage-step: 0.04
+    finisher-damage-bonus: 0.08
+    range-multiplier: 1.00
+    maximum-attack-speed-reduction: 0.18
+    minimum-timing-scale: 0.78
+    interruptible: false
+    interrupt-damage-percent: 0.0
+
+  great-weapon:
+    display-name: 重型武器
+    windup-ticks: 13
+    active-ticks: 2
+    recovery-ticks: 15
+    input-buffer-ticks: 5
+    combo-reset-ticks: 26
+    maximum-combo-steps: 2
+    base-damage-multiplier: 1.55
+    combo-damage-step: 0.06
+    finisher-damage-bonus: 0.10
+    range-multiplier: 1.08
+    maximum-attack-speed-reduction: 0.12
+    minimum-timing-scale: 0.85
+    interruptible: true
+    interrupt-damage-percent: 5.0
+
+  polearm:
+    display-name: 長柄武器
+    windup-ticks: 8
+    active-ticks: 1
+    recovery-ticks: 10
+    input-buffer-ticks: 4
+    combo-reset-ticks: 22
+    maximum-combo-steps: 3
+    base-damage-multiplier: 1.14
+    combo-damage-step: 0.035
+    finisher-damage-bonus: 0.07
+    range-multiplier: 1.22
+    maximum-attack-speed-reduction: 0.15
+    minimum-timing-scale: 0.82
+    interruptible: false
+    interrupt-damage-percent: 0.0
+
+  ranger-bow:
+    display-name: 戰弓
+    windup-ticks: 9
+    active-ticks: 1
+    recovery-ticks: 8
+    input-buffer-ticks: 4
+    combo-reset-ticks: 22
+    maximum-combo-steps: 3
+    base-damage-multiplier: 1.00
+    combo-damage-step: 0.03
+    finisher-damage-bonus: 0.06
+    range-multiplier: 1.00
+    maximum-attack-speed-reduction: 0.16
+    minimum-timing-scale: 0.80
+    interruptible: false
+    interrupt-damage-percent: 0.0
+
+  shadow-dagger:
+    display-name: 匕首
+    windup-ticks: 2
+    active-ticks: 1
+    recovery-ticks: 4
+    input-buffer-ticks: 2
+    combo-reset-ticks: 15
+    maximum-combo-steps: 4
+    base-damage-multiplier: 0.78
+    combo-damage-step: 0.025
+    finisher-damage-bonus: 0.06
+    range-multiplier: 0.94
+    maximum-attack-speed-reduction: 0.22
+    minimum-timing-scale: 0.72
+    interruptible: false
+    interrupt-damage-percent: 0.0
+
+  gauntlet:
+    display-name: 拳刃
+    windup-ticks: 3
+    active-ticks: 1
+    recovery-ticks: 5
+    input-buffer-ticks: 2
+    combo-reset-ticks: 16
+    maximum-combo-steps: 4
+    base-damage-multiplier: 0.86
+    combo-damage-step: 0.03
+    finisher-damage-bonus: 0.07
+    range-multiplier: 0.90
+    maximum-attack-speed-reduction: 0.20
+    minimum-timing-scale: 0.74
+    interruptible: false
+    interrupt-damage-percent: 0.0
+
+  arcane-focus:
+    display-name: 法器
+    windup-ticks: 7
+    active-ticks: 1
+    recovery-ticks: 7
+    input-buffer-ticks: 3
+    combo-reset-ticks: 20
+    maximum-combo-steps: 3
+    base-damage-multiplier: 1.00
+    combo-damage-step: 0.035
+    finisher-damage-bonus: 0.07
+    range-multiplier: 1.00
+    maximum-attack-speed-reduction: 0.16
+    minimum-timing-scale: 0.80
+    interruptible: false
+    interrupt-damage-percent: 0.0
+
+  arcane-staff:
+    display-name: 長杖
+    windup-ticks: 11
+    active-ticks: 2
+    recovery-ticks: 12
+    input-buffer-ticks: 4
+    combo-reset-ticks: 24
+    maximum-combo-steps: 2
+    base-damage-multiplier: 1.32
+    combo-damage-step: 0.05
+    finisher-damage-bonus: 0.08
+    range-multiplier: 1.10
+    maximum-attack-speed-reduction: 0.13
+    minimum-timing-scale: 0.84
+    interruptible: true
+    interrupt-damage-percent: 4.0
+
+  warden-totem:
+    display-name: 靈媒圖騰
+    windup-ticks: 10
+    active-ticks: 2
+    recovery-ticks: 10
+    input-buffer-ticks: 4
+    combo-reset-ticks: 24
+    maximum-combo-steps: 3
+    base-damage-multiplier: 1.08
+    combo-damage-step: 0.03
+    finisher-damage-bonus: 0.06
+    range-multiplier: 1.05
+    maximum-attack-speed-reduction: 0.12
+    minimum-timing-scale: 0.85
+    interruptible: true
+    interrupt-damage-percent: 4.0

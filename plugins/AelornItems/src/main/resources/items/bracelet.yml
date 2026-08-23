@@ -1,0 +1,50 @@
+# 手鐲（BRACELET）— 前 30 級
+#
+# 定位：速度與資源循環。手鐲負責「動起來」與「撐得久」，
+# 與戒指的爆發向、項鍊的生存向分工，避免三個欄位給同一種東西。
+
+WAYFARERS_LEATHER_CUFF:
+  base:
+    material: LEATHER
+    name: '&7旅者皮腕帶'
+    displayed-type: '&f手鐲'
+    tier: COMMON
+    browser-display-idx: 120
+    gem-sockets: 0
+    rune-slots: 0
+    lore:
+      - '&7走長路的人都會綁一條，磨損得很快。'
+    movement-speed: { base: 0.6, scale: 0.02 }
+    max-stamina: { base: 6.0, scale: 0.4 }
+    required-level: 6
+
+GALEWIND_BANGLE:
+  base:
+    material: FEATHER
+    name: '&f疾風腕環'
+    displayed-type: '&f手鐲'
+    tier: UNCOMMON
+    browser-display-idx: 121
+    gem-sockets: 0
+    rune-slots: 0
+    lore:
+      - '&7據說取自風棘鳥的翎羽，戴著時步伐輕得像被托著。'
+    movement-speed: { base: 1.2, scale: 0.03 }
+    attack-speed: { base: 2.0, scale: 0.06 }
+    required-level: 14
+
+TIDEWORN_BRACER:
+  base:
+    material: PRISMARINE_SHARD
+    name: '&9汐蝕護腕'
+    displayed-type: '&f手鐲'
+    tier: RARE
+    browser-display-idx: 122
+    gem-sockets: 1
+    rune-slots: 0
+    lore:
+      - '&7長年浸在浪痕之下的石環，表面被沖刷出細密的紋路。'
+      - '&8握拳時能聽見極輕的水聲。'
+    mana-regeneration: { base: 2.2, scale: 0.09 }
+    cooldown-reduction: { base: 3.0, scale: 0.09 }
+    required-level: 23

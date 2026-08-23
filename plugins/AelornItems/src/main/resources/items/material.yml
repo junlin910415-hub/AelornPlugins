@@ -1,0 +1,71 @@
+COMMON_FRAGMENT:
+  base:
+    material: PRISMARINE_SHARD
+    name: '&f凡品裝備殘片'
+    displayed-type: '&7分解材料'
+    tier: COMMON
+    browser-display-idx: 10
+    lore:
+      - '&7由凡品裝備分解出的基礎殘片。'
+      - '&8可作為製作、升階或任務交換材料。'
+
+WEAPON_POWDER:
+  base:
+    material: GLOWSTONE_DUST
+    name: '&e武器粉塵'
+    displayed-type: '&7分解材料'
+    tier: COMMON
+    browser-display-idx: 20
+    lore:
+      - '&7武器分解後留下的細緻粉塵。'
+      - '&8適合用於低階強化與修復流程。'
+
+UNCOMMON_WEAPON_ESSENCE:
+  base:
+    material: AMETHYST_SHARD
+    name: '&f凡品武器精華'
+    displayed-type: '&7分解材料'
+    tier: COMMON
+    browser-display-idx: 30
+    lore:
+      - '&7凝聚凡品裝備殘留力量的精華。'
+
+RARE_WEAPON_ESSENCE:
+  base:
+    material: ECHO_SHARD
+    name: '&9稀有武器精華'
+    displayed-type: '&7分解材料'
+    tier: RARE
+    browser-display-idx: 40
+    lore:
+      - '&7稀有裝備分解後保留下來的核心能量。'
+
+VERY_RARE_WEAPON_ESSENCE:
+  base:
+    material: LAPIS_LAZULI
+    name: '&5史詩武器精華'
+    displayed-type: '&7分解材料'
+    tier: EPIC
+    browser-display-idx: 50
+    lore:
+      - '&7帶有高階魔力紋理的史詩精華。'
+
+LEGENDARY_WEAPON_ESSENCE:
+  base:
+    material: NETHER_STAR
+    name: '&6傳說武器精華'
+    displayed-type: '&7分解材料'
+    tier: LEGENDARY
+    browser-display-idx: 60
+    lore:
+      - '&7傳說武器核心殘留的穩定能量。'
+
+MYTHIC_WEAPON_ESSENCE:
+  base:
+    material: NETHERITE_SCRAP
+    name: '&b浩瀚武器精華'
+    displayed-type: '&7分解材料'
+    tier: VAST
+    browser-display-idx: 70
+    lore:
+      - '&7極高階裝備分解後才可能產出的浩瀚精華。'

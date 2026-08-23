@@ -1,0 +1,195 @@
+schema-version: 1
+
+# ═══════════════════════════════════════════════════════════════
+#  艾洛恩 AELORN — 增益與減益設定
+# ═══════════════════════════════════════════════════════════════
+#
+#  祝福、詛咒、中毒、狂暴都寫在這裡。技能只要說
+#  「給目標掛上 deep_poison 兩層」，剩下的疊層、計時、
+#  屬性換算與到期清除全由系統處理。
+#
+# ───────────────────────────────────────────────────────────────
+#  疊層規則 stack-rule
+# ───────────────────────────────────────────────────────────────
+#  REFRESH   重複施加時只刷新時間，不增加層數。
+#  STACK     疊加層數並刷新時間，上限為 max-stacks。
+#  IGNORE    已存在時直接忽略，讓原本的效果自然走完。
+#
+# ───────────────────────────────────────────────────────────────
+#  屬性修飾 modifiers
+# ───────────────────────────────────────────────────────────────
+#  每個屬性可填兩種加成，兩者都是「每層」的量：
+#
+#    flat      加值，直接相加
+#    percent   百分比，6 代表 +6%
+#
+#  計算方式固定為「先加後乘」：
+#
+#    最終值 = (原始值 + flat 總和) × (1 + percent 總和 ÷ 100)
+#
+#  刻意不採逐項相乘 —— 三個 +20% 若相乘會變成 1.728 倍而非 1.6 倍，
+#  疊到五六層數值就會失控。
+#
+# ───────────────────────────────────────────────────────────────
+#  週期效果 periodic
+# ───────────────────────────────────────────────────────────────
+#  interval-seconds  觸發間隔（秒）
+#  damage            每層每次造成的傷害
+#  healing           每層每次回復的生命
+#
+# ───────────────────────────────────────────────────────────────
+#  其他欄位
+# ───────────────────────────────────────────────────────────────
+#  name              顯示名稱
+#  icon              HUD 與選單用的符號
+#  color             顏色代碼（& 開頭）
+#  description       給玩家看的一句話說明
+#  beneficial        true 為增益、false 為減益；驅散效果依此分類
+#  duration-seconds  持續秒數；填 0 代表永久，需手動移除
+#  max-stacks        最大層數
+#
+# ═══════════════════════════════════════════════════════════════
+
+# 每隔幾 tick 掃描一次到期與週期效果。10 = 每半秒一次。
+sweep-period-ticks: 10
+
+# ───────────────────────────────────────────────────────────────
+#  屬性安全閘
+# ───────────────────────────────────────────────────────────────
+#  疊層是會失控的：四層碎甲加兩層灼燒能把防禦推成負值，
+#  三層遲滯能讓玩家完全動不了，堆滿爆擊裝再吃一個增益就變成必爆。
+#  這些不是「數值很高」，而是遊戲直接壞掉。
+#
+#  上限填 0 代表不設限，用不到的欄位可以直接刪掉。
+limits:
+  minimum-health: 1.0                 # 生命上限的下限，避免減益把血條歸零
+  minimum-mana: 1.0
+  minimum-speed: 20.0                 # 移動速度下限，避免疊滿減速後完全不能動
+  maximum-speed: 400.0                # 移動速度上限，避免加速到穿牆
+  maximum-critical-chance: 0.95       # 爆擊率上限（0~1）
+  maximum-dodge-chance: 0.90          # 閃避率上限（0~1）
+  maximum-spell-cost-reduction: 0.90  # 法力消耗減免上限（0~1）
+  maximum-attack-power: 0             # 0 = 不設限
+  maximum-defense: 0                  # 0 = 不設限
+
+types:
+
+  # ── 增益 ═════════════════════════════════════════════════════
+
+  # 戰意高昂 — 連續命中的獎勵，鼓勵持續進攻而非放風箏。
+  battle_fury:
+    name: "戰意高昂"
+    icon: "⚔"
+    color: "&c"
+    description: "每層提升 6% 攻擊力，最多五層。"
+    beneficial: true
+    duration-seconds: 12
+    max-stacks: 5
+    stack-rule: STACK
+    modifiers:
+      attack-power:
+        percent: 6
+
+  # 磐石護盾 — 短時間大幅提升防禦，用於擋下首領的大招。
+  stone_ward:
+    name: "磐石護盾"
+    icon: "🛡"
+    color: "&6"
+    description: "防禦力提升 40%，並額外獲得 20 點減傷。"
+    beneficial: true
+    duration-seconds: 8
+    max-stacks: 1
+    stack-rule: REFRESH
+    modifiers:
+      defense:
+        flat: 20
+        percent: 40
+
+  # 疾風步 — 提升移動速度，脫離戰鬥或追擊時使用。
+  swift_step:
+    name: "疾風步"
+    icon: "🌀"
+    color: "&b"
+    description: "移動速度提升 25%。"
+    beneficial: true
+    duration-seconds: 10
+    max-stacks: 1
+    stack-rule: REFRESH
+    modifiers:
+      speed:
+        percent: 25
+
+  # 生命湧泉 — 持續治療，考驗玩家對爆發傷害的預判。
+  life_spring:
+    name: "生命湧泉"
+    icon: "✚"
+    color: "&d"
+    description: "每秒回復生命，持續十秒。"
+    beneficial: true
+    duration-seconds: 10
+    max-stacks: 3
+    stack-rule: STACK
+    periodic:
+      interval-seconds: 1
+      healing: 3
+
+  # ── 減益 ═════════════════════════════════════════════════════
+
+  # 劇毒 — 可疊層的持續傷害，適合刺客的消耗手段。
+  deep_poison:
+    name: "劇毒"
+    icon: "☠"
+    color: "&2"
+    description: "每秒受到毒素傷害，最多可疊三層。"
+    beneficial: false
+    duration-seconds: 8
+    max-stacks: 3
+    stack-rule: STACK
+    periodic:
+      interval-seconds: 1
+      damage: 4
+
+  # 灼燒 — 傷害較高但層數少，且會降低防禦。
+  searing_burn:
+    name: "灼燒"
+    icon: "🔥"
+    color: "&6"
+    description: "每秒受到火焰傷害，並降低 15% 防禦力。"
+    beneficial: false
+    duration-seconds: 6
+    max-stacks: 2
+    stack-rule: STACK
+    modifiers:
+      defense:
+        percent: -15
+    periodic:
+      interval-seconds: 1
+      damage: 6
+
+  # 碎甲 — 純減防，讓隊伍能集火開窗。
+  armor_break:
+    name: "碎甲"
+    icon: "✖"
+    color: "&8"
+    description: "防禦力降低 10%，最多可疊四層。"
+    beneficial: false
+    duration-seconds: 15
+    max-stacks: 4
+    stack-rule: STACK
+    modifiers:
+      defense:
+        percent: -10
+
+  # 遲滯 — 控場用的減速，不疊層但可刷新。
+  chill_snare:
+    name: "遲滯"
+    icon: "❄"
+    color: "&9"
+    description: "移動速度降低 30%。"
+    beneficial: false
+    duration-seconds: 5
+    max-stacks: 1
+    stack-rule: REFRESH
+    modifiers:
+      speed:
+        percent: -30

@@ -1,0 +1,94 @@
+# MythicMobs 內部 ID 對應 MMOItems 掉落。chance 為 0-100。
+mobs:
+  SKELETON_KNIGHT:
+    drops:
+      weapon_powder:
+        type: MATERIAL
+        item: WEAPON_POWDER
+        tier: COMMON
+        level: 8
+        chance: 38.0
+        amount-min: 1
+        amount-max: 2
+      rare_essence:
+        type: MATERIAL
+        item: RARE_WEAPON_ESSENCE
+        tier: RARE
+        level: 12
+        chance: 6.0
+        amount-min: 1
+        amount-max: 1
+
+  FOREST_GUARDIAN:
+    drops:
+      upgrade_stone:
+        type: UPGRADE_STONE
+        item: COMMON_UPGRADE_STONE
+        tier: COMMON
+        level: 15
+        chance: 12.0
+        amount-min: 1
+        amount-max: 1
+
+  RPGCore_RoadsideRaider:
+    drops:
+      weapon_powder:
+        type: MATERIAL
+        item: WEAPON_POWDER
+        tier: COMMON
+        level: 3
+        chance: 42.0
+        amount-min: 1
+        amount-max: 2
+
+  RPGCore_MossboundGuardian:
+    drops:
+      common_fragment:
+        type: MATERIAL
+        item: COMMON_FRAGMENT
+        tier: COMMON
+        level: 10
+        chance: 36.0
+        amount-min: 1
+        amount-max: 2
+      upgrade_stone:
+        type: UPGRADE_STONE
+        item: COMMON_UPGRADE_STONE
+        tier: COMMON
+        level: 10
+        chance: 9.0
+        amount-min: 1
+        amount-max: 1
+
+  RPGCore_EmberAdept:
+    drops:
+      weapon_essence:
+        type: MATERIAL
+        item: UNCOMMON_WEAPON_ESSENCE
+        tier: COMMON
+        level: 17
+        chance: 28.0
+        amount-min: 1
+        amount-max: 1
+
+  RPGCore_GroveChanter:
+    drops:
+      upgrade_stone:
+        type: UPGRADE_STONE
+        item: COMMON_UPGRADE_STONE
+        tier: COMMON
+        level: 24
+        chance: 24.0
+        amount-min: 1
+        amount-max: 1
+
+  RPGCore_RuinWarden:
+    drops:
+      rare_essence:
+        type: MATERIAL
+        item: RARE_WEAPON_ESSENCE
+        tier: RARE
+        level: 32
+        chance: 35.0
+        amount-min: 1
+        amount-max: 2

@@ -1,0 +1,146 @@
+﻿config-version: 7
+
+compatibility:
+  # Reads existing plugins/MMOItems/item/*.yml as clean data templates when present.
+  # The plugin does not copy original code and will not overwrite existing data files.
+  import-legacy-item-folder: true
+
+display:
+  append-core-lore: true
+  show-imported-items: true
+  show-hidden-types: false
+  resource-pack-tooltips: true
+
+tooltips:
+  multi-page:
+    # 游標停在物品上按 F 翻頁；武器與裝備五頁，素材等其他物品三頁。
+    enabled: true
+    equipment-pages: 5
+    other-pages: 3
+  custom-style:
+    # 對應資源包 assets/mmoitems/textures/gui/sprites/tooltip/ 下的六階材質。
+    enabled: true
+    namespace: mmoitems
+
+browser:
+  resource-pack-background:
+    enabled: false
+    glyph: mmoitems_browser_gui
+    width: 256
+  vanilla-layout:
+    enabled: true
+    fill-border: true
+  three-dimensional-preview:
+    enabled: true
+    duration-ticks: 160
+    update-period-ticks: 2
+    distance: 2.2
+    scale: 1.15
+
+generation:
+  default-level: 1
+  random-tier-command: true
+
+safety:
+  # Prevents malformed YAML, imported legacy data, or command mistakes from creating broken items.
+  max-generated-level: 1000
+  max-stack-amount: 64
+  max-stat-value: 100000.0
+  max-rating-value: 20000.0
+  max-percent-value: 500.0
+  max-resource-cost: 1000.0
+
+upgrade:
+  max-level: 20
+  # Positive combat stats gain this multiplier per upgrade level.
+  positive-stat-growth: 0.04
+
+deconstruct:
+  enabled: true
+  fallback-material: true
+  # Success chance = base + quality * quality-factor + upgrade * upgrade-factor, capped by max-success-chance.
+  base-success-chance: 0.55
+  quality-factor: 0.0035
+  upgrade-factor: 0.012
+  max-success-chance: 0.92
+  guarantee-result: true
+
+soulbound:
+  prevent-foreign-use: true
+  prevent-owner-drop: true
+  allow-owner-drop-while-sneaking: false
+
+sockets:
+  default: 1
+  default-per-tier:
+    STARTER: 0
+    COMMON: 1
+    RARE: 2
+    EPIC: 2
+    LEGENDARY: 3
+    VAST: 4
+
+score:
+  weights:
+    ATTACK_DAMAGE: 1.35
+    WEAPON_DAMAGE: 1.2
+    MAGIC_DAMAGE: 1.25
+    SKILL_DAMAGE: 1.2
+    FIRE_DAMAGE: 0.95
+    ICE_DAMAGE: 0.95
+    THUNDER_DAMAGE: 1.0
+    LIGHTNING_DAMAGE: 1.0
+    WIND_DAMAGE: 0.9
+    EARTH_DAMAGE: 0.92
+    WATER_DAMAGE: 0.9
+    DARKNESS_DAMAGE: 1.05
+    SHADOW_DAMAGE: 1.05
+    LIGHTNESS_DAMAGE: 1.05
+    HOLY_DAMAGE: 1.05
+    ARCANE_DAMAGE: 1.0
+    CRITICAL_STRIKE_CHANCE: 1.1
+    CRITICAL_STRIKE_RATING: 0.045
+    CRITICAL_STRIKE_POWER: 0.28
+    DEFENSE: 0.75
+    MAGIC_RESISTANCE: 0.7
+    ELEMENTAL_RESISTANCE: 0.65
+    MAX_HEALTH: 0.55
+    MAX_MANA: 0.35
+    LIFE_STEAL: 3.0
+    STRENGTH: 0.85
+    DEXTERITY: 0.85
+    INTELLIGENCE: 0.85
+    WISDOM: 0.8
+forge:
+  base-success-chance: 0.92
+  level-penalty: 0.045
+  catalyst-bonus: 0.1
+  pity-per-failure: 0.035
+  base-cost: 12.0
+  level-cost-factor: 3.0
+  item-value-factor: 0.025
+mythic-drops:
+  enabled: true
+gui:
+  internal-textures:
+    enabled: true
+
+# ═══════════════════════════════════════════════════════════════
+#  重鑄保留規則
+# ═══════════════════════════════════════════════════════════════
+#  決定一次重鑄「洗掉什麼、留下什麼」。
+#  升級等級一律保留,不提供設定 —— 那是玩家實際投入的資源。
+#
+#  玩家可用旗標覆寫單次行為(需 allow-flags: true):
+#    /mmoitems reforge                    依下方預設
+#    /mmoitems reforge LEGENDARY          指定重鑄成傳說
+#    /mmoitems reforge --keep-affixes     保留詞綴,只重擲數值
+#    /mmoitems reforge RANDOM --keep-quality
+#  旗標前加 no- 可反向關閉,例如 --no-keep-gems。
+reforge:
+  keep-tier: false      # 保留階級
+  keep-quality: false   # 保留品質百分比
+  keep-affixes: false   # 保留詞綴組合,只重擲數值
+  keep-gems: true       # 保留已鑲嵌的寶石
+  keep-rune: true       # 保留符文
+  allow-flags: true     # 允許玩家用指令旗標覆寫

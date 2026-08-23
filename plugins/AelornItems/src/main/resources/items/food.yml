@@ -1,0 +1,10 @@
+TRAVELERS_HERB_STEW:
+  base:
+    material: RABBIT_STEW
+    name: '&a旅人香草燉湯'
+    displayed-type: '&a食物'
+    tier: COMMON
+    browser-display-idx: 10
+    lore:
+      - '&7以常見香草熬製，適合長途冒險。'
+    health-regeneration: { base: 4.0, scale: 0.08 }

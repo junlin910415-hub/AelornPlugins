@@ -7,8 +7,8 @@
 #
 # 伺服器樹要有:
 #   <ServerRoot>\libraries\                     編譯用的 API 與函式庫
-#   <ServerRoot>ersions.2\purpur-26.2.jar  NMS adapter 的編譯目標
-#   <ServerRoot>ersions.2olia-26.2.jar   可選:第二核心閘門
+#   <ServerRoot>\versions\26.2\purpur-26.2.jar  NMS adapter 的編譯目標
+#   <ServerRoot>\versions\26.2\folia-26.2.jar   可選:第二核心閘門
 #   <ServerRoot>\plugins\                       ProtocolLib、PacketEvents、PlaceholderAPI…
 #
 # 這些是第三方著作,不進這個倉庫。ServerRoot 也可以用環境變數 AELORN_SERVER_ROOT 指定。
@@ -149,6 +149,7 @@ $Projects = @(
     # Core = $true 起手只是把核心掛上 classpath;實際改用核心的 Messages/ConfigParse
     # 取代自家 config\TextBundle 是後續的事,分開做才看得出哪一步弄壞了什麼。
     # joml 走 LibCp:物品的位移/旋轉計算用到,但它不在無核心的基礎 classpath 裡。
+    @{ Name = "AelornItems";         Jar = "AelornItems-3.2.2-AELORN-NEXO_26.2";                    ExtraCp = @("MythicCore-*.jar", "RPGCore-*.jar"); Core = $true; LibCp = @("org\joml\joml\1.10.9\joml-1.10.9.jar") },
     @{ Name = "RPGCoreMythicBridge"; Jar = "RPGCoreMythicBridge-0.2.0_26.2";                       ExtraCp = @("MythicCore-*.jar", "RPGCore-*.jar") },
     @{ Name = "AelornDiscordBridge"; Jar = "AelornDiscordBridge-3.0.0_26.2";           ExtraCp = @("DiscordSRV-*.jar") },
     @{ Name = "AelornQuestBridge";   Jar = "AelornQuestBridge-3.1.0_26.2";             ExtraCp = @("PlaceholderAPI-*.jar"); Core = $true },

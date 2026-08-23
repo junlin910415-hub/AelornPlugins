@@ -1,0 +1,122 @@
+RUBY_ATTACK:
+  name: '&c紅曜戰石'
+  family: OFFENSE
+  material: REDSTONE
+  min-level: 1
+  stats:
+    attack-damage:
+      base: 2.0
+      scale: 0.20
+    strength:
+      base: 2.0
+      scale: 0.10
+
+SAPPHIRE_ARCANE:
+  name: '&b蒼藍法晶'
+  family: MAGIC
+  material: LAPIS_LAZULI
+  min-level: 1
+  stats:
+    magic-damage:
+      base: 2.5
+      scale: 0.28
+    max-mana:
+      base: 8.0
+      scale: 0.8
+
+TOPAZ_CRIT:
+  name: '&e雷紋黃玉'
+  family: CRITICAL
+  material: AMETHYST_SHARD
+  min-level: 8
+  stats:
+    critical-strike-rating:
+      base: 45.0
+      scale: 4.0
+    thunder-damage:
+      base: 1.5
+      scale: 0.15
+
+JADE_GUARD:
+  name: '&a翠玉守心'
+  family: DEFENSE
+  material: EMERALD
+  min-level: 5
+  stats:
+    defense:
+      base: 5.0
+      scale: 0.45
+    max-health:
+      base: 6.0
+      scale: 0.55
+
+MOONSTONE_LEECH:
+  name: '&5月魄血石'
+  family: SUSTAIN
+  material: ECHO_SHARD
+  min-level: 18
+  stats:
+    life-steal:
+      base: 1.4
+      scale: 0.04
+    darkness-damage:
+      base: 2.0
+      scale: 0.18
+
+AMBER_EARTH:
+  name: '&6琥珀地核'
+  family: GUARD
+  material: HONEYCOMB
+  min-level: 10
+  stats:
+    earth-damage:
+      base: 2.0
+      scale: 0.18
+    armor:
+      base: 4.0
+      scale: 0.32
+
+OPAL_GALE:
+  name: '&a風紋歐泊'
+  family: AGILITY
+  material: PRISMARINE_SHARD
+  min-level: 12
+  stats:
+    wind-damage:
+      base: 2.0
+      scale: 0.18
+    dexterity:
+      base: 2.0
+      scale: 0.12
+    movement-speed:
+      base: 0.006
+      scale: 0.00008
+
+SUNSTONE_HOLY:
+  name: '&e曜陽聖石'
+  family: SUPPORT
+  material: GLOWSTONE_DUST
+  min-level: 16
+  stats:
+    lightness-damage:
+      base: 2.0
+      scale: 0.20
+    wisdom:
+      base: 2.0
+      scale: 0.14
+    max-mana:
+      base: 6.0
+      scale: 0.50
+
+OBSIDIAN_SHADOW:
+  name: '&5暮影黑曜'
+  family: ASSASSIN
+  material: OBSIDIAN
+  min-level: 16
+  stats:
+    darkness-damage:
+      base: 2.2
+      scale: 0.22
+    critical-strike-rating:
+      base: 30.0
+      scale: 3.5

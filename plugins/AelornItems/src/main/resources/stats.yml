@@ -1,0 +1,384 @@
+schema-version: 1
+
+# ===============================================================
+#  艾洛恩 AELORN — 武器屬性目錄
+# ===============================================================
+#
+#  這份檔案取代了原本寫死在 Java 裡的 WeaponStatCatalog。
+#  先前新增一個屬性、改一個中文顯示名、調一個數值上限，
+#  都得改程式碼重新編譯部署；現在改這裡就好。
+#
+#  欄位說明：
+#    name      顯示名稱（Lore 與選單共用）
+#    suffix    單位，例如 % 或「 格」
+#    category  分類，決定 Lore 的分組與顏色
+#    limit     數值安全上限，防止設定檔手滑寫出天文數字
+#
+#  屬性在 Lore 裡的呈現順序 = 先照分類的 order，同分類內照本檔案的
+#  書寫順序。想調整某條屬性出現的位置，把它在 stats 底下搬個位置即可。
+#
+# ===============================================================
+
+# ── 分類：決定 Lore 的分組、顏色與呈現先後 ─────────────────────
+#
+#  每個分類在 Lore 裡會長出一行標題，例如「&c✦ 攻擊」，
+#  底下才是屬於它的屬性。order 小的排前面。
+#
+#  icon 是標題前的符號，留空字串就只顯示名稱。
+#  這裡選用的符號都是本伺服器字型確定畫得出來的；
+#  換符號前請先在遊戲裡確認不會變成豆腐方塊。
+#
+categories:
+  OFFENSE:
+    name: '攻擊'
+    color: '&c'
+    icon: '✦'
+    order: 1
+  DEFENSE:
+    name: '防禦'
+    color: '&9'
+    icon: '◆'
+    order: 2
+  RESOURCE:
+    name: '資源'
+    color: '&b'
+    icon: '❖'
+    order: 3
+  MOBILITY:
+    name: '機動'
+    color: '&a'
+    icon: '✸'
+    order: 4
+  PRIMARY:
+    name: '屬性'
+    color: '&e'
+    icon: '✧'
+    order: 5
+  ECONOMY:
+    name: '增益'
+    color: '&6'
+    icon: '◈'
+    order: 6
+
+# ── 元素：每個元素自動衍生 8 條屬性 ───────────────────────────
+elements:
+  EARTH: { name: '大地', color: '&2' }
+  THUNDER: { name: '雷霆', color: '&e' }
+  WATER: { name: '流水', color: '&3' }
+  FIRE: { name: '烈焰', color: '&c' }
+  WIND: { name: '疾風', color: '&a' }
+  ICE: { name: '冰霜', color: '&b' }
+  DARKNESS: { name: '暗影', color: '&5' }
+  LIGHTNESS: { name: '聖光', color: '&f' }
+  ARCANE: { name: '奧術', color: '&d' }
+  NATURE: { name: '自然', color: '&2' }
+
+# 元素衍生模板；{element} 會被代換成元素名稱
+element-templates:
+  '_DAMAGE': { name: '{element}傷害', suffix: '', category: OFFENSE, limit: 100000 }
+  '_DAMAGE_PERCENT': { name: '{element}傷害', suffix: '%', category: OFFENSE, limit: 500 }
+  '_MAIN_ATTACK_DAMAGE': { name: '{element}主攻擊傷害', suffix: '', category: OFFENSE, limit: 100000 }
+  '_MAIN_ATTACK_DAMAGE_PERCENT': { name: '{element}主攻擊傷害', suffix: '%', category: OFFENSE, limit: 500 }
+  '_SPELL_DAMAGE': { name: '{element}法術傷害', suffix: '', category: OFFENSE, limit: 100000 }
+  '_SPELL_DAMAGE_PERCENT': { name: '{element}法術傷害', suffix: '%', category: OFFENSE, limit: 500 }
+  '_RESISTANCE': { name: '{element}抗性', suffix: '', category: DEFENSE, limit: 100000 }
+  '_RESISTANCE_PERCENT': { name: '{element}抗性', suffix: '%', category: DEFENSE, limit: 500 }
+
+# ── 屬性本體 ─────────────────────────────────────────────────
+stats:
+
+  # ── 攻擊 ──
+  ATTACK_DAMAGE: { name: '攻擊傷害', suffix: '', category: OFFENSE, limit: 100000 }
+  WEAPON_DAMAGE: { name: '武器傷害', suffix: '', category: OFFENSE, limit: 100000 }
+  MAIN_ATTACK_DAMAGE: { name: '主攻擊傷害', suffix: '', category: OFFENSE, limit: 100000 }
+  MAIN_ATTACK_DAMAGE_PERCENT: { name: '主攻擊傷害', suffix: '%', category: OFFENSE, limit: 500 }
+  SPELL_DAMAGE: { name: '法術傷害', suffix: '', category: OFFENSE, limit: 100000 }
+  SPELL_DAMAGE_PERCENT: { name: '法術傷害', suffix: '%', category: OFFENSE, limit: 500 }
+  MAGIC_DAMAGE: { name: '魔法傷害', suffix: '', category: OFFENSE, limit: 100000 }
+  SKILL_DAMAGE: { name: '技能傷害', suffix: '', category: OFFENSE, limit: 100000 }
+  ABILITY_DAMAGE: { name: '能力傷害', suffix: '', category: OFFENSE, limit: 100000 }
+  ALL_DAMAGE: { name: '全傷害', suffix: '%', category: OFFENSE, limit: 500 }
+  PVE_DAMAGE: { name: 'PvE 傷害', suffix: '%', category: OFFENSE, limit: 500 }
+  PVP_DAMAGE: { name: 'PvP 傷害', suffix: '%', category: OFFENSE, limit: 500 }
+  PROJECTILE_DAMAGE: { name: '投射物傷害', suffix: '%', category: OFFENSE, limit: 500 }
+  PHYSICAL_DAMAGE: { name: '物理傷害', suffix: '%', category: OFFENSE, limit: 500 }
+  ATTACK_SPEED: { name: '攻擊速度', suffix: '', category: OFFENSE, limit: 100 }
+  ATTACK_SPEED_TIER: { name: '攻擊速度階級', suffix: ' 階', category: OFFENSE, limit: 7 }
+  RANGE: { name: '主攻擊距離', suffix: ' 格', category: OFFENSE, limit: 64 }
+  ARROW_VELOCITY: { name: '投射速度', suffix: '', category: OFFENSE, limit: 100 }
+  KNOCKBACK: { name: '擊退強度', suffix: '%', category: OFFENSE, limit: 500 }
+  CRITICAL_STRIKE_CHANCE: { name: '暴擊機率', suffix: '%', category: OFFENSE, limit: 100 }
+  CRITICAL_STRIKE_RATING: { name: '暴擊評級', suffix: '', category: OFFENSE, limit: 20000 }
+  CRITICAL_STRIKE_POWER: { name: '暴擊威力', suffix: '%', category: OFFENSE, limit: 500 }
+  SKILL_CRITICAL_STRIKE_CHANCE: { name: '技能暴擊機率', suffix: '%', category: OFFENSE, limit: 100 }
+  SKILL_CRITICAL_STRIKE_POWER: { name: '技能暴擊威力', suffix: '%', category: OFFENSE, limit: 500 }
+  ARMOR_PENETRATION: { name: '護甲穿透', suffix: '', category: OFFENSE, limit: 100000 }
+  ARMOR_PENETRATION_PERCENT: { name: '護甲穿透', suffix: '%', category: OFFENSE, limit: 500 }
+  MAGIC_PENETRATION: { name: '魔法穿透', suffix: '', category: OFFENSE, limit: 100000 }
+  MAGIC_PENETRATION_PERCENT: { name: '魔法穿透', suffix: '%', category: OFFENSE, limit: 500 }
+  ELEMENTAL_PENETRATION: { name: '元素穿透', suffix: '', category: OFFENSE, limit: 100000 }
+  ELEMENTAL_PENETRATION_PERCENT: { name: '元素穿透', suffix: '%', category: OFFENSE, limit: 500 }
+  EXPLODING: { name: '爆裂機率', suffix: '%', category: OFFENSE, limit: 100 }
+  POISON: { name: '中毒傷害', suffix: '/3秒', category: OFFENSE, limit: 100000 }
+  SLOW_ENEMY: { name: '緩速強度', suffix: '%', category: OFFENSE, limit: 100 }
+  WEAKEN_ENEMY: { name: '弱化強度', suffix: '%', category: OFFENSE, limit: 100 }
+  BLUNT_POWER: { name: '鈍擊威力', suffix: '', category: OFFENSE, limit: 100000 }
+  BLUNT_RATING: { name: '鈍擊評級', suffix: '', category: OFFENSE, limit: 20000 }
+  ELEMENTAL_DAMAGE: { name: '元素傷害', suffix: '', category: OFFENSE, limit: 100000 }
+  ELEMENTAL_DAMAGE_PERCENT: { name: '元素傷害', suffix: '%', category: OFFENSE, limit: 500 }
+  ELEMENTAL_MAIN_ATTACK_DAMAGE: { name: '元素主攻擊傷害', suffix: '', category: OFFENSE, limit: 100000 }
+  ELEMENTAL_MAIN_ATTACK_DAMAGE_PERCENT: { name: '元素主攻擊傷害', suffix: '%', category: OFFENSE, limit: 500 }
+  ELEMENTAL_SPELL_DAMAGE: { name: '元素法術傷害', suffix: '', category: OFFENSE, limit: 100000 }
+  ELEMENTAL_SPELL_DAMAGE_PERCENT: { name: '元素法術傷害', suffix: '%', category: OFFENSE, limit: 500 }
+
+  # ── 防禦 ──
+  DEFENSE: { name: '防禦', suffix: '', category: DEFENSE, limit: 100000 }
+  ARMOR: { name: '護甲', suffix: '', category: DEFENSE, limit: 100000 }
+  ARMOR_TOUGHNESS: { name: '護甲韌性', suffix: '', category: DEFENSE, limit: 100000 }
+  MAGIC_RESISTANCE: { name: '魔法抗性', suffix: '', category: DEFENSE, limit: 100000 }
+  ELEMENTAL_RESISTANCE: { name: '元素抗性', suffix: '', category: DEFENSE, limit: 100000 }
+  ELEMENTAL_RESISTANCE_PERCENT: { name: '元素抗性', suffix: '%', category: DEFENSE, limit: 500 }
+  DAMAGE_REDUCTION: { name: '傷害減免', suffix: '%', category: DEFENSE, limit: 90 }
+  PHYSICAL_DAMAGE_REDUCTION: { name: '物理減傷', suffix: '%', category: DEFENSE, limit: 90 }
+  MAGIC_DAMAGE_REDUCTION: { name: '魔法減傷', suffix: '%', category: DEFENSE, limit: 90 }
+  PROJECTILE_DAMAGE_REDUCTION: { name: '投射物減傷', suffix: '%', category: DEFENSE, limit: 90 }
+  PVE_DAMAGE_REDUCTION: { name: 'PvE 減傷', suffix: '%', category: DEFENSE, limit: 90 }
+  PVP_DAMAGE_REDUCTION: { name: 'PvP 減傷', suffix: '%', category: DEFENSE, limit: 90 }
+  KNOCKBACK_RESISTANCE: { name: '擊退抗性', suffix: '%', category: DEFENSE, limit: 100 }
+  BLOCK_POWER: { name: '格擋強度', suffix: '%', category: DEFENSE, limit: 100 }
+  BLOCK_RATING: { name: '格擋評級', suffix: '', category: DEFENSE, limit: 20000 }
+  DODGE_RATING: { name: '閃避評級', suffix: '', category: DEFENSE, limit: 20000 }
+  PARRY_RATING: { name: '招架評級', suffix: '', category: DEFENSE, limit: 20000 }
+  THORNS: { name: '荊棘反傷', suffix: '%', category: DEFENSE, limit: 100 }
+  REFLECTION: { name: '投射反射', suffix: '%', category: DEFENSE, limit: 100 }
+
+  # ── 資源 ──
+  HEALING_EFFICIENCY: { name: '治療效率', suffix: '%', category: RESOURCE, limit: 500 }
+  MAX_HEALTH: { name: '生命上限', suffix: '', category: RESOURCE, limit: 100000 }
+  MAX_HEALTH_PERCENT: { name: '生命上限', suffix: '%', category: RESOURCE, limit: 500 }
+  HEALTH_REGENERATION: { name: '生命回復', suffix: '/5秒', category: RESOURCE, limit: 100000 }
+  HEALTH_REGENERATION_PERCENT: { name: '生命回復', suffix: '%', category: RESOURCE, limit: 500 }
+  MAX_MANA: { name: '魔力上限', suffix: '', category: RESOURCE, limit: 100000 }
+  MAX_STAMINA: { name: '耐力上限', suffix: '', category: RESOURCE, limit: 100000 }
+  MANA_REGENERATION: { name: '魔力回復', suffix: '/5秒', category: RESOURCE, limit: 100000 }
+  STAMINA_REGENERATION: { name: '耐力回復', suffix: '/5秒', category: RESOURCE, limit: 100000 }
+  LIFE_STEAL: { name: '生命竊取', suffix: '/3秒', category: RESOURCE, limit: 100000 }
+  MANA_STEAL: { name: '魔力竊取', suffix: '/3秒', category: RESOURCE, limit: 100000 }
+  SPELL_VAMPIRISM: { name: '法術吸血', suffix: '%', category: RESOURCE, limit: 100 }
+  MANA_COST: { name: '魔力消耗', suffix: '', category: RESOURCE, limit: 1000 }
+  STAMINA_COST: { name: '耐力消耗', suffix: '', category: RESOURCE, limit: 1000 }
+  COOLDOWN: { name: '技能冷卻', suffix: ' 秒', category: RESOURCE, limit: 1000 }
+  COOLDOWN_REDUCTION: { name: '冷卻縮減', suffix: '%', category: RESOURCE, limit: 90 }
+
+  # ── 機動 ──
+  MOVEMENT_SPEED: { name: '移動速度', suffix: '%', category: MOBILITY, limit: 500 }
+  SPRINT: { name: '衝刺耐力', suffix: '%', category: MOBILITY, limit: 500 }
+  SPRINT_REGEN: { name: '衝刺回復', suffix: '%', category: MOBILITY, limit: 500 }
+  JUMP_HEIGHT: { name: '跳躍高度', suffix: '', category: MOBILITY, limit: 16 }
+
+  # ── 屬性 ──
+  RESILIENCE: { name: '韌性', suffix: '', category: PRIMARY, limit: 100000 }
+  STRENGTH: { name: '力量', suffix: '', category: PRIMARY, limit: 200 }
+  DEXTERITY: { name: '靈巧', suffix: '', category: PRIMARY, limit: 200 }
+  INTELLIGENCE: { name: '智力', suffix: '', category: PRIMARY, limit: 200 }
+  DEFENCE: { name: '護甲能力', suffix: '', category: PRIMARY, limit: 200 }
+  AGILITY: { name: '敏捷', suffix: '', category: PRIMARY, limit: 200 }
+  WISDOM: { name: '靈性', suffix: '', category: PRIMARY, limit: 200 }
+  VITALITY: { name: '體魄', suffix: '', category: PRIMARY, limit: 200 }
+  REQUIRED_LEVEL: { name: '需求等級', suffix: '', category: PRIMARY, limit: 1000 }
+
+  # ── 增益 ──
+  XP_BONUS: { name: '戰鬥經驗', suffix: '%', category: ECONOMY, limit: 500 }
+  LOOT_BONUS: { name: '戰利品數量', suffix: '%', category: ECONOMY, limit: 500 }
+  LOOT_QUALITY: { name: '戰利品品質', suffix: '%', category: ECONOMY, limit: 500 }
+  STEALING: { name: '掠奪機率', suffix: '%', category: ECONOMY, limit: 100 }
+  GATHER_XP_BONUS: { name: '採集經驗', suffix: '%', category: ECONOMY, limit: 500 }
+  GATHER_SPEED: { name: '採集速度', suffix: '%', category: ECONOMY, limit: 500 }
+
+# ── Lore 呈現 ────────────────────────────────────────────────
+lore:
+
+  # 這些屬性不進 Lore 的屬性列表。
+  # 需求等級已經在「需求」區塊逐項標示 ✔／✖ 了，在屬性欄再列一次
+  # 只是多佔一行，還會讓玩家以為那是一條可以疊的加成。
+  hidden:
+    - REQUIRED_LEVEL
+
+  # ── 攻速文字分級 ───────────────────────────────────────────
+  #
+  #  武器摘要裡「攻擊速度：快速」的那個詞。門檻由高到低比對，
+  #  第一個滿足的就是答案。載入時會自動重新排序，所以寫的順序不影響結果。
+  #
+  #  想多加一級（例如「極速」）直接補一行即可，不必改程式。
+  #  整段刪掉或寫壞時沿用程式內建的四級。
+  #
+  attack-speed-tiers:
+    - { at-least: 1.8,  name: '快速' }
+    - { at-least: 1.35, name: '普通' }
+    - { at-least: 0.85, name: '慢速' }
+    - { at-least: -999, name: '沉重' }   # 兜底級：門檻要低到一定選得上
+
+  # ── 代號 → 顯示名稱 ────────────────────────────────────────
+  #
+  #  這兩張表先前是寫死在 Java 裡的 switch，每新增一種能力或職業
+  #  都得重新編譯部署。查不到的代號會原樣顯示（例如 SHOCK），
+  #  這是刻意的 —— 看得見才知道漏了哪一筆。
+  #
+  displays:
+
+    # 附加能力（詞綴／寶石觸發的效果）
+    ability:
+      BURN: '灼燒'
+      FROST: '冰霜緩速'
+      SHOCK: '雷擊'
+      BLEED: '流血'
+      HEAL: '治癒'
+
+    # 職業。職業本身是 RPGCore 的資料（classes.yml），
+    # 這裡只決定「在物品需求上怎麼寫給玩家看」。
+    class:
+      VANGUARD: '戰士 / 守護騎士'
+      WARRIOR: '戰士 / 守護騎士'
+      RANGER: '弓箭手 / 神射手'
+      ARCHER: '弓箭手 / 神射手'
+      HUNTER: '弓箭手 / 神射手'
+      SHADOWBLADE: '刺客 / 決鬥者'
+      ASSASSIN: '刺客 / 決鬥者'
+      ROGUE: '刺客 / 決鬥者'
+      ARCANIST: '法師 / 秘術師'
+      MAGE: '法師 / 秘術師'
+      WIZARD: '法師 / 秘術師'
+      WARDEN: '薩滿 / 圖騰先知'
+      SHAMAN: '薩滿 / 圖騰先知'
+      KNIGHT: '騎士'
+
+  # ── 版面文字 ───────────────────────────────────────────────
+  #
+  #  提示框裡每一行給玩家看的字都可以在這裡改，改完 /mi reload 即生效，
+  #  不必重新編譯。整段是「覆寫層」：只寫你想改的鍵，
+  #  沒寫的自動沿用程式內建的預設值（也就是下面註解掉的那些）。
+  #
+  #  ⚠ 不要把值寫成空字串來隱藏某一行 —— 空值會被當成「沒寫」而回退到預設。
+  #
+  #  佔位符是具名的，可以自由調換語序：
+  #      '&7等級：&f{level}'  改成  '&f{level} &7級'  都可以。
+  #  打錯的佔位符會原樣顯示在畫面上（例如 {levle}），這是故意的：
+  #  看得見才查得到，靜靜變成空字串只會留下難追的怪 bug。
+  #
+  #  pages 是各分頁的標題；text 是其餘所有行。
+  #
+  # pages:
+  #   overview: '物品總覽'
+  #   offense: '攻擊與元素'
+  #   attributes: '屬性與功能'
+  #   survival: '生存與資源'
+  #   abilities: '能力、鑲嵌與限制'
+  #   story: '物品故事'
+  #
+  # text:
+  #   page-header: '{tier} &8｜ &f{type}'
+  #   page-title: '&f{title}'
+  #   page-hint: ' 翻頁'
+  #   level-line: '&7等級：&f{level}    &7品鑑：&f{quality}%'
+  #   upgrade-line: '&7強化等級：&e+{upgrade}'
+  #   trade-quote-line: '&7商店估價：&f購買 {buy} / 售出 {sell} {currency}'
+  #   score-line: '&e裝備評分：&f{score} &8[&f{grade}&8]'
+  #   score-breakdown-title: '&6評分構成'
+  #   score-breakdown-combat: '&7傷害：&f{offense}    &7生存：&f{defense}'
+  #   score-breakdown-support: '&7資源：&f{resource}    &7輔助：&f{utility}'
+  #   requirement-class: '職業'
+  #   requirement-level: '戰鬥等級'
+  #   requirement-quest: '任務'
+  #   class-any: '不限職業'
+  #   class-separator: ' / '
+  #   weapon-dps: '&f{dps} &7每秒傷害'
+  #   weapon-attack-speed: '&7攻擊速度：&f{label} &8(&f每秒 {rate} 次&8)'
+  #   weapon-damage-range: '&6傷害範圍：&f{range}'
+  #   equipment-health: '&f+{value} &7生命'
+  #   equipment-defense: '&f+{value} &7防禦'
+  #   equipment-resistance: '&f+{value} &7抗性'
+  #   empty-offense: '&8此物品沒有攻擊屬性。'
+  #   empty-survival: '&8此物品沒有生存或資源屬性。'
+  #   empty-story: '&8尚未有人記錄這件物品的來歷。'
+  #   empty-affixes: '&8沒有額外詞綴。'
+  #   affix-list: '&d附加能力：&f{affixes}'
+  #   affix-separator: '、'
+  #   affix-major: '&c核心詞條：&f{affix}'
+  #   major-identification: '&c核心特性：&f{name}'
+  #   major-identification-line: '&7{line}'
+  #   ability-name: '&e特殊能力：&f{name}'
+  #   ability-chance: '&7觸發機率：&f{chance}%'
+  #   ability-power: '&7能力強度：&f{power}'
+  #   set-name: '&b所屬套裝：&f{set}'
+  #   deconstruct-yes: '&a可拆解：&f是'
+  #   deconstruct-no: '&8可拆解：否'
+  #   gem-slots: '&3寶石孔：&f{used}&7 / &f{total}'
+  #   gem-empty: '&8尚未鑲嵌寶石。'
+  #   gem-unsupported: '&8這件物品沒有寶石孔。'
+  #   gem-entry: '&b◆ {gem}'
+  #   rune-slots: '&6符文孔：&f{used}&7 / &f{total}'
+  #   rune-empty: '&8尚未裝配符文。'
+  #   rune-entry: '&6◆ {rune}'
+  #   soulbound: '&c靈魂綁定：&f{owner}'
+  #   tradeable: '&a交易狀態：&f可交易'
+  #   catalogue-line: '&8典藏編號：{type}.{id}'
+
+# ── 別名：舊代號自動對應到正式代號 ───────────────────────────
+aliases:
+  LIGHTNING_DAMAGE: THUNDER_DAMAGE
+  HOLY_DAMAGE: LIGHTNESS_DAMAGE
+  SHADOW_DAMAGE: DARKNESS_DAMAGE
+  AIR_DAMAGE: WIND_DAMAGE
+  WALK_SPEED: MOVEMENT_SPEED
+  MELEE_DAMAGE: MAIN_ATTACK_DAMAGE_PERCENT
+  RAW_MELEE_DAMAGE: MAIN_ATTACK_DAMAGE
+  RAW_MAIN_ATTACK_DAMAGE: MAIN_ATTACK_DAMAGE
+  RAW_SPELL_DAMAGE: SPELL_DAMAGE
+  HEALTH: MAX_HEALTH
+  HEALTH_REGEN: HEALTH_REGENERATION
+  MANA_REGEN: MANA_REGENERATION
+  LIFESTEAL: LIFE_STEAL
+  CRITICAL_DAMAGE_BONUS: CRITICAL_STRIKE_POWER
+  MAIN_ATTACK_RANGE: RANGE
+
+# ── 中繼鍵：這些不是屬性，是物品的結構性欄位 ─────────────────
+metadata-keys:
+  - NAME
+  - MATERIAL
+  - DISPLAY
+  - DISPLAYED_TYPE
+  - LORE
+  - STORY
+  - TIER
+  - TOOLTIP
+  - TOOLTIP_PAGES
+  - ABILITY
+  - CRAFTING
+  - UPGRADE
+  - ENCHANTS
+  - PERM_EFFECTS
+  - DISABLE_ENCHANTING
+  - DISABLE_REPAIRING
+  - HIDE_ENCHANTS
+  - GEM_SOCKETS
+  - ITEM_PARTICLES
+  - CUSTOM_MODEL_DATA
+  - CUSTOM_MODEL_DATA_FLOAT
+  - ITEM_MODEL
+  - SKULL_TEXTURE
+  - MAX_DURABILITY
+  - UNBREAKABLE
+  - SET
+  - ITEM_SET
+  - REQUIRED_CLASS
+  - REQUIRED_CLASSES
+  - REQUIREMENTS
+  - CLASS
+  - COMMANDS
+  - NBTTAGS
+  - CUSTOM_NBT
+  - UPGRADE_TEMPLATE
+  - RUNE_SLOTS
+  - BROWSER_DISPLAY_IDX
+  - MAJOR_IDENTIFICATION
+  - MAJOR_ID

@@ -1,0 +1,20 @@
+TEMPERED_ECHO_STONE:
+  base:
+    material: ECHO_SHARD
+    name: '&6淬鍊回響石'
+    displayed-type: '&6強化石'
+    tier: EPIC
+    browser-display-idx: 10
+    lore:
+    - '&7保存穩定鍛造回響的高階強化素材。'
+    - '&8用於提升裝備時可降低能量逸散。'
+COMMON_UPGRADE_STONE:
+  base:
+    material: AMETHYST_SHARD
+    name: '&f凡品強化石'
+    displayed-type: '&6強化石'
+    tier: COMMON
+    browser-display-idx: 1
+    lore:
+    - '&7供初階裝備強化使用的穩定媒介。'
+    - '&8放入皇家強化台可提高本次成功率。'

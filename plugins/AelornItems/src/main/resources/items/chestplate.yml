@@ -1,0 +1,108 @@
+STARTER_TRAINING_CHESTPLATE:
+  base:
+    material: LEATHER_CHESTPLATE
+    name: '&7新人測試胸甲'
+    displayed-type: '&f胸甲'
+    tier: STARTER
+    set: STARTER_TRAINING_SET
+    browser-display-idx: 1
+    gem-sockets: 0
+    rune-slots: 0
+    unbreakable: true
+    lore:
+      - '&7新人測試防具套裝之一。'
+    armor: { base: 3.0, scale: 0.16 }
+    defense: { base: 1.0, scale: 0.08 }
+    max-health: { base: 4.0, scale: 0.25 }
+    required-level: 1
+
+MOSSWARD_CHESTPLATE:
+  base:
+    material: IRON_CHESTPLATE
+    name: '&a苔衛胸甲'
+    displayed-type: '&f胸甲'
+    tier: COMMON
+    set: IMMORTAL_VANGUARD
+    required-class: Vanguard
+    browser-display-idx: 10
+    gem-sockets: 2
+    lore:
+      - '&7多層甲片能分散正面衝擊。'
+    armor: { base: 12.0, scale: 0.7 }
+    defense: { base: 8.0, scale: 0.45 }
+    max-health: { base: 28.0, scale: 1.6 }
+    required-level: 7
+
+EMBERLOOM_ROBE:
+  base:
+    material: LEATHER_CHESTPLATE
+    name: '&c焰紋法織長袍'
+    displayed-type: '&f長袍'
+    tier: EPIC
+    set: STARFORGE_ARCANIST
+    required-class: Arcanist
+    browser-display-idx: 20
+    gem-sockets: 2
+    lore:
+      - '&7以導熱絲線織成，讓法力流動更平順。'
+    armor: { base: 5.0, scale: 0.30 }
+    magic-damage: { base: 8.0, scale: 0.55 }
+    fire-damage: { base: 4.0, scale: 0.26 }
+    max-mana: { base: 20.0, scale: 1.5 }
+    intelligence: { base: 5.0, scale: 0.26 }
+    required-level: 16
+
+LEAFGLIDE_TUNIC:
+  base:
+    material: LEATHER_CHESTPLATE
+    name: '&a掠葉獵裝'
+    displayed-type: '&f獵裝'
+    tier: RARE
+    set: GALE_RANGER
+    required-class: Ranger
+    browser-display-idx: 30
+    gem-sockets: 2
+    lore:
+      - '&7輕量護具讓射手能在樹線間快速換位。'
+    armor: { base: 6.0, scale: 0.34 }
+    dodge-rating: { base: 5.0, scale: 0.28 }
+    dexterity: { base: 4.0, scale: 0.22 }
+    movement-speed: { base: 0.010, scale: 0.00010 }
+    required-level: 13
+
+MOONSHADE_JACKET:
+  base:
+    material: LEATHER_CHESTPLATE
+    name: '&5月蝕短襖'
+    displayed-type: '&f皮襖'
+    tier: EPIC
+    set: NIGHTSHADE_DUELIST
+    required-class: Shadowblade
+    browser-display-idx: 40
+    gem-sockets: 2
+    lore:
+      - '&7貼身剪裁讓轉身與拔刃更俐落。'
+    armor: { base: 6.0, scale: 0.32 }
+    critical-strike-rating: { base: 32.0, scale: 2.8 }
+    darkness-damage: { base: 3.0, scale: 0.22 }
+    life-steal: { base: 1.0, scale: 0.05 }
+    required-level: 17
+
+RESONANT_VESTMENT:
+  base:
+    material: CHAINMAIL_CHESTPLATE
+    name: '&3共鳴祭袍'
+    displayed-type: '&f祭袍'
+    tier: EPIC
+    set: TOTEMIC_WARDEN
+    required-class: Warden
+    browser-display-idx: 50
+    gem-sockets: 2
+    lore:
+      - '&7內襯能放大領域回響，穩住隊伍節奏。'
+    armor: { base: 7.0, scale: 0.34 }
+    magic-resistance: { base: 7.0, scale: 0.36 }
+    water-damage: { base: 3.0, scale: 0.20 }
+    wisdom: { base: 5.0, scale: 0.24 }
+    max-health: { base: 16.0, scale: 1.1 }
+    required-level: 17

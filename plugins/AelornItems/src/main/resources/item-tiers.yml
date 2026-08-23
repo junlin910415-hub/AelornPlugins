@@ -1,0 +1,219 @@
+﻿# 正式階級順序：凡品 > 優良 > 稀有 > 史詩 > 傳說 > 浩瀚 > 神話
+# STARTER 只供新人裝備與開發測試使用，不會被隨機生成，也不能分解。
+STARTER:
+  name: '&7新人測試'
+  tooltip: STARTER
+  stat-multiplier: 1.00
+  quality:
+    min: 50
+    max: 50
+  max-affixes: 0
+  chance: 0.0
+
+COMMON:
+  name: '&f凡品'
+  tooltip: COMMON
+  stat-multiplier: 1.00
+  quality:
+    min: 45
+    max: 78
+  max-affixes: 2
+  # 詞綴額度:實際條數由額度決定,max-affixes 僅作硬上限。
+  affix-capacity:
+    base: 1.2
+    spread: 0.35
+    max-spread: 0.8
+  chance: 0.40
+  deconstruct-item:
+    success:
+      coef: 1
+      items:
+        MATERIAL:
+          COMMON_FRAGMENT: 100,1-2,0
+    lose:
+      coef: 1
+      items:
+        MATERIAL:
+          WEAPON_POWDER: 100,1-1,0
+
+UNCOMMON:
+  name: '&a優良'
+  tooltip: UNCOMMON
+  stat-multiplier: 1.05
+  quality:
+    min: 52
+    max: 82
+  max-affixes: 3
+  # 詞綴額度:實際條數由額度決定,max-affixes 僅作硬上限。
+  affix-capacity:
+    base: 2
+    spread: 0.45
+    max-spread: 1
+  chance: 0.26
+
+RARE:
+  name: '&9稀有'
+  tooltip: RARE
+  stat-multiplier: 1.10
+  quality:
+    min: 58
+    max: 86
+  max-affixes: 4
+  # 詞綴額度:實際條數由額度決定,max-affixes 僅作硬上限。
+  affix-capacity:
+    base: 2.6
+    spread: 0.5
+    max-spread: 1.1
+  chance: 0.17
+  deconstruct-item:
+    success:
+      coef: 1
+      items:
+        MATERIAL:
+          RARE_WEAPON_ESSENCE: 100,1-1,0
+          WEAPON_POWDER: 70,1-3,0
+    lose:
+      coef: 1
+      items:
+        MATERIAL:
+          WEAPON_POWDER: 100,1-2,0
+
+EPIC:
+  name: '&5史詩'
+  tooltip: EPIC
+  stat-multiplier: 1.20
+  quality:
+    min: 68
+    max: 93
+  max-affixes: 5
+  # 詞綴額度:實際條數由額度決定,max-affixes 僅作硬上限。
+  affix-capacity:
+    base: 3.4
+    spread: 0.55
+    max-spread: 1.2
+  chance: 0.09
+  deconstruct-item:
+    success:
+      coef: 1
+      items:
+        MATERIAL:
+          VERY_RARE_WEAPON_ESSENCE: 100,1-1,0
+          RARE_WEAPON_ESSENCE: 35,1-1,0
+    lose:
+      coef: 1
+      items:
+        MATERIAL:
+          WEAPON_POWDER: 100,2-3,0
+
+LEGENDARY:
+  name: '&6傳說'
+  tooltip: LEGENDARY
+  stat-multiplier: 1.33
+  quality:
+    min: 78
+    max: 98
+  max-affixes: 6
+  # 詞綴額度:實際條數由額度決定,max-affixes 僅作硬上限。
+  affix-capacity:
+    base: 4.4
+    spread: 0.6
+    max-spread: 1.3
+  chance: 0.045
+  deconstruct-item:
+    success:
+      coef: 1
+      items:
+        MATERIAL:
+          LEGENDARY_WEAPON_ESSENCE: 100,1-1,0
+          VERY_RARE_WEAPON_ESSENCE: 30,1-1,0
+    lose:
+      coef: 1
+      items:
+        MATERIAL:
+          WEAPON_POWDER: 100,3-4,0
+
+VAST:
+  name: '&b浩瀚'
+  tooltip: VAST
+  stat-multiplier: 1.48
+  quality:
+    min: 88
+    max: 100
+  max-affixes: 7
+  # 詞綴額度:實際條數由額度決定,max-affixes 僅作硬上限。
+  affix-capacity:
+    base: 5.4
+    spread: 0.65
+    max-spread: 1.4
+  chance: 0.025
+  deconstruct-item:
+    success:
+      coef: 1
+      items:
+        MATERIAL:
+          MYTHIC_WEAPON_ESSENCE: 100,1-1,0
+          LEGENDARY_WEAPON_ESSENCE: 40,1-1,0
+    lose:
+      coef: 1
+      items:
+        MATERIAL:
+          WEAPON_POWDER: 100,4-6,0
+
+MYTHIC:
+  name: '&c神話'
+  tooltip: MYTHIC
+  stat-multiplier: 1.62
+  quality:
+    min: 92
+    max: 100
+  max-affixes: 8
+  # 詞綴額度:實際條數由額度決定,max-affixes 僅作硬上限。
+  affix-capacity:
+    base: 6.4
+    spread: 0.7
+    max-spread: 1.5
+  chance: 0.01
+
+# ═══════════════════════════════════════════════════════════════
+#  別名：使用者輸入的各種寫法 → 上面的正式代號
+# ═══════════════════════════════════════════════════════════════
+#
+#  指令與設定檔裡的階級可以寫英文同義字或中文名，
+#  這張表負責把它們收斂成正式代號。查不到的字串會原樣大寫後使用，
+#  因此正式代號本身不必也不需要登記在這裡。
+#
+#  新增一個階級時，把它的中文名與慣用英文寫法補進來，
+#  /mi 指令就吃得到 —— 這在以前得改 Java 重新編譯。
+#
+# 沒指定階級時採用哪一級。
+# 注意:這裡不能用空字串當 aliases 的鍵 —— Bukkit 的 YamlConfiguration 遇到
+# 空鍵會丟 IllegalArgumentException 並讓「整份檔案」載入失敗,
+# 症狀是所有階級一起消失,而錯誤訊息完全看不出兇手是誰。
+default-tier: COMMON
+
+# 採「專名」的階級：這些階級的物品名稱是兩字專名（斷罪、歸墟…），
+# 詞綴不會接到名字前面 —— 專名靠簡短取得份量，前面掛「銳鋒」會把效果抵銷，
+# 中文密度又高，接完常常超出快捷欄與提示框標題的寬度。
+# 詞綴本身仍照常生效（數值有加、Lore 也照列），只是不寫進名字。
+proper-name-tiers:
+  - MYTHIC
+  - VAST
+
+aliases:
+  NOVICE: STARTER
+  TEST: STARTER
+  新人測試: STARTER
+  測試: STARTER
+  優秀: UNCOMMON
+  優良: UNCOMMON
+  NORMAL: COMMON
+  凡品: COMMON
+  普通: COMMON
+  稀有: RARE
+  VERY_RARE: EPIC
+  史詩: EPIC
+  傳說: LEGENDARY
+  FABLED: VAST
+  浩瀚: VAST
+  MYTHICAL: MYTHIC
+  神話: MYTHIC

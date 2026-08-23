@@ -1,0 +1,408 @@
+# MMOItems 1.6.0 繁體中文物品種類表。
+# browser-category 僅使用 WEAPONS、EQUIPMENT、OTHER 三個主分類。
+
+SWORD:
+  display: IRON_SWORD
+  name: '&f劍'
+  browser-category: WEAPONS
+  browser-display-idx: 10
+  attack-damage-types: [WEAPON, PHYSICAL]
+LONG_SWORD:
+  display: DIAMOND_SWORD
+  name: '&f長劍'
+  browser-category: WEAPONS
+  browser-display-idx: 20
+  attack-damage-types: [WEAPON, PHYSICAL]
+THRUSTING_SWORD:
+  display: GOLDEN_SWORD
+  name: '&f刺劍'
+  browser-category: WEAPONS
+  browser-display-idx: 30
+  attack-damage-types: [WEAPON, PHYSICAL]
+KATANA:
+  display: NETHERITE_SWORD
+  name: '&f刀'
+  browser-category: WEAPONS
+  browser-display-idx: 40
+  attack-damage-types: [WEAPON, PHYSICAL]
+DAGGER:
+  display: SHEARS
+  name: '&f匕首'
+  browser-category: WEAPONS
+  browser-display-idx: 50
+  attack-damage-types: [WEAPON, PHYSICAL]
+SPEAR:
+  display: TRIDENT
+  name: '&f長矛'
+  browser-category: WEAPONS
+  browser-display-idx: 60
+  attack-damage-types: [WEAPON, PHYSICAL]
+LANCE:
+  display: TRIDENT
+  name: '&f騎槍'
+  browser-category: WEAPONS
+  browser-display-idx: 70
+  attack-damage-types: [WEAPON, PHYSICAL]
+HALBERD:
+  display: NETHERITE_AXE
+  name: '&f長戟'
+  browser-category: WEAPONS
+  browser-display-idx: 80
+  attack-damage-types: [WEAPON, PHYSICAL]
+AXE:
+  display: IRON_AXE
+  name: '&f戰斧'
+  browser-category: WEAPONS
+  browser-display-idx: 90
+  attack-damage-types: [WEAPON, PHYSICAL]
+GREATAXE:
+  display: NETHERITE_AXE
+  name: '&f巨斧'
+  browser-category: WEAPONS
+  browser-display-idx: 100
+  attack-damage-types: [WEAPON, PHYSICAL]
+GREATSWORD:
+  display: NETHERITE_SWORD
+  name: '&f大劍'
+  browser-category: WEAPONS
+  browser-display-idx: 110
+  attack-damage-types: [WEAPON, PHYSICAL]
+HAMMER:
+  display: MACE
+  name: '&f戰鎚'
+  browser-category: WEAPONS
+  browser-display-idx: 120
+  attack-damage-types: [WEAPON, PHYSICAL]
+GREATHAMMER:
+  display: MACE
+  name: '&f巨鎚'
+  browser-category: WEAPONS
+  browser-display-idx: 130
+  attack-damage-types: [WEAPON, PHYSICAL]
+GAUNTLET:
+  display: IRON_HORSE_ARMOR
+  name: '&f拳套'
+  browser-category: WEAPONS
+  browser-display-idx: 140
+  attack-damage-types: [WEAPON, PHYSICAL]
+WHIP:
+  display: LEAD
+  name: '&f長鞭'
+  browser-category: WEAPONS
+  browser-display-idx: 150
+  attack-damage-types: [WEAPON, PHYSICAL]
+STAFF:
+  display: BLAZE_ROD
+  name: '&b法杖'
+  browser-category: WEAPONS
+  browser-display-idx: 160
+  attack-damage-types: [WEAPON, MAGIC]
+GREATSTAFF:
+  display: END_ROD
+  name: '&b長柄法杖'
+  browser-category: WEAPONS
+  browser-display-idx: 170
+  attack-damage-types: [WEAPON, MAGIC]
+STAVE:
+  display: BLAZE_ROD
+  name: '&b符杖'
+  browser-category: WEAPONS
+  browser-display-idx: 175
+  attack-damage-types: [WEAPON, MAGIC]
+WAND:
+  display: STICK
+  name: '&b魔杖'
+  browser-category: WEAPONS
+  browser-display-idx: 180
+  attack-damage-types: [WEAPON, MAGIC]
+TOME:
+  display: ENCHANTED_BOOK
+  name: '&b魔導書'
+  browser-category: WEAPONS
+  browser-display-idx: 190
+  attack-damage-types: [MAGIC]
+BOW:
+  display: BOW
+  name: '&f弓'
+  browser-category: WEAPONS
+  browser-display-idx: 200
+  attack-damage-types: [WEAPON, PROJECTILE]
+GREATBOW:
+  display: BOW
+  name: '&f長弓'
+  browser-category: WEAPONS
+  browser-display-idx: 210
+  attack-damage-types: [WEAPON, PROJECTILE]
+CROSSBOW:
+  display: CROSSBOW
+  name: '&f弩'
+  browser-category: WEAPONS
+  browser-display-idx: 220
+  attack-damage-types: [WEAPON, PROJECTILE]
+MUSKET:
+  display: SPYGLASS
+  name: '&f火槍'
+  browser-category: WEAPONS
+  browser-display-idx: 230
+  attack-damage-types: [WEAPON, PROJECTILE]
+LUTE:
+  display: GOAT_HORN
+  name: '&e樂器'
+  browser-category: WEAPONS
+  browser-display-idx: 240
+  attack-damage-types: [WEAPON, MAGIC]
+CATALYST:
+  display: AMETHYST_CLUSTER
+  name: '&3法器'
+  browser-category: WEAPONS
+  browser-display-idx: 250
+  attack-damage-types: [WEAPON, MAGIC]
+MAIN_CATALYST:
+  display: AMETHYST_SHARD
+  name: '&3主手法器'
+  browser-category: WEAPONS
+  browser-display-idx: 260
+  attack-damage-types: [WEAPON, MAGIC]
+OFF_CATALYST:
+  display: ECHO_SHARD
+  name: '&3副手法器'
+  browser-category: WEAPONS
+  browser-display-idx: 270
+  attack-damage-types: [MAGIC]
+
+ARMOR:
+  display: IRON_CHESTPLATE
+  name: '&f護甲'
+  browser-category: EQUIPMENT
+  browser-display-idx: 10
+  attack-damage-types: []
+HELMET:
+  display: IRON_HELMET
+  name: '&f頭盔'
+  browser-category: EQUIPMENT
+  browser-display-idx: 20
+  attack-damage-types: []
+CHESTPLATE:
+  display: IRON_CHESTPLATE
+  name: '&f胸甲'
+  browser-category: EQUIPMENT
+  browser-display-idx: 30
+  attack-damage-types: []
+LEGGINGS:
+  display: IRON_LEGGINGS
+  name: '&f護腿'
+  browser-category: EQUIPMENT
+  browser-display-idx: 40
+  attack-damage-types: []
+BOOTS:
+  display: IRON_BOOTS
+  name: '&f靴子'
+  browser-category: EQUIPMENT
+  browser-display-idx: 50
+  attack-damage-types: []
+SHIELD:
+  display: SHIELD
+  name: '&f盾牌'
+  browser-category: EQUIPMENT
+  browser-display-idx: 60
+  attack-damage-types: []
+GLOVES:
+  display: LEATHER_HORSE_ARMOR
+  name: '&f手套'
+  browser-category: EQUIPMENT
+  browser-display-idx: 70
+  attack-damage-types: []
+RING:
+  display: GOLD_NUGGET
+  name: '&e戒指'
+  browser-category: EQUIPMENT
+  browser-display-idx: 80
+  attack-damage-types: []
+AMULET:
+  display: EMERALD
+  name: '&e項鍊'
+  browser-category: EQUIPMENT
+  browser-display-idx: 85
+  attack-damage-types: []
+BRACELET:
+  display: CHAIN
+  name: '&e手環'
+  browser-category: EQUIPMENT
+  browser-display-idx: 90
+  attack-damage-types: []
+TALISMAN:
+  display: TOTEM_OF_UNDYING
+  name: '&e護符'
+  browser-category: EQUIPMENT
+  browser-display-idx: 100
+  attack-damage-types: []
+ACCESSORY:
+  display: DIAMOND
+  name: '&e飾品'
+  browser-category: EQUIPMENT
+  browser-display-idx: 110
+  attack-damage-types: []
+ORNAMENT:
+  display: GOLD_NUGGET
+  name: '&e裝飾品'
+  browser-category: EQUIPMENT
+  browser-display-idx: 120
+  attack-damage-types: []
+ARTIFACT:
+  display: NETHER_STAR
+  name: '&d遺物'
+  browser-category: EQUIPMENT
+  browser-display-idx: 130
+  attack-damage-types: []
+
+MATERIAL:
+  display: AMETHYST_SHARD
+  name: '&f素材'
+  browser-category: OTHER
+  browser-display-idx: 10
+  attack-damage-types: []
+FOOD:
+  display: COOKED_BEEF
+  name: '&a食物'
+  browser-category: OTHER
+  browser-display-idx: 20
+  attack-damage-types: []
+CONSUMABLE:
+  display: HONEY_BOTTLE
+  name: '&a消耗品'
+  browser-category: OTHER
+  browser-display-idx: 30
+  attack-damage-types: []
+POTION:
+  display: POTION
+  name: '&d藥水'
+  browser-category: OTHER
+  browser-display-idx: 40
+  attack-damage-types: []
+GEM_STONE:
+  display: EMERALD
+  name: '&b寶石'
+  browser-category: OTHER
+  browser-display-idx: 50
+  attack-damage-types: []
+SKIN:
+  display: NAME_TAG
+  name: '&d外觀'
+  browser-category: OTHER
+  browser-display-idx: 55
+  attack-damage-types: []
+UPGRADE_STONE:
+  display: ECHO_SHARD
+  name: '&6強化石'
+  browser-category: OTHER
+  browser-display-idx: 60
+  attack-damage-types: []
+RUNE:
+  display: PRISMARINE_CRYSTALS
+  name: '&6符文'
+  browser-category: OTHER
+  browser-display-idx: 70
+  attack-damage-types: []
+TOOL:
+  display: IRON_PICKAXE
+  name: '&7工具'
+  browser-category: OTHER
+  browser-display-idx: 80
+  attack-damage-types: []
+BLOCK:
+  display: STONE
+  name: '&7方塊'
+  browser-category: OTHER
+  browser-display-idx: 90
+  attack-damage-types: []
+QUEST:
+  display: BOOK
+  name: '&d任務物品'
+  browser-category: OTHER
+  browser-display-idx: 100
+  attack-damage-types: []
+MISCELLANEOUS:
+  display: BUNDLE
+  name: '&7雜項'
+  browser-category: OTHER
+  browser-display-idx: 110
+  attack-damage-types: []
+
+# ═══════════════════════════════════════════════════════════════
+#  圖鑑分類
+# ═══════════════════════════════════════════════════════════════
+#
+#  /mi browse 首頁的分類頁籤。原本寫死在 Java 裡，新增一種武器類型
+#  或把某個類型換一個分類都得重新編譯，現在改這裡就好。
+#
+#  ⚠ 順序有意義：比對是由上到下、第一個命中就採用。
+#    近戰寫在遠程前面，GREATSWORD 才會先命中 SWORD 關鍵字歸入近戰。
+#    把遠程搬到最前面，所有含 BOW/STAFF 的類型就會改歸遠程。
+#
+#  欄位：
+#    id          分類代號，可被 item-types 的 category 欄位指名
+#    display     顯示名稱（含 & 色碼）
+#    icon        頁籤圖示的 Minecraft 材質；打錯只會退回 PAPER，不會讓分類消失
+#    description 頁籤上的說明文字
+#    types       精確比對的物品類型（完全相等才算）
+#    keywords    模糊比對的關鍵字（類型名「包含」它就算）
+#
+#  整段刪掉或全部寫壞時，沿用程式內建的五大分類。
+#
+
+browser-categories:
+
+  - id: MELEE
+    display: '&c近戰武器'
+    icon: DIAMOND_SWORD
+    description: '劍、大劍、斧、匕首、長矛'
+    types: [SWORD, GREATSWORD, LONG_SWORD, THRUSTING_SWORD, KATANA, DAGGER,
+            SPEAR, LANCE, HALBERD, AXE, GREATAXE, HAMMER, GREAT_HAMMER,
+            GREATHAMMER, GAUNTLET, WHIP]
+    keywords: [SWORD, DAGGER, SPEAR, AXE, HAMMER, LANCE, GAUNTLET, WHIP]
+
+  - id: RANGED
+    display: '&d遠程・法器'
+    icon: BOW
+    description: '弓、弩、法杖、聖器'
+    types: [BOW, GREATBOW, CROSSBOW, MUSKET, STAFF, GREATSTAFF, WAND, TOME,
+            LUTE, CATALYST, MAIN_CATALYST, OFF_CATALYST]
+    keywords: [BOW, STAFF, WAND, TOME, CATALYST, MUSKET, LUTE]
+
+  - id: ARMOR
+    display: '&b防具'
+    icon: IRON_CHESTPLATE
+    description: '頭盔、胸甲、護腿、靴子、盾牌'
+    types: [ARMOR, HELMET, CHESTPLATE, LEGGINGS, BOOTS, SHIELD, GLOVES]
+    keywords: [ARMOR, HELMET, CHEST, LEGGING, BOOT, SHIELD, GLOVE]
+
+  # 飾品從「強化・寶石」獨立出來：戒指護符是穿戴裝備，
+  # 放在強化材料頁會讓玩家去翻錯的分頁。
+  - id: TRINKET
+    display: '&e飾品'
+    icon: GOLD_INGOT
+    description: '戒指、護符、手鐲與其他配飾'
+    types: [RING, AMULET, BRACELET, TALISMAN, ORNAMENT, ACCESSORY, ARTIFACT]
+    keywords: [RING, AMULET, BRACELET, TALISMAN, ORNAMENT, ACCESSORY, ARTIFACT]
+
+  - id: ENHANCE
+    display: '&6強化・寶石'
+    icon: AMETHYST_SHARD
+    description: '寶石、符文與強化石'
+    types: [GEM_STONE, UPGRADE_STONE, RUNE]
+    keywords: [GEM, UPGRADE, RUNE]
+
+  - id: SUPPLY
+    display: '&a素材・消耗品'
+    icon: BUNDLE
+    description: '素材、食物、藥水與工具'
+    types: [MATERIAL, FOOD, CONSUMABLE, POTION, TOOL, BLOCK, SKIN,
+            MISCELLANEOUS]
+    keywords: [MATERIAL, FOOD, CONSUMABLE, POTION, TOOL, BLOCK, SKIN, MISC, COIN]
+
+  - id: QUEST
+    display: '&f任務物品'
+    icon: WRITTEN_BOOK
+    description: '任務道具與劇情物件'
+    types: [QUEST, QUEST_ITEM, KEY]
+    keywords: [QUEST, KEY]

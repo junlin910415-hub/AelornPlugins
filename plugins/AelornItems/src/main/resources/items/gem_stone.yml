@@ -1,0 +1,11 @@
+AZURE_FOCUS_GEM:
+  base:
+    material: DIAMOND
+    name: '&b蒼藍聚能寶石'
+    displayed-type: '&b寶石'
+    tier: RARE
+    browser-display-idx: 10
+    lore:
+      - '&7可嵌入裝備，穩定魔力流動。'
+    max-mana: { base: 8.0, scale: 0.3 }
+    mana-regeneration: { base: 1.0, scale: 0.05 }

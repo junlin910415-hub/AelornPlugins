@@ -1,0 +1,72 @@
+# 戒指（RING）— 前 30 級
+#
+# 設計原則：
+# 1. 飾品共有四格（戒指×2、手鐲、項鍊），單件數值必須保守，
+#    否則四格疊加會直接壓過武器與防具的權重。
+#    每件的定位是「小幅補強一個面向」，不是主力輸出來源。
+# 2. 不給 attack-damage / armor 這類主屬性，避免與武器防具搶位置；
+#    改給 rating、百分比與資源類，讓飾品成為「調整取向」而非「堆數值」。
+# 3. 兩個戒指欄可放同一件，因此不設套裝，避免雙倍套裝加成。
+
+APPRENTICE_COPPER_BAND:
+  base:
+    material: COPPER_INGOT
+    name: '&7學徒銅環'
+    displayed-type: '&f戒指'
+    tier: COMMON
+    browser-display-idx: 100
+    gem-sockets: 0
+    rune-slots: 0
+    lore:
+      - '&7初階冒險者的第一枚戒指。'
+      - '&8銅料樸素，卻足以承載微弱的法紋。'
+    max-mana: { base: 8.0, scale: 0.6 }
+    mana-regeneration: { base: 0.8, scale: 0.04 }
+    required-level: 4
+
+HUNTERS_KEEN_RING:
+  base:
+    material: GOLD_NUGGET
+    name: '&f獵手銳目環'
+    displayed-type: '&f戒指'
+    tier: UNCOMMON
+    browser-display-idx: 101
+    gem-sockets: 0
+    rune-slots: 0
+    lore:
+      - '&7獵人以獸骨磨製的環，據說能穩定持弓的手。'
+    critical-strike-rating: { base: 18.0, scale: 1.1 }
+    dexterity: { base: 2.0, scale: 0.12 }
+    required-level: 11
+
+STONEHEART_SIGNET:
+  base:
+    material: BRICK
+    name: '&9磐心印戒'
+    displayed-type: '&f戒指'
+    tier: RARE
+    browser-display-idx: 102
+    gem-sockets: 1
+    rune-slots: 0
+    lore:
+      - '&7以山根礦脈的碎石鑲成，戴上時能感到沉穩的重量。'
+      - '&8適合站在隊伍最前方的人。'
+    max-health: { base: 22.0, scale: 1.2 }
+    defense: { base: 6.0, scale: 0.30 }
+    knockback-resistance: { base: 2.0, scale: 0.05 }
+    required-level: 19
+
+EMBERTHREAD_LOOP:
+  base:
+    material: BLAZE_POWDER
+    name: '&9燼線環'
+    displayed-type: '&f戒指'
+    tier: RARE
+    browser-display-idx: 103
+    gem-sockets: 1
+    rune-slots: 0
+    lore:
+      - '&7環身纏著一縷不熄的餘燼，靠近時掌心會微微發熱。'
+    fire-damage: { base: 5.0, scale: 0.34 }
+    spell-damage-percent: { base: 3.0, scale: 0.10 }
+    required-level: 26

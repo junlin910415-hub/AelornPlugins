@@ -1,0 +1,103 @@
+STARTER_TRAINING_BOOTS:
+  base:
+    material: LEATHER_BOOTS
+    name: '&7新人測試短靴'
+    displayed-type: '&f靴子'
+    tier: STARTER
+    set: STARTER_TRAINING_SET
+    browser-display-idx: 1
+    gem-sockets: 0
+    rune-slots: 0
+    unbreakable: true
+    lore:
+      - '&7新人測試防具套裝之一。'
+    armor: { base: 1.0, scale: 0.08 }
+    movement-speed: { base: 0.005, scale: 0.00005 }
+    required-level: 1
+
+SHADOWSTEP_BOOTS:
+  base:
+    material: LEATHER_BOOTS
+    name: '&5影步短靴'
+    displayed-type: '&f靴子'
+    tier: EPIC
+    set: NIGHTSHADE_DUELIST
+    required-class: Shadowblade
+    browser-display-idx: 10
+    gem-sockets: 2
+    lore:
+      - '&7柔韌鞋底能降低高速轉向時的失衡。'
+    armor: { base: 5.0, scale: 0.3 }
+    movement-speed: { base: 0.03, scale: 0.0003 }
+    dodge-rating: { base: 8.0, scale: 0.35 }
+    required-level: 16
+
+BASTION_TREADS:
+  base:
+    material: IRON_BOOTS
+    name: '&6堡誓戰靴'
+    displayed-type: '&f戰靴'
+    tier: COMMON
+    set: IMMORTAL_VANGUARD
+    required-class: Vanguard
+    browser-display-idx: 20
+    gem-sockets: 1
+    lore:
+      - '&7提供穩固步伐，讓重裝衝鋒更不易偏移。'
+    armor: { base: 6.0, scale: 0.36 }
+    block-rating: { base: 3.0, scale: 0.16 }
+    movement-speed: { base: 0.008, scale: 0.00008 }
+    required-level: 8
+
+HAWKRUN_BOOTS:
+  base:
+    material: LEATHER_BOOTS
+    name: '&a鷹躍短靴'
+    displayed-type: '&f短靴'
+    tier: RARE
+    set: GALE_RANGER
+    required-class: Ranger
+    browser-display-idx: 30
+    gem-sockets: 1
+    lore:
+      - '&7讓持弓者在換位與追擊間保持輕快腳步。'
+    armor: { base: 4.0, scale: 0.24 }
+    movement-speed: { base: 0.020, scale: 0.00020 }
+    dexterity: { base: 3.0, scale: 0.18 }
+    required-level: 12
+
+COMETSTEP_SLIPPERS:
+  base:
+    material: LEATHER_BOOTS
+    name: '&d彗痕法履'
+    displayed-type: '&f法履'
+    tier: RARE
+    set: STARFORGE_ARCANIST
+    required-class: Arcanist
+    browser-display-idx: 40
+    gem-sockets: 1
+    lore:
+      - '&7施法位移時會留下短暫的星火殘光。'
+    armor: { base: 3.0, scale: 0.18 }
+    movement-speed: { base: 0.012, scale: 0.00012 }
+    max-mana: { base: 10.0, scale: 0.70 }
+    cooldown-reduction: { base: 2.0, scale: 0.08 }
+    required-level: 12
+
+RUNESTRIDE_SANDALS:
+  base:
+    material: LEATHER_BOOTS
+    name: '&3符行祭履'
+    displayed-type: '&f祭履'
+    tier: RARE
+    set: TOTEMIC_WARDEN
+    required-class: Warden
+    browser-display-idx: 50
+    gem-sockets: 1
+    lore:
+      - '&7行走時能保持地面靈脈與施術者的同步。'
+    armor: { base: 4.0, scale: 0.22 }
+    movement-speed: { base: 0.010, scale: 0.00010 }
+    mana-regeneration: { base: 1.2, scale: 0.06 }
+    wisdom: { base: 3.0, scale: 0.16 }
+    required-level: 12

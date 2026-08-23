@@ -1,0 +1,133 @@
+# ─────────────────────────────────────────────────────────────
+# 艾洛恩 — 物品提示樣式(Wynncraft 風格)
+#
+# 與舊版的差別:
+#   分隔線  整排刪除線 &m------ → 中央帶菱形的細線 ◇──────◇
+#           整排刪除線在長 lore 上很吵,菱形細線是 Wynncraft 的視覺語彙
+#   標頭    「稀有度 - 類型」→ 全大寫徽章「RARE HELMET」
+#
+# 佔位符:{tier} 稀有度顯示名、{type} 物品類型
+#
+# top    第一頁開頭
+# middle 區塊之間
+# bottom 每頁結尾(翻頁指示之前)
+# ─────────────────────────────────────────────────────────────
+
+STARTER:
+  top: '&8◇──────────────◇'
+  middle: '&8◇──────────────◇'
+  bottom: '&8◇──────────────◇'
+  lore_header:
+    - '&8{tier} &8{type}'
+
+COMMON:
+  top: '&f◇──────────────◇'
+  middle: '&f◇──────────────◇'
+  bottom: '&f◇──────────────◇'
+  lore_header:
+    - '&f{tier} &f{type}'
+
+UNCOMMON:
+  top: '&a◇──────────────◇'
+  middle: '&a◇──────────────◇'
+  bottom: '&a◇──────────────◇'
+  lore_header:
+    - '&a{tier} &a{type}'
+
+RARE:
+  top: '&9◇──────────────◇'
+  middle: '&9◇──────────────◇'
+  bottom: '&9◇──────────────◇'
+  lore_header:
+    - '&9{tier} &9{type}'
+
+EPIC:
+  top: '&5◇──────────────◇'
+  middle: '&5◇──────────────◇'
+  bottom: '&5◇──────────────◇'
+  lore_header:
+    - '&5{tier} &5{type}'
+
+LEGENDARY:
+  top: '&6◇──────────────◇'
+  middle: '&6◇──────────────◇'
+  bottom: '&6◇──────────────◇'
+  lore_header:
+    - '&6{tier} &6{type}'
+
+VAST:
+  top: '&b◇──────────────◇'
+  middle: '&b◇──────────────◇'
+  bottom: '&b◇──────────────◇'
+  lore_header:
+    - '&b{tier} &b{type}'
+
+MYTHIC:
+  top: '&d◇──────────────◇'
+  middle: '&d◇──────────────◇'
+  bottom: '&d◇──────────────◇'
+  lore_header:
+    - '&d{tier} &d{type}'
+
+RAWSTONE:
+  top: '&7◇──────────────◇'
+  middle: '&7◇──────────────◇'
+  bottom: '&7◇──────────────◇'
+  lore_header:
+    - '&7{tier} &7{type}'
+
+TEMPERED:
+  top: '&e◇──────────────◇'
+  middle: '&e◇──────────────◇'
+  bottom: '&e◇──────────────◇'
+  lore_header:
+    - '&e{tier} &e{type}'
+
+REFINED:
+  top: '&3◇──────────────◇'
+  middle: '&3◇──────────────◇'
+  bottom: '&3◇──────────────◇'
+  lore_header:
+    - '&3{tier} &3{type}'
+
+ASCENDANT:
+  top: '&c◇──────────────◇'
+  middle: '&c◇──────────────◇'
+  bottom: '&c◇──────────────◇'
+  lore_header:
+    - '&c{tier} &c{type}'
+
+RADIANT:
+  top: '&e◇──────────────◇'
+  middle: '&e◇──────────────◇'
+  bottom: '&e◇──────────────◇'
+  lore_header:
+    - '&e{tier} &e{type}'
+
+CELESTIAL_FORGED:
+  top: '&b◇──────────────◇'
+  middle: '&b◇──────────────◇'
+  bottom: '&b◇──────────────◇'
+  lore_header:
+    - '&b{tier} &b{type}'
+
+HOLY_SIGIL:
+  top: '&f◇──────────────◇'
+  middle: '&f◇──────────────◇'
+  bottom: '&f◇──────────────◇'
+  lore_header:
+    - '&f{tier} &f{type}'
+
+DIVINE_AWAKENING:
+  top: '&6◇──────────────◇'
+  middle: '&6◇──────────────◇'
+  bottom: '&6◇──────────────◇'
+  lore_header:
+    - '&6{tier} &6{type}'
+
+ETERNITY:
+  top: '&5◇──────────────◇'
+  middle: '&5◇──────────────◇'
+  bottom: '&5◇──────────────◇'
+  lore_header:
+    - '&5{tier} &5{type}'

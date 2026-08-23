@@ -1,0 +1,1207 @@
+profile:
+  welcome-summary: true
+
+integration:
+  rpgcore:
+    # 每次啟用或 /mythiccore reload 時唯讀同步 RPGCore 的最新職業與技能資料。
+    enabled: true
+    data-folder: RPGCore
+    import-classes: true
+    import-abilities: true
+    # 快取角色檔並監聽施法事件，職業與等級限制會使用目前角色資料。
+    player-profile-sync: true
+    prefer-mythiccore-stage-names: true
+    # RPGCore 原始係數以執行器為基準；匯入 API 時先縮放，避免與裝備傷害重複放大。
+    ability-coefficient-scale: 0.55
+
+combat:
+  enabled: true
+  actionbar-indicators: true
+  minimum-damage: 0.5
+  ability-cooldown-ms: 450
+  formula:
+    defense-k: 105.0
+    resistance-k: 95.0
+    damage-weight: 2.55
+    defense-cap: 0.82
+    resistance-cap: 0.76
+    magic-defense-weight: 2.15
+    element-defense-weight: 2.35
+    magic-resistance-cap: 0.78
+    element-resistance-cap: 0.74
+    dodge-cap: 35.0
+    parry-cap: 45.0
+    block-cap: 55.0
+    default-critical-power: 170.0
+    vanilla-damage-weight: 0.32
+    weapon-bonus: 1.04
+    magic-bonus: 0.95
+    element-bonus: 0.86
+    combo-scalar-cap: 2.45
+
+safety:
+  max-item-level: 1000
+  max-stat-value: 100000.0
+  max-percent-value: 500.0
+  max-rating-value: 20000.0
+  max-final-damage: 150000.0
+  max-internal-ability-damage: 30000.0
+  max-heal: 30000.0
+
+skill-balance:
+  # 單次完整技能的總傷害上限，而不是每一段的上限。
+  max-total-damage: 30000.0
+
+stats:
+  known:
+    - ATTACK_DAMAGE
+    - WEAPON_DAMAGE
+    - MAGIC_DAMAGE
+    - SKILL_DAMAGE
+    - ABILITY_DAMAGE
+    - ATTACK_SPEED
+    - CRITICAL_STRIKE_CHANCE
+    - CRITICAL_STRIKE_RATING
+    - CRITICAL_STRIKE_POWER
+    - SKILL_CRITICAL_STRIKE_CHANCE
+    - SKILL_CRITICAL_STRIKE_POWER
+    - DEFENSE
+    - ARMOR
+    - ARMOR_TOUGHNESS
+    - ARMOR_PENETRATION
+    - ARMOR_PENETRATION_PERCENT
+    - MAGIC_RESISTANCE
+    - ELEMENTAL_RESISTANCE
+    - ELEMENTAL_PENETRATION
+    - ELEMENTAL_PENETRATION_PERCENT
+    - RESILIENCE
+    - MAX_HEALTH
+    - HEALTH_REGENERATION
+    - MOVEMENT_SPEED
+    - MANA
+    - MAX_MANA
+    - MAX_STAMINA
+    - MANA_REGENERATION
+    - STAMINA_REGENERATION
+    - MANA_COST
+    - STAMINA_COST
+    - COOLDOWN_REDUCTION
+    - DODGE_RATING
+    - PARRY_RATING
+    - BLOCK_RATING
+    - BLOCK_POWER
+    - DAMAGE_REDUCTION
+    - PROJECTILE_DAMAGE
+    - PHYSICAL_DAMAGE
+    - KNOCKBACK
+    - KNOCKBACK_RESISTANCE
+    - BLUNT_POWER
+    - BLUNT_RATING
+    - LIFE_STEAL
+    - REQUIRED_LEVEL
+    - STRENGTH
+    - DEXTERITY
+    - INTELLIGENCE
+    - WISDOM
+    - VITALITY
+    - ALL_DAMAGE
+    - PVE_DAMAGE
+    - PVP_DAMAGE
+    - FIRE_DAMAGE
+    - ICE_DAMAGE
+    - THUNDER_DAMAGE
+    - LIGHTNING_DAMAGE
+    - WIND_DAMAGE
+    - EARTH_DAMAGE
+    - WATER_DAMAGE
+    - DARKNESS_DAMAGE
+    - SHADOW_DAMAGE
+    - LIGHTNESS_DAMAGE
+    - HOLY_DAMAGE
+    - ARCANE_DAMAGE
+    - NATURE_DAMAGE
+    - FIRE_RESISTANCE
+    - ICE_RESISTANCE
+    - THUNDER_RESISTANCE
+    - WIND_RESISTANCE
+    - EARTH_RESISTANCE
+    - WATER_RESISTANCE
+    - DARKNESS_RESISTANCE
+    - LIGHTNESS_RESISTANCE
+    - ARCANE_RESISTANCE
+    - NATURE_RESISTANCE
+    - VENDOR_VALUE
+    - BUY_PRICE
+    - SELL_PRICE
+
+  base:
+    CRITICAL_STRIKE_POWER: 170.0
+    SKILL_CRITICAL_STRIKE_POWER: 170.0
+    BLOCK_POWER: 25.0
+
+  clamps:
+    CRITICAL_STRIKE_CHANCE: '0 = 72'
+    CRITICAL_STRIKE_RATING: '0 = 20000'
+    CRITICAL_STRIKE_POWER: '100 = 360'
+    SKILL_CRITICAL_STRIKE_CHANCE: '0 = 72'
+    SKILL_CRITICAL_STRIKE_POWER: '100 = 360'
+    DEFENSE: '0 = 10000'
+    ARMOR: '0 = 10000'
+    ARMOR_TOUGHNESS: '0 = 10000'
+    MAGIC_RESISTANCE: '0 = 10000'
+    ELEMENTAL_RESISTANCE: '0 = 10000'
+    RESILIENCE: '0 = 10000'
+    DODGE_RATING: '0 = 35'
+    PARRY_RATING: '0 = 45'
+    BLOCK_RATING: '0 = 55'
+    BLOCK_POWER: '10 = 80'
+    DAMAGE_REDUCTION: '0 = 80'
+    COOLDOWN_REDUCTION: '0 = 55'
+    LIFE_STEAL: '0 = 22'
+    MOVEMENT_SPEED: '0 = 0.30'
+
+balance:
+  elements:
+    default-soft-cap: 120.0
+    types:
+      PHYSICAL:
+        display-name: 物理
+        damage-stats: [PHYSICAL_DAMAGE]
+        resistance-stats: [DEFENSE, ARMOR]
+        damage-multiplier: 0.72
+        soft-cap: 160.0
+        skill-multiplier: 1.00
+      FIRE:
+        display-name: 火焰
+        damage-stats: [FIRE_DAMAGE]
+        resistance-stats: [FIRE_RESISTANCE, ELEMENTAL_RESISTANCE]
+        damage-multiplier: 0.88
+        soft-cap: 95.0
+        skill-multiplier: 1.04
+      ICE:
+        display-name: 冰霜
+        damage-stats: [ICE_DAMAGE]
+        resistance-stats: [ICE_RESISTANCE, ELEMENTAL_RESISTANCE]
+        damage-multiplier: 0.82
+        soft-cap: 90.0
+        skill-multiplier: 0.96
+      THUNDER:
+        display-name: 雷霆
+        damage-stats: [THUNDER_DAMAGE, LIGHTNING_DAMAGE]
+        resistance-stats: [THUNDER_RESISTANCE, LIGHTNING_RESISTANCE, ELEMENTAL_RESISTANCE]
+        damage-multiplier: 0.92
+        soft-cap: 90.0
+        skill-multiplier: 1.08
+      WIND:
+        display-name: 疾風
+        damage-stats: [WIND_DAMAGE]
+        resistance-stats: [WIND_RESISTANCE, ELEMENTAL_RESISTANCE]
+        damage-multiplier: 0.78
+        soft-cap: 88.0
+        skill-multiplier: 0.98
+      EARTH:
+        display-name: 大地
+        damage-stats: [EARTH_DAMAGE]
+        resistance-stats: [EARTH_RESISTANCE, ELEMENTAL_RESISTANCE]
+        damage-multiplier: 0.86
+        soft-cap: 105.0
+        skill-multiplier: 1.02
+      WATER:
+        display-name: 流水
+        damage-stats: [WATER_DAMAGE]
+        resistance-stats: [WATER_RESISTANCE, ELEMENTAL_RESISTANCE]
+        damage-multiplier: 0.78
+        soft-cap: 90.0
+        skill-multiplier: 0.94
+      DARKNESS:
+        display-name: 暗影
+        damage-stats: [DARKNESS_DAMAGE, SHADOW_DAMAGE]
+        resistance-stats: [DARKNESS_RESISTANCE, SHADOW_RESISTANCE, ELEMENTAL_RESISTANCE]
+        damage-multiplier: 0.88
+        soft-cap: 92.0
+        skill-multiplier: 1.05
+      LIGHTNESS:
+        display-name: 聖光
+        damage-stats: [LIGHTNESS_DAMAGE, HOLY_DAMAGE]
+        resistance-stats: [LIGHTNESS_RESISTANCE, HOLY_RESISTANCE, ELEMENTAL_RESISTANCE]
+        damage-multiplier: 0.86
+        soft-cap: 92.0
+        skill-multiplier: 1.02
+      ARCANE:
+        display-name: 奧術
+        damage-stats: [ARCANE_DAMAGE]
+        resistance-stats: [ARCANE_RESISTANCE, MAGIC_RESISTANCE]
+        damage-multiplier: 0.84
+        soft-cap: 100.0
+        skill-multiplier: 1.06
+      NATURE:
+        display-name: 自然
+        damage-stats: [NATURE_DAMAGE]
+        resistance-stats: [NATURE_RESISTANCE, ELEMENTAL_RESISTANCE]
+        damage-multiplier: 0.80
+        soft-cap: 94.0
+        skill-multiplier: 0.98
+
+  items:
+    default-stat-soft-cap: 82.0
+    level-soft-cap-growth: 1.75
+    type-scalar:
+      SWORD: 1.00
+      SPEAR: 1.04
+      GREATSWORD: 1.15
+      AXE: 1.08
+      DAGGER: 0.86
+      BOW: 0.96
+      STAFF: 0.92
+      CATALYST: 0.88
+      HELMET: 0.70
+      CHESTPLATE: 0.84
+      LEGGINGS: 0.78
+      BOOTS: 0.68
+      GEM_STONE: 0.42
+      UPGRADE_STONE: 0.30
+    stat-soft-caps:
+      ATTACK_DAMAGE: 72.0
+      WEAPON_DAMAGE: 64.0
+      MAGIC_DAMAGE: 76.0
+      SKILL_DAMAGE: 58.0
+      ABILITY_DAMAGE: 54.0
+      PHYSICAL_DAMAGE: 58.0
+      PROJECTILE_DAMAGE: 50.0
+      FIRE_DAMAGE: 42.0
+      ICE_DAMAGE: 42.0
+      THUNDER_DAMAGE: 42.0
+      WIND_DAMAGE: 40.0
+      EARTH_DAMAGE: 46.0
+      WATER_DAMAGE: 40.0
+      DARKNESS_DAMAGE: 44.0
+      LIGHTNESS_DAMAGE: 44.0
+      ARCANE_DAMAGE: 48.0
+      NATURE_DAMAGE: 42.0
+      CRITICAL_STRIKE_CHANCE: 24.0
+      CRITICAL_STRIKE_RATING: 950.0
+      CRITICAL_STRIKE_POWER: 72.0
+      SKILL_CRITICAL_STRIKE_CHANCE: 22.0
+      SKILL_CRITICAL_STRIKE_POWER: 64.0
+      DEFENSE: 88.0
+      ARMOR: 95.0
+      MAGIC_RESISTANCE: 74.0
+      ELEMENTAL_RESISTANCE: 70.0
+      MAX_HEALTH: 130.0
+      MAX_MANA: 105.0
+      LIFE_STEAL: 7.0
+      COOLDOWN_REDUCTION: 16.0
+    class-scalar:
+      VANGUARD:
+        OFFENSE: 0.98
+        CRITICAL: 0.86
+        DEFENSE: 1.14
+        SUSTAIN: 1.12
+        RESOURCE: 0.92
+        MOBILITY: 0.86
+        ELEMENTAL: 0.88
+      ARCANIST:
+        OFFENSE: 0.84
+        MAGIC: 1.15
+        CRITICAL: 0.96
+        DEFENSE: 0.82
+        SUSTAIN: 0.88
+        RESOURCE: 1.16
+        MOBILITY: 0.98
+        ELEMENTAL: 1.12
+      RANGER:
+        OFFENSE: 1.02
+        MAGIC: 0.78
+        CRITICAL: 1.10
+        DEFENSE: 0.88
+        SUSTAIN: 0.90
+        RESOURCE: 0.94
+        MOBILITY: 1.10
+        ELEMENTAL: 0.96
+      SHADOWBLADE:
+        OFFENSE: 1.04
+        MAGIC: 0.76
+        CRITICAL: 1.14
+        DEFENSE: 0.84
+        SUSTAIN: 0.96
+        RESOURCE: 0.90
+        MOBILITY: 1.08
+        ELEMENTAL: 0.98
+      WARDEN:
+        OFFENSE: 0.88
+        MAGIC: 1.04
+        CRITICAL: 0.82
+        DEFENSE: 0.96
+        SUSTAIN: 1.02
+        RESOURCE: 1.10
+        MOBILITY: 0.88
+        ELEMENTAL: 1.06
+
+economy:
+  currency: 金幣
+  level-factor: 0.065
+  quality-factor: 0.012
+  score-factor: 0.45
+  sell-rate: 0.36
+  min-buy: 5.0
+  max-buy: 10000000.0
+  tiers:
+    STARTER: 0.0
+    COMMON: 22.0
+    RARE: 78.0
+    EPIC: 210.0
+    LEGENDARY: 620.0
+    VAST: 1600.0
+
+classes:
+  vanguard:
+    display-name: 戰士
+    second-job-name: 騎士
+    advanced-jobs:
+      - 聖盾騎士
+      - 龍血狂戰士
+      - 鋼誓統帥
+    weapon: 長劍 / 長矛 / 大劍
+    role: 前線承傷、控場、隊伍保護
+    base-stats:
+      health: 142.0
+      mana: 95.0
+      attack: 12.0
+      defense: 18.0
+      resistance: 11.0
+      speed: 0.10
+    scaling:
+      strength: 1.15
+      vitality: 1.05
+      wisdom: 0.35
+    ratings:
+      difficulty: 2
+      damage: 3
+      defense: 5
+      range: 1
+      mobility: 2
+      support: 3
+    stages:
+      warrior:
+        display-name: 戰士
+        minimum-level: 1
+        health-multiplier: 1.00
+        mana-multiplier: 1.00
+        attack-multiplier: 1.00
+        defense-multiplier: 1.00
+        resistance-multiplier: 1.00
+        speed-multiplier: 1.00
+        basic-attack-multiplier: 1.00
+        damage-taken-multiplier: 1.00
+        bonus-ability-points: 0
+      knight:
+        display-name: 王國騎士
+        minimum-level: 25
+        health-multiplier: 1.10
+        mana-multiplier: 1.06
+        attack-multiplier: 1.07
+        defense-multiplier: 1.11
+        resistance-multiplier: 1.07
+        speed-multiplier: 1.03
+        basic-attack-multiplier: 1.06
+        damage-taken-multiplier: 0.98
+        bonus-ability-points: 1
+      royal_guardian:
+        display-name: 皇家守護者
+        minimum-level: 55
+        health-multiplier: 1.20
+        mana-multiplier: 1.14
+        attack-multiplier: 1.15
+        defense-multiplier: 1.18
+        resistance-multiplier: 1.14
+        speed-multiplier: 1.07
+        basic-attack-multiplier: 1.12
+        damage-taken-multiplier: 0.94
+        bonus-ability-points: 2
+    archetypes:
+      bulwark:
+        display-name: 聖盾騎士
+        role: 防禦坦克
+        description: 以格擋、護盾與嘲諷維持隊伍生存。
+      onslaught:
+        display-name: 龍血狂戰士
+        role: 近戰輸出
+        description: 用怒氣與連斬累積壓力，但爆發受到冷卻限制。
+      commander:
+        display-name: 鋼誓統帥
+        role: 團隊增益
+        description: 用戰旗與戰吼提升隊伍穩定性。
+
+  arcanist:
+    display-name: 法師
+    second-job-name: 魔術師
+    advanced-jobs:
+      - 元素大魔導
+      - 星界魔術師
+      - 秘儀賢者
+    weapon: 法杖 / 魔導書 / 觸媒
+    role: 遠程魔法、元素控制、治療輔助
+    base-stats:
+      health: 100.0
+      mana: 134.0
+      attack: 8.0
+      defense: 6.0
+      resistance: 12.0
+      speed: 0.10
+    scaling:
+      intelligence: 1.20
+      wisdom: 0.95
+      vitality: 0.35
+    ratings:
+      difficulty: 3
+      damage: 4
+      defense: 2
+      range: 5
+      mobility: 3
+      support: 4
+    stages:
+      mage:
+        display-name: 法師
+        minimum-level: 1
+        health-multiplier: 1.00
+        mana-multiplier: 1.00
+        attack-multiplier: 1.00
+        defense-multiplier: 1.00
+        resistance-multiplier: 1.00
+        speed-multiplier: 1.00
+        basic-attack-multiplier: 1.00
+        damage-taken-multiplier: 1.00
+        bonus-ability-points: 0
+      magician:
+        display-name: 秘法魔術師
+        minimum-level: 25
+        health-multiplier: 1.05
+        mana-multiplier: 1.16
+        attack-multiplier: 1.06
+        defense-multiplier: 1.04
+        resistance-multiplier: 1.10
+        speed-multiplier: 1.03
+        basic-attack-multiplier: 1.04
+        damage-taken-multiplier: 1.00
+        bonus-ability-points: 1
+      archmage:
+        display-name: 大魔導師
+        minimum-level: 60
+        health-multiplier: 1.11
+        mana-multiplier: 1.28
+        attack-multiplier: 1.13
+        defense-multiplier: 1.08
+        resistance-multiplier: 1.17
+        speed-multiplier: 1.07
+        basic-attack-multiplier: 1.09
+        damage-taken-multiplier: 0.97
+        bonus-ability-points: 2
+    archetypes:
+      elemental:
+        display-name: 元素大魔導
+        role: 元素輸出
+        description: 以火、冰、雷交替施法，保持穩定範圍傷害。
+      chronomancy:
+        display-name: 星界魔術師
+        role: 冷卻與節奏
+        description: 調整施法節奏，降低隊伍技能空窗。
+      mystic:
+        display-name: 秘儀賢者
+        role: 護盾與治療
+        description: 用奧術護盾與回復維持團隊容錯。
+
+  ranger:
+    display-name: 弓箭手
+    second-job-name: 遊俠
+    advanced-jobs:
+      - 鷹眼神射手
+      - 疾風巡獵者
+      - 森境獵人
+    weapon: 長弓 / 短弓 / 弩
+    role: 遠程輸出、機動走位、陷阱控制
+    base-stats:
+      health: 104.0
+      mana: 108.0
+      attack: 15.0
+      defense: 8.0
+      resistance: 8.0
+      speed: 0.112
+    scaling:
+      dexterity: 1.18
+      strength: 0.62
+      wisdom: 0.42
+    ratings:
+      difficulty: 3
+      damage: 5
+      defense: 2
+      range: 5
+      mobility: 4
+      support: 2
+    stages:
+      archer:
+        display-name: 弓箭手
+        minimum-level: 1
+        health-multiplier: 1.00
+        mana-multiplier: 1.00
+        attack-multiplier: 1.00
+        defense-multiplier: 1.00
+        resistance-multiplier: 1.00
+        speed-multiplier: 1.00
+        basic-attack-multiplier: 1.00
+        damage-taken-multiplier: 1.00
+        bonus-ability-points: 0
+      ranger:
+        display-name: 王國遊俠
+        minimum-level: 22
+        health-multiplier: 1.05
+        mana-multiplier: 1.09
+        attack-multiplier: 1.10
+        defense-multiplier: 1.05
+        resistance-multiplier: 1.05
+        speed-multiplier: 1.08
+        basic-attack-multiplier: 1.09
+        damage-taken-multiplier: 0.98
+        bonus-ability-points: 1
+      sharpshooter:
+        display-name: 鷹眼神射手
+        minimum-level: 55
+        health-multiplier: 1.13
+        mana-multiplier: 1.18
+        attack-multiplier: 1.20
+        defense-multiplier: 1.10
+        resistance-multiplier: 1.11
+        speed-multiplier: 1.14
+        basic-attack-multiplier: 1.16
+        damage-taken-multiplier: 0.93
+        bonus-ability-points: 2
+    archetypes:
+      marksman:
+        display-name: 鷹眼神射手
+        role: 單體精準
+        description: 蓄力攻擊弱點，遠距離輸出穩定但需站位。
+      windrunner:
+        display-name: 疾風巡獵者
+        role: 機動輸出
+        description: 在移動中維持傷害，用疾風技能調整距離。
+      trapper:
+        display-name: 森境獵人
+        role: 陷阱控場
+        description: 以陷阱、標記與緩速控制戰場節奏。
+
+  shadowblade:
+    display-name: 刺客
+    second-job-name: 暗殺者
+    advanced-jobs:
+      - 夜刃決鬥者
+      - 毒影暗殺者
+      - 幻影行者
+    weapon: 匕首 / 短刀 / 雙刃
+    role: 近戰爆發、連擊、位移閃避
+    base-stats:
+      health: 110.0
+      mana: 104.0
+      attack: 15.0
+      defense: 11.0
+      resistance: 8.0
+      speed: 0.112
+    scaling:
+      dexterity: 1.12
+      strength: 0.82
+      intelligence: 0.42
+    ratings:
+      difficulty: 4
+      damage: 4
+      defense: 3
+      range: 1
+      mobility: 5
+      support: 1
+    stages:
+      rogue:
+        display-name: 刺客
+        minimum-level: 1
+        health-multiplier: 1.00
+        mana-multiplier: 1.00
+        attack-multiplier: 1.00
+        defense-multiplier: 1.00
+        resistance-multiplier: 1.00
+        speed-multiplier: 1.00
+        basic-attack-multiplier: 1.00
+        damage-taken-multiplier: 1.00
+        bonus-ability-points: 0
+      assassin:
+        display-name: 暗殺者
+        minimum-level: 24
+        health-multiplier: 1.02
+        mana-multiplier: 1.04
+        attack-multiplier: 1.11
+        defense-multiplier: 1.04
+        resistance-multiplier: 1.05
+        speed-multiplier: 1.10
+        basic-attack-multiplier: 1.12
+        damage-taken-multiplier: 1.00
+        bonus-ability-points: 1
+      night_executor:
+        display-name: 夜幕執行官
+        minimum-level: 58
+        health-multiplier: 1.09
+        mana-multiplier: 1.10
+        attack-multiplier: 1.21
+        defense-multiplier: 1.09
+        resistance-multiplier: 1.11
+        speed-multiplier: 1.16
+        basic-attack-multiplier: 1.19
+        damage-taken-multiplier: 0.97
+        bonus-ability-points: 2
+    archetypes:
+      duelist:
+        display-name: 夜刃決鬥者
+        role: 連擊單挑
+        description: 掌握短冷卻連段，對單體造成穩定壓力。
+      venom:
+        display-name: 毒影暗殺者
+        role: 持續削弱
+        description: 疊加毒素與破防效果，壓低敵人輸出。
+      mirage:
+        display-name: 幻影行者
+        role: 位移擾亂
+        description: 以殘影與短距離穿梭換取生存空間。
+
+  warden:
+    display-name: 薩滿
+    second-job-name: 祭司
+    advanced-jobs:
+      - 靈魂守衛
+      - 風暴祭司
+      - 圖騰先知
+    weapon: 圖騰 / 觸媒 / 法器
+    role: 圖騰支援、範圍控制、團隊回復
+    base-stats:
+      health: 96.0
+      mana: 124.0
+      attack: 12.0
+      defense: 6.0
+      resistance: 10.0
+      speed: 0.10
+    scaling:
+      wisdom: 1.18
+      intelligence: 0.82
+      vitality: 0.55
+    ratings:
+      difficulty: 4
+      damage: 3
+      defense: 2
+      range: 4
+      mobility: 2
+      support: 5
+    stages:
+      shaman:
+        display-name: 薩滿
+        minimum-level: 1
+        health-multiplier: 1.00
+        mana-multiplier: 1.00
+        attack-multiplier: 1.00
+        defense-multiplier: 1.00
+        resistance-multiplier: 1.00
+        speed-multiplier: 1.00
+        basic-attack-multiplier: 1.00
+        damage-taken-multiplier: 1.00
+        bonus-ability-points: 0
+      spirit_priest:
+        display-name: 靈魂祭司
+        minimum-level: 24
+        health-multiplier: 1.06
+        mana-multiplier: 1.12
+        attack-multiplier: 1.05
+        defense-multiplier: 1.05
+        resistance-multiplier: 1.13
+        speed-multiplier: 1.03
+        basic-attack-multiplier: 1.05
+        damage-taken-multiplier: 0.97
+        bonus-ability-points: 1
+      earth_oracle:
+        display-name: 大地先知
+        minimum-level: 60
+        health-multiplier: 1.14
+        mana-multiplier: 1.23
+        attack-multiplier: 1.11
+        defense-multiplier: 1.10
+        resistance-multiplier: 1.24
+        speed-multiplier: 1.06
+        basic-attack-multiplier: 1.09
+        damage-taken-multiplier: 0.92
+        bonus-ability-points: 2
+    archetypes:
+      guardian:
+        display-name: 靈魂守衛
+        role: 團隊防禦
+        description: 以守護圖騰減傷，穩住大型副本節奏。
+      tempest:
+        display-name: 風暴祭司
+        role: 範圍輸出
+        description: 召喚雷雨與疾風，造成可控的持續傷害。
+      resonance:
+        display-name: 圖騰先知
+        role: 回復共鳴
+        description: 用共鳴脈動治療隊友並強化資源循環。
+
+skills:
+  vanguard_guardian_charge:
+    class: vanguard
+    archetype: bulwark
+    display-name: 破陣盾衝
+    element: PHYSICAL
+    combo: [RIGHT, LEFT, RIGHT]
+    required-level: 1
+    mana: 16.0
+    cooldown-seconds: 4.0
+    effect: DASH_STRIKE
+    coefficient: 0.82
+    flat-power: 3.0
+    radius: 2.4
+    range: 6.0
+    max-hits: 3
+    description: 向前突進並短暫打斷小型敵人。
+  vanguard_oath_wall:
+    class: vanguard
+    archetype: bulwark
+    display-name: 誓約壁壘
+    element: LIGHTNESS
+    combo: [RIGHT, RIGHT, LEFT]
+    required-level: 8
+    mana: 28.0
+    cooldown-seconds: 12.0
+    effect: BULWARK
+    coefficient: 0.0
+    flat-power: 0.0
+    duration-ticks: 120
+    description: 短時間提高格擋與抗性。
+  vanguard_cleave:
+    class: vanguard
+    archetype: onslaught
+    display-name: 裂甲橫斬
+    element: PHYSICAL
+    combo: [RIGHT, RIGHT, RIGHT]
+    required-level: 12
+    mana: 22.0
+    cooldown-seconds: 5.5
+    effect: CLEAVE
+    coefficient: 0.96
+    flat-power: 4.0
+    radius: 3.2
+    max-hits: 4
+    description: 橫掃前方敵人，對護甲目標較有效。
+  vanguard_dragon_roar:
+    class: vanguard
+    archetype: onslaught
+    display-name: 龍血戰吼
+    element: FIRE
+    combo: [LEFT, RIGHT, RIGHT]
+    required-level: 24
+    mana: 32.0
+    cooldown-seconds: 10.0
+    effect: WAR_CRY
+    coefficient: 0.72
+    flat-power: 5.0
+    radius: 5.0
+    duration-ticks: 70
+    max-hits: 6
+    description: 震退敵人並附帶低量火焰壓制。
+  vanguard_banner:
+    class: vanguard
+    archetype: commander
+    display-name: 鋼誓戰旗
+    element: LIGHTNESS
+    combo: [LEFT, RIGHT, LEFT]
+    required-level: 18
+    mana: 30.0
+    cooldown-seconds: 14.0
+    effect: BANNER
+    coefficient: 0.0
+    flat-power: 0.0
+    radius: 6.0
+    duration-ticks: 160
+    description: 提供小幅防禦與魔力回復增益。
+  vanguard_ground_slam:
+    class: vanguard
+    archetype: commander
+    display-name: 裂地號令
+    element: EARTH
+    combo: [RIGHT, LEFT, LEFT]
+    required-level: 30
+    mana: 34.0
+    cooldown-seconds: 8.0
+    effect: GROUND_SLAM
+    coefficient: 1.02
+    flat-power: 5.0
+    radius: 4.2
+    max-hits: 5
+    description: 重擊地面並對近距離敵人造成緩速。
+
+  arcanist_fire_lance:
+    class: arcanist
+    archetype: elemental
+    display-name: 火晶長矛
+    element: FIRE
+    combo: [RIGHT, RIGHT, RIGHT]
+    required-level: 1
+    mana: 18.0
+    cooldown-seconds: 2.8
+    effect: ARCANE_BOLT
+    coefficient: 0.88
+    flat-power: 4.0
+    range: 18.0
+    max-hits: 1
+    description: 發射穩定火焰法術，單段傷害受軟上限控制。
+  arcanist_frost_ring:
+    class: arcanist
+    archetype: elemental
+    display-name: 霜環新星
+    element: ICE
+    combo: [RIGHT, RIGHT, LEFT]
+    required-level: 10
+    mana: 30.0
+    cooldown-seconds: 8.5
+    effect: FROST_NOVA
+    coefficient: 0.76
+    flat-power: 3.0
+    radius: 5.0
+    duration-ticks: 80
+    max-hits: 6
+    description: 凍結周圍空間，傷害較低但控制可靠。
+  arcanist_thunder_orbit:
+    class: arcanist
+    archetype: elemental
+    display-name: 雷軌連彈
+    element: THUNDER
+    combo: [LEFT, RIGHT, RIGHT]
+    required-level: 22
+    mana: 34.0
+    cooldown-seconds: 6.5
+    effect: CHAIN_LIGHTNING
+    coefficient: 0.64
+    flat-power: 3.0
+    range: 14.0
+    max-hits: 5
+    description: 對多個敵人彈跳，單段傷害低但總量穩定。
+  arcanist_time_step:
+    class: arcanist
+    archetype: chronomancy
+    display-name: 星界瞬步
+    element: ARCANE
+    combo: [RIGHT, LEFT, RIGHT]
+    required-level: 6
+    mana: 16.0
+    cooldown-seconds: 3.2
+    effect: BLINK
+    coefficient: 0.0
+    flat-power: 0.0
+    range: 8.0
+    description: 短距離位移到安全位置。
+  arcanist_mana_clock:
+    class: arcanist
+    archetype: chronomancy
+    display-name: 魔力鐘擺
+    element: ARCANE
+    combo: [LEFT, LEFT, RIGHT]
+    required-level: 26
+    mana: 26.0
+    cooldown-seconds: 13.0
+    effect: COOLDOWN_FIELD
+    coefficient: 0.0
+    flat-power: 0.0
+    radius: 5.0
+    duration-ticks: 120
+    description: 小幅改善範圍內施法節奏。
+  arcanist_life_echo:
+    class: arcanist
+    archetype: mystic
+    display-name: 生命回響
+    element: LIGHTNESS
+    combo: [RIGHT, LEFT, LEFT]
+    required-level: 14
+    mana: 32.0
+    cooldown-seconds: 9.0
+    effect: RESTORE
+    coefficient: 0.28
+    flat-power: 8.0
+    radius: 4.5
+    max-hits: 4
+    description: 治療自身與附近隊友，治療量受安全上限保護。
+
+  ranger_wind_backstep:
+    class: ranger
+    archetype: windrunner
+    display-name: 疾風退躍
+    element: WIND
+    combo: [RIGHT, LEFT, RIGHT]
+    required-level: 1
+    mana: 14.0
+    cooldown-seconds: 3.0
+    effect: BACKSTEP
+    coefficient: 0.0
+    flat-power: 0.0
+    description: 後躍拉開距離。
+  ranger_precision_arrow:
+    class: ranger
+    archetype: marksman
+    display-name: 鷹眼穿刺
+    element: PHYSICAL
+    combo: [RIGHT, RIGHT, RIGHT]
+    required-level: 6
+    mana: 20.0
+    cooldown-seconds: 4.0
+    effect: PIERCING_ARROW
+    coefficient: 0.92
+    flat-power: 4.0
+    range: 24.0
+    max-hits: 2
+    description: 穿透直線目標，適合處理狹窄戰線。
+  ranger_rapid_volley:
+    class: ranger
+    archetype: marksman
+    display-name: 連矢風暴
+    element: WIND
+    combo: [LEFT, RIGHT, RIGHT]
+    required-level: 16
+    mana: 26.0
+    cooldown-seconds: 6.0
+    effect: RAPID_VOLLEY
+    coefficient: 0.46
+    flat-power: 2.0
+    range: 22.0
+    max-hits: 5
+    description: 連續射擊五段，每段傷害低但命中穩定。
+  ranger_gale_mark:
+    class: ranger
+    archetype: windrunner
+    display-name: 逐風標記
+    element: WIND
+    combo: [LEFT, RIGHT, LEFT]
+    required-level: 22
+    mana: 24.0
+    cooldown-seconds: 8.0
+    effect: HUNT_MARK
+    coefficient: 0.34
+    flat-power: 3.0
+    range: 18.0
+    duration-ticks: 100
+    description: 標記目標，使後續遠程攻擊更穩定。
+  ranger_root_trap:
+    class: ranger
+    archetype: trapper
+    display-name: 森縛陷阱
+    element: EARTH
+    combo: [RIGHT, LEFT, LEFT]
+    required-level: 12
+    mana: 28.0
+    cooldown-seconds: 8.0
+    effect: ROOT_TRAP
+    coefficient: 0.62
+    flat-power: 2.5
+    radius: 3.5
+    duration-ticks: 80
+    max-hits: 4
+    description: 陷阱造成緩速與少量大地傷害。
+  ranger_explosive_shot:
+    class: ranger
+    archetype: trapper
+    display-name: 爆裂箭
+    element: FIRE
+    combo: [LEFT, LEFT, RIGHT]
+    required-level: 28
+    mana: 34.0
+    cooldown-seconds: 9.0
+    effect: EXPLOSIVE_SHOT
+    coefficient: 0.84
+    flat-power: 5.0
+    radius: 3.4
+    range: 20.0
+    max-hits: 5
+    description: 引爆落點，範圍傷害受命中數分攤。
+
+  shadowblade_shadow_dash:
+    class: shadowblade
+    archetype: mirage
+    display-name: 影襲
+    element: DARKNESS
+    combo: [RIGHT, LEFT, RIGHT]
+    required-level: 1
+    mana: 16.0
+    cooldown-seconds: 3.5
+    effect: SHADOW_DASH
+    coefficient: 0.74
+    flat-power: 3.0
+    radius: 2.2
+    range: 7.0
+    max-hits: 3
+    description: 位移至目標附近並造成低量暗影傷害。
+  shadowblade_duelist_cut:
+    class: shadowblade
+    archetype: duelist
+    display-name: 決鬥斬
+    element: PHYSICAL
+    combo: [RIGHT, RIGHT, RIGHT]
+    required-level: 8
+    mana: 18.0
+    cooldown-seconds: 3.8
+    effect: QUICK_CUT
+    coefficient: 0.82
+    flat-power: 3.0
+    radius: 2.0
+    max-hits: 2
+    description: 快速斬擊單一目標，冷卻短但上限保守。
+  shadowblade_hundred_blades:
+    class: shadowblade
+    archetype: duelist
+    display-name: 百刃連擊
+    element: PHYSICAL
+    combo: [RIGHT, LEFT, LEFT]
+    required-level: 24
+    mana: 32.0
+    cooldown-seconds: 7.5
+    effect: MULTI_HIT
+    coefficient: 0.42
+    flat-power: 2.0
+    radius: 2.8
+    duration-ticks: 16
+    max-hits: 6
+    description: 多段連擊，每段公式分攤，避免瞬間爆傷。
+  shadowblade_venom_edge:
+    class: shadowblade
+    archetype: venom
+    display-name: 毒影刃
+    element: DARKNESS
+    combo: [LEFT, RIGHT, RIGHT]
+    required-level: 14
+    mana: 24.0
+    cooldown-seconds: 6.0
+    effect: VENOM_EDGE
+    coefficient: 0.56
+    flat-power: 3.0
+    radius: 2.6
+    duration-ticks: 100
+    max-hits: 4
+    description: 疊加持續削弱，不追求單下爆發。
+  shadowblade_smoke_field:
+    class: shadowblade
+    archetype: venom
+    display-name: 夜幕煙陣
+    element: DARKNESS
+    combo: [RIGHT, RIGHT, LEFT]
+    required-level: 20
+    mana: 30.0
+    cooldown-seconds: 12.0
+    effect: SMOKE_FIELD
+    coefficient: 0.36
+    flat-power: 2.0
+    radius: 4.0
+    duration-ticks: 90
+    max-hits: 5
+    description: 干擾敵人並提供短暫生存空間。
+  shadowblade_mirage_step:
+    class: shadowblade
+    archetype: mirage
+    display-name: 幻影步
+    element: WIND
+    combo: [LEFT, LEFT, RIGHT]
+    required-level: 30
+    mana: 28.0
+    cooldown-seconds: 10.0
+    effect: MIRAGE_STEP
+    coefficient: 0.0
+    flat-power: 0.0
+    duration-ticks: 80
+    description: 生成殘影並提高短時間閃避。
+
+  warden_guard_field:
+    class: warden
+    archetype: guardian
+    display-name: 守望領域
+    element: LIGHTNESS
+    combo: [RIGHT, LEFT, RIGHT]
+    required-level: 1
+    mana: 24.0
+    cooldown-seconds: 8.0
+    effect: WARDEN_FIELD
+    coefficient: 0.52
+    flat-power: 4.0
+    radius: 4.5
+    duration-ticks: 100
+    max-hits: 6
+    description: 建立守護領域，兼具小量傷害與隊伍減壓。
+  warden_stone_totem:
+    class: warden
+    archetype: guardian
+    display-name: 磐石圖騰
+    element: EARTH
+    combo: [RIGHT, RIGHT, LEFT]
+    required-level: 12
+    mana: 30.0
+    cooldown-seconds: 13.0
+    effect: STONE_TOTEM
+    coefficient: 0.0
+    flat-power: 0.0
+    radius: 5.0
+    duration-ticks: 140
+    description: 提供隊伍防禦與抗性。
+  warden_resonance_wave:
+    class: warden
+    archetype: resonance
+    display-name: 共鳴震波
+    element: ARCANE
+    combo: [RIGHT, RIGHT, RIGHT]
+    required-level: 8
+    mana: 22.0
+    cooldown-seconds: 5.0
+    effect: RESONANCE_WAVE
+    coefficient: 0.70
+    flat-power: 3.0
+    radius: 5.0
+    max-hits: 5
+    description: 推離周圍敵人並造成穩定奧術傷害。
+  warden_renewal_pulse:
+    class: warden
+    archetype: resonance
+    display-name: 復甦脈動
+    element: WATER
+    combo: [LEFT, RIGHT, LEFT]
+    required-level: 18
+    mana: 36.0
+    cooldown-seconds: 10.0
+    effect: RENEWAL_PULSE
+    coefficient: 0.34
+    flat-power: 8.0
+    radius: 6.0
+    max-hits: 5
+    description: 以流水共鳴回復生命，治療量受上限保護。
+  warden_storm_call:
+    class: warden
+    archetype: tempest
+    display-name: 風暴呼喚
+    element: THUNDER
+    combo: [LEFT, RIGHT, RIGHT]
+    required-level: 16
+    mana: 30.0
+    cooldown-seconds: 7.0
+    effect: STORM_CALL
+    coefficient: 0.62
+    flat-power: 3.5
+    radius: 5.0
+    range: 12.0
+    max-hits: 6
+    description: 召喚雷雨追擊敵人，分段傷害避免浮誇。
+  warden_anchor_leap:
+    class: warden
+    archetype: tempest
+    display-name: 牽引躍遷
+    element: WIND
+    combo: [RIGHT, LEFT, LEFT]
+    required-level: 26
+    mana: 20.0
+    cooldown-seconds: 4.5
+    effect: ANCHOR_LEAP
+    coefficient: 0.46
+    flat-power: 2.0
+    radius: 3.0
+    max-hits: 4
+    description: 震開近身敵人並調整站位。

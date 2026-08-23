@@ -1,0 +1,68 @@
+# 項鍊（AMULET）— 前 30 級
+#
+# 定位：生存與抗性。項鍊是四個飾品欄中唯一給「保命」的，
+# 讓玩家在戒指堆輸出、手鐲堆機動之後，仍有一格能換回容錯空間。
+
+TRAVELERS_BONE_CHARM:
+  base:
+    material: BONE
+    name: '&7旅人骨符'
+    displayed-type: '&f項鍊'
+    tier: COMMON
+    browser-display-idx: 140
+    gem-sockets: 0
+    rune-slots: 0
+    lore:
+      - '&7刻著簡單祈願的獸骨，商道旁到處都在賣。'
+      - '&8便宜，但總比什麼都不戴好。'
+    max-health: { base: 10.0, scale: 0.7 }
+    health-regeneration: { base: 0.5, scale: 0.03 }
+    required-level: 3
+
+MOSSGUARD_PENDANT:
+  base:
+    material: MOSS_BLOCK
+    name: '&f苔衛垂飾'
+    displayed-type: '&f項鍊'
+    tier: UNCOMMON
+    browser-display-idx: 141
+    gem-sockets: 0
+    rune-slots: 0
+    lore:
+      - '&7取自苔甲守衛的甲片，仍帶著潮濕的生命力。'
+    max-health: { base: 20.0, scale: 1.0 }
+    defense: { base: 5.0, scale: 0.26 }
+    required-level: 12
+
+WARDSTONE_LOCKET:
+  base:
+    material: AMETHYST_SHARD
+    name: '&9守紋墜'
+    displayed-type: '&f項鍊'
+    tier: RARE
+    browser-display-idx: 142
+    gem-sockets: 1
+    rune-slots: 0
+    lore:
+      - '&7墜心的晶體會在受擊時短暫亮起，像是替你擋下了什麼。'
+    max-health: { base: 34.0, scale: 1.5 }
+    magic-resistance: { base: 10.0, scale: 0.5 }
+    elemental-resistance: { base: 8.0, scale: 0.4 }
+    required-level: 21
+
+ECHOHEART_TALISMAN:
+  base:
+    material: ECHO_SHARD
+    name: '&9回聲之心'
+    displayed-type: '&f項鍊'
+    tier: RARE
+    browser-display-idx: 143
+    gem-sockets: 1
+    rune-slots: 1
+    lore:
+      - '&7自回聲庫藏深處取出的碎片，貼著胸口時能聽見自己的心跳被放大。'
+      - '&8有人說那不是自己的心跳。'
+    max-health: { base: 40.0, scale: 1.7 }
+    resilience: { base: 25.0, scale: 1.2 }
+    life-steal: { base: 2.0, scale: 0.05 }
+    required-level: 28

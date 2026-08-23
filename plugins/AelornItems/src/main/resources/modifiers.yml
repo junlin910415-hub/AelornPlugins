@@ -1,0 +1,256 @@
+﻿# 詞條採權重抽選；同一 group 每件物品最多出現一次。
+# item-types 與 tiers 可讓企劃精準限制武器族群及稀有度。
+keen_edge:
+  weight: 36
+  prefix: '&f銳鋒'
+  group: physical_edge
+  item-types: [SWORD, LONG_SWORD, THRUSTING_SWORD, KATANA, DAGGER, SPEAR, LANCE, HALBERD, AXE, GREATAXE, GREATSWORD]
+  stats:
+    main-attack-damage:
+      base: 2.5
+      scale: 0.35
+      spread: 0.08
+
+deadeye:
+  weight: 30
+  suffix: '&e鷹準'
+  group: precision
+  item-types: [BOW, GREATBOW, CROSSBOW, MUSKET]
+  stats:
+    projectile-damage: { base: 4.0, scale: 0.22, spread: 0.10 }
+    critical-strike-chance: { base: 2.0, scale: 0.08 }
+    range: { base: 1.0, scale: 0.04 }
+
+swift_cycle:
+  weight: 25
+  prefix: '&a迅捷'
+  group: cadence
+  item-types: [DAGGER, KATANA, BOW, CROSSBOW, MUSKET, GAUNTLET, WAND]
+  stats:
+    attack-speed: { base: 5.0, scale: 0.18, spread: 0.08 }
+    dexterity: { base: 2.0, scale: 0.12 }
+
+heavy_frame:
+  weight: 20
+  prefix: '&6重鑄'
+  group: cadence
+  item-types: [GREATSWORD, GREATAXE, HAMMER, GREATHAMMER, HALBERD, GREATBOW]
+  stats:
+    main-attack-damage-percent: { base: 8.0, scale: 0.25, spread: 0.10 }
+    attack-speed-tier: { base: -1.0, scale: 0.0 }
+    knockback: { base: 8.0, scale: 0.20 }
+
+arcane_channel:
+  weight: 28
+  suffix: '&b導法'
+  group: spell_form
+  item-types: [STAFF, GREATSTAFF, WAND, TOME, CATALYST, MAIN_CATALYST, OFF_CATALYST]
+  min-level: 5
+  stats:
+    spell-damage-percent: { base: 5.0, scale: 0.28, spread: 0.12 }
+    max-mana: { base: 10.0, scale: 1.5 }
+
+efficient_cast:
+  weight: 20
+  prefix: '&3節流'
+  group: spell_cost
+  item-types: [STAFF, GREATSTAFF, WAND, TOME, CATALYST, MAIN_CATALYST, OFF_CATALYST]
+  min-level: 10
+  stats:
+    mana-regeneration: { base: 1.5, scale: 0.08 }
+    spell-1-cost-percent: { base: -3.0, scale: -0.04 }
+    spell-2-cost-percent: { base: -3.0, scale: -0.04 }
+
+vital_core:
+  weight: 24
+  prefix: '&a蓄命'
+  group: vitality
+  min-level: 8
+  stats:
+    max-health: { base: 8.0, scale: 1.1 }
+    vitality: { base: 3.0, scale: 0.2 }
+
+stone_guard:
+  weight: 22
+  prefix: '&6磐守'
+  group: guard
+  excluded-item-types: [FOOD, MATERIAL, CONSUMABLE, POTION, GEM_STONE, UPGRADE_STONE, RUNE]
+  min-level: 12
+  stats:
+    defense: { base: 6.0, scale: 0.55 }
+    max-health: { base: 10.0, scale: 0.95 }
+    knockback-resistance: { base: 3.0, scale: 0.10 }
+
+duelist_guard:
+  weight: 16
+  suffix: '&7決鬥'
+  group: guard
+  item-types: [SWORD, LONG_SWORD, THRUSTING_SWORD, KATANA, DAGGER, SPEAR]
+  min-level: 14
+  stats:
+    parry-rating: { base: 35.0, scale: 5.0 }
+    critical-strike-power: { base: 8.0, scale: 0.24 }
+
+storm_forged:
+  weight: 18
+  prefix: '&e雷鍛'
+  group: element
+  min-level: 12
+  stats:
+    thunder-damage: { base: 5.0, scale: 0.6 }
+    critical-strike-rating: { base: 55.0, scale: 8.0 }
+  ability:
+    on-hit:
+      type: SHOCK
+      chance: 14.0
+      power: 3.0
+
+frost_bound:
+  weight: 17
+  suffix: '&b霜縛'
+  group: element
+  min-level: 10
+  stats:
+    ice-damage: { base: 4.0, scale: 0.55 }
+    ice-resistance: { base: 5.0, scale: 0.35 }
+    slow-enemy: { base: 5.0, scale: 0.10 }
+  ability:
+    on-hit:
+      type: FROST
+      chance: 18.0
+      power: 1.0
+
+wildfire:
+  weight: 17
+  prefix: '&c野火'
+  group: element
+  min-level: 12
+  stats:
+    fire-damage: { base: 4.0, scale: 0.52 }
+    exploding: { base: 4.0, scale: 0.10 }
+  ability:
+    on-hit:
+      type: BURN
+      chance: 16.0
+      power: 2.5
+
+rift_oath:
+  weight: 17
+  suffix: '&6裂誓'
+  group: element
+  min-level: 14
+  stats:
+    earth-damage: { base: 3.0, scale: 0.28 }
+    mana-regeneration: { base: 1.5, scale: 0.08 }
+    intelligence: { base: 2.5, scale: 0.16 }
+
+earth_shaker:
+  weight: 16
+  prefix: '&2震土'
+  group: element
+  min-level: 14
+  stats:
+    earth-damage: { base: 4.0, scale: 0.40 }
+    armor-penetration: { base: 3.0, scale: 0.24 }
+    knockback: { base: 5.0, scale: 0.18 }
+
+gale_stride:
+  weight: 18
+  prefix: '&a逐風'
+  group: element
+  min-level: 10
+  stats:
+    wind-damage: { base: 3.0, scale: 0.32 }
+    movement-speed: { base: 3.0, scale: 0.08 }
+    agility: { base: 2.0, scale: 0.14 }
+
+venom_touched:
+  weight: 13
+  suffix: '&2蝕毒'
+  group: ailment
+  min-level: 16
+  item-types: [DAGGER, KATANA, BOW, CROSSBOW, SPEAR, WHIP]
+  stats:
+    poison: { base: 6.0, scale: 0.65, spread: 0.12 }
+    weaken-enemy: { base: 3.0, scale: 0.08 }
+
+blood_seeker:
+  weight: 11
+  suffix: '&c飲血'
+  group: sustain
+  min-level: 18
+  stats:
+    life-steal: { base: 2.5, scale: 0.08 }
+  ability:
+    on-hit:
+      type: BLEED
+      chance: 16.0
+      power: 2.5
+
+mana_siphon:
+  weight: 11
+  suffix: '&5汲魔'
+  group: sustain
+  min-level: 18
+  item-types: [STAFF, GREATSTAFF, WAND, TOME, CATALYST, MAIN_CATALYST, OFF_CATALYST]
+  stats:
+    mana-steal: { base: 2.0, scale: 0.07 }
+    spell-vampirism: { base: 2.0, scale: 0.05 }
+
+treasure_hunter:
+  weight: 9
+  prefix: '&6尋珍'
+  group: fortune
+  min-level: 20
+  stats:
+    loot-bonus: { base: 4.0, scale: 0.12 }
+    loot-quality: { base: 1.0, scale: 0.04 }
+
+seasoned:
+  weight: 12
+  suffix: '&d歷戰'
+  group: fortune
+  min-level: 16
+  stats:
+    xp-bonus: { base: 4.0, scale: 0.15 }
+    pve-damage: { base: 3.0, scale: 0.10 }
+
+void_lens:
+  weight: 4
+  suffix: '&5虛空透鏡'
+  group: major_trait
+  major: true
+  cost: 2.0
+  min-level: 35
+  tiers: [LEGENDARY, VAST, MYTHIC]
+  item-types: [STAFF, GREATSTAFF, WAND, TOME, CATALYST]
+  stats:
+    magic-penetration-percent: { base: 8.0, scale: 0.10 }
+    cooldown-reduction: { base: 4.0, scale: 0.06 }
+
+execution_mark:
+  weight: 4
+  prefix: '&4斷罪'
+  group: major_trait
+  major: true
+  cost: 2.0
+  min-level: 35
+  tiers: [LEGENDARY, VAST, MYTHIC]
+  item-types: [SWORD, LONG_SWORD, KATANA, DAGGER, SPEAR, AXE, GREATSWORD, GREATAXE]
+  stats:
+    armor-penetration-percent: { base: 8.0, scale: 0.10 }
+    critical-strike-power: { base: 12.0, scale: 0.15 }
+
+ballistic_oracle:
+  weight: 4
+  suffix: '&e彈道先知'
+  group: major_trait
+  major: true
+  cost: 2.0
+  min-level: 35
+  tiers: [LEGENDARY, VAST, MYTHIC]
+  item-types: [BOW, GREATBOW, CROSSBOW, MUSKET]
+  stats:
+    projectile-damage: { base: 10.0, scale: 0.12 }
+    range: { base: 4.0, scale: 0.04 }
+    arrow-velocity: { base: 6.0, scale: 0.08 }

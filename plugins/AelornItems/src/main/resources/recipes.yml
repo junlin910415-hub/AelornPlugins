@@ -1,0 +1,46 @@
+recipes:
+  novice_guard_blade:
+    name: 新兵守備劍
+    order: 10
+    gold-cost: 30
+    result:
+      type: SWORD
+      item: STARTER_TRAINING_SWORD
+      tier: STARTER
+      level: 1
+      amount: 1
+    ingredients:
+      iron:
+        kind: VANILLA
+        material: IRON_INGOT
+        amount: 6
+        display: 鐵錠
+      powder:
+        kind: MMOITEM
+        type: MATERIAL
+        item: WEAPON_POWDER
+        amount: 2
+        display: 武器粉末
+
+  common_upgrade_stone:
+    name: 凡品強化石
+    order: 20
+    gold-cost: 20
+    result:
+      type: UPGRADE_STONE
+      item: COMMON_UPGRADE_STONE
+      tier: COMMON
+      level: 1
+      amount: 1
+    ingredients:
+      shard:
+        kind: VANILLA
+        material: AMETHYST_SHARD
+        amount: 4
+        display: 紫水晶碎片
+      powder:
+        kind: MMOITEM
+        type: MATERIAL
+        item: WEAPON_POWDER
+        amount: 3
+        display: 武器粉末

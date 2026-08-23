@@ -1,0 +1,104 @@
+STARTER_TRAINING_HELMET:
+  base:
+    material: LEATHER_HELMET
+    name: '&7新人測試頭盔'
+    displayed-type: '&f頭盔'
+    tier: STARTER
+    set: STARTER_TRAINING_SET
+    browser-display-idx: 1
+    gem-sockets: 0
+    rune-slots: 0
+    unbreakable: true
+    lore:
+      - '&7新人測試防具套裝之一。'
+    armor: { base: 1.0, scale: 0.08 }
+    max-health: { base: 2.0, scale: 0.15 }
+    required-level: 1
+
+ASHEN_WATCH_HELMET:
+  base:
+    material: IRON_HELMET
+    name: '&9灰燼守望盔'
+    displayed-type: '&f頭盔'
+    tier: RARE
+    set: IMMORTAL_VANGUARD
+    required-class: Vanguard
+    browser-display-idx: 10
+    gem-sockets: 1
+    lore:
+      - '&7護面能隔絕高溫與飛散火星。'
+    armor: { base: 7.0, scale: 0.45 }
+    max-health: { base: 18.0, scale: 1.1 }
+    fire-resistance: { base: 6.0, scale: 0.22 }
+    required-level: 12
+
+STARWEAVE_CIRCLET:
+  base:
+    material: GOLDEN_HELMET
+    name: '&d星紋冠飾'
+    displayed-type: '&f頭盔'
+    tier: RARE
+    set: STARFORGE_ARCANIST
+    required-class: Arcanist
+    browser-display-idx: 20
+    gem-sockets: 1
+    lore:
+      - '&7以細金線與星砂織成，能穩定施法心流。'
+    armor: { base: 3.0, scale: 0.20 }
+    max-mana: { base: 16.0, scale: 1.2 }
+    arcane-damage: { base: 3.0, scale: 0.20 }
+    intelligence: { base: 4.0, scale: 0.22 }
+    required-level: 12
+
+WINDSIGHT_HOOD:
+  base:
+    material: LEATHER_HELMET
+    name: '&a風瞳兜帽'
+    displayed-type: '&f頭盔'
+    tier: COMMON
+    set: GALE_RANGER
+    required-class: Ranger
+    browser-display-idx: 30
+    gem-sockets: 1
+    lore:
+      - '&7視野開闊的輕帽，適合長距離追獵。'
+    armor: { base: 4.0, scale: 0.25 }
+    critical-strike-rating: { base: 24.0, scale: 2.2 }
+    dexterity: { base: 3.0, scale: 0.18 }
+    required-level: 9
+
+NIGHTVEIL_HOOD:
+  base:
+    material: LEATHER_HELMET
+    name: '&5夜幕行者兜帽'
+    displayed-type: '&f頭盔'
+    tier: RARE
+    set: NIGHTSHADE_DUELIST
+    required-class: Shadowblade
+    browser-display-idx: 40
+    gem-sockets: 1
+    lore:
+      - '&7降低身形輪廓，讓近距離突襲更難被察覺。'
+    armor: { base: 4.0, scale: 0.22 }
+    darkness-damage: { base: 2.0, scale: 0.16 }
+    dodge-rating: { base: 4.0, scale: 0.20 }
+    dexterity: { base: 4.0, scale: 0.22 }
+    required-level: 13
+
+RIFTWARDEN_HEADDRESS:
+  base:
+    material: TURTLE_HELMET
+    name: '&6裂境守望頭飾'
+    displayed-type: '&f頭盔'
+    tier: RARE
+    set: TOTEMIC_WARDEN
+    required-class: Warden
+    browser-display-idx: 50
+    gem-sockets: 1
+    lore:
+      - '&7裂境晶紋會在界脈共鳴時泛起古金微光。'
+    armor: { base: 4.0, scale: 0.22 }
+    earth-damage: { base: 2.0, scale: 0.16 }
+    wisdom: { base: 4.0, scale: 0.20 }
+    mana-regeneration: { base: 1.0, scale: 0.06 }
+    required-level: 12

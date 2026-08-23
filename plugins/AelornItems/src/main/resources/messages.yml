@@ -1,0 +1,215 @@
+﻿schema-version: 1
+
+# ===============================================================
+#  艾洛恩 AELORN — MMOItems 訊息
+# ===============================================================
+#
+#  GUI 版面與指令回應上的文字。改完 /mi reload 即生效，
+#  不必重新編譯部署。
+#
+#  這份檔案是「覆寫層」：只寫你想改的鍵，沒寫的自動沿用程式內建的
+#  預設值（也就是這裡列出的內容）。因此可以安全地整段刪掉某一區，
+#  或只保留你真正改過的幾行 —— 缺鍵不會讓介面出現空白。
+#
+#  ⚠ 不要用空字串來隱藏某一行 —— 空值會被視同「沒寫」而回退到預設。
+#    要隱藏某個元素請用該功能自己的開關。
+#
+#  佔位符是具名的，可以自由調換語序：
+#      '&7頁次：&f{page}&8 / &f{total}'
+#      '&f{page}&8/&f{total} &7頁'      ← 兩種寫法都可以
+#  打錯的佔位符會原樣顯示在畫面上（例如 {pge}），這是故意的：
+#  看得見才查得到，靜靜換成空字串只會留下難追的怪 bug。
+#
+# ===============================================================
+
+# ── 指令 ───────────────────────────────────────────────────────
+command:
+
+  # 所有需要玩家身分的子指令共用這一句（原本在 13 個地方各寫了一份）
+  players-only: '&c這個指令只能由玩家使用。'
+
+  reload:
+    no-permission: '&c你沒有權限重載 MMOItems。'
+    done: '&aMMOItems 已重新載入：模板 {templates}、類型 {types}、tooltip {tooltips}、詞綴 {affixes}、套裝 {sets}。'
+
+  validate:
+    no-permission: '&c你沒有權限執行資料檢查。'
+    error: '&c錯誤：{detail}'
+    warning: '&e警告：{detail}'
+
+  list-power:
+    gems: '寶石'
+    runes: '符文'
+  editor:
+    no-permission: '&c你沒有權限使用物品編輯器。'
+  craft:
+    no-permission: '&c你沒有權限使用工藝台。'
+  forge:
+    no-permission: '&c你沒有權限使用強化台。'
+  shop:
+    no-permission: '&c你沒有權限使用交易所。'
+  browse:
+    no-permission: '&c你沒有權限開啟 MMOItems 物品圖鑑。'
+    not-found: '&c找不到分類或類型：{query}'
+  give:
+    no-permission: '&c你沒有權限給予 MMOItems 物品。'
+    player-not-found: '&c找不到玩家。'
+    done: '&a已給予 {player} {type}.{id} [{tier}]'
+  upgrade:
+    no-permission: '&c你沒有權限強化 MMOItems 物品。'
+    done: '&a強化完成：+{level}'
+  refresh:
+    done: '&a已刷新手中裝備資料。'
+  reforge:
+    no-permission: '&c你沒有權限重鑄 MMOItems 物品。'
+  deconstruct:
+    no-permission: '&c你沒有權限分解 MMOItems 物品。'
+    done: '&a分解完成：成功 {success} 次，耗損 {lost} 次，產出 {materials} 組材料。'
+  soulbound:
+    no-permission: '&c你沒有權限綁定 MMOItems 物品。'
+    admin-only: '&c只有管理員可以解除靈魂綁定。'
+    cleared: '&a已解除手中裝備的靈魂綁定。'
+
+  gem:
+    no-permission: '&c你沒有權限鑲嵌寶石。'
+    usage: '&e/mmoitems gem <寶石ID>'
+    level-mismatch: '&c這顆寶石不符合裝備等級。'
+    slots-full: '&c寶石孔已滿。'
+    inserted: '&a已鑲嵌寶石：{gem}'
+    not-found: '&c找不到裝備或寶石。'
+
+  rune:
+    no-permission: '&c你沒有權限刻印符文。'
+    usage: '&e/mmoitems rune <符文ID>'
+    no-slot: '&c這件裝備沒有符文槽。'
+    level-mismatch: '&c這枚符文不符合裝備等級。'
+    inserted: '&a已刻印符文：{rune}'
+    not-found: '&c找不到裝備或符文。'
+
+  gold:
+    no-permission: '&c你沒有權限使用黃金帳戶。'
+    deposited-other: '&a已存入 {amount} 黃金至 {player} 的錢包。'
+    console-usage: '&e主控台用法：/mi gold give <玩家> <數量>'
+    usage: '&e/mi gold give <玩家> <數量>'
+    deposited: '&6已存入 {amount} 黃金。'
+    withdrawn: '&6已領取 {amount} 個實體黃金。'
+    given: '&a已給予 {player} {amount} 黃金。'
+    invalid-target: '&c找不到玩家或數量無效。'
+
+  list:
+    header: '&bMMOItems 物品清單&7  共 {count} 筆'
+    truncated: '&8還有 {remaining} 筆未顯示，輸入 /mi list <分類或類型> 200 可提高上限。'
+
+  # /mi help 的完整說明。新增子指令時在這裡補一行即可。
+  # {cmd} 會代換成玩家實際輸入的指令名，因此設了別名也顯示得正確。
+  help:
+    - '&e/{cmd} give <玩家> <類型> <ID> [等級] [數量] [階級|RANDOM]'
+    - '&e/{cmd} roll <玩家> <類型> <ID> [等級] [數量]'
+    - '&e/{cmd} browse [分類|類型] [搜尋] [階級]'
+    - '&e/{cmd} editor | craft | forge | shop | gold [deposit|withdraw|balance]'
+    - '&e/{cmd} validate | reload'
+    - '&e/{cmd} gem <ID> | rune <ID> | reforge [階級|RANDOM]'
+    - '&e/{cmd} deconstruct [次數] [auto|success|lose] | soulbound [等級|clear]'
+    - '&e/{cmd} list [分類|類型] [數量] | identify | upgrade [等級] | reload'
+
+# ── 物品狀態 ───────────────────────────────────────────────────
+item:
+  # 五支指令共用（原本各寫一份）
+  not-managed: '&c手中物品不是新版 MMOItems 裝備。'
+  soulbound-drop-blocked: '&c這件靈魂綁定裝備受到保護，無法丟棄。'
+  soulbound-foreign-move: '&c你不能操作其他玩家的靈魂綁定裝備。'
+  soulbound-foreign-use: '&c這件裝備已靈魂綁定給其他玩家，無法操作。'
+
+  # ⚠ 這一行同時用於「寫入物品 lore」與「辨識既有的綁定行以便移除」。
+  #   冒號前的文字是辨識用的標記，改動它會讓「既有物品」上的舊綁定行
+  #   變成無法移除的孤兒（重新綁定時會多疊一行）。
+  #   顏色可以隨意改，辨識時會先去掉色碼。
+  soulbound-lore-prefix: '&c靈魂綁定: '
+
+  use-denied: '&c無法使用：&f{reason}'
+  unknown-owner: '未知玩家'
+  unknown-material: '未知材料'
+
+  # 分解產出的材料物品
+  salvage-material: '&7MMOItems 分解材料'
+  salvage-source-tier: '&7來源階級: {tier}'
+  salvage-id: '&8ID: {id}'
+
+gui:
+
+  preview:
+    disabled: '&e3D 預覽目前已由管理員關閉。'
+    started: '&b正在預覽「{item}」；移動視角即可從不同角度查看。'
+
+  # ── 物品圖鑑的底部控制列 ─────────────────────────────────────
+  browser:
+
+    # 共用的頁次指示，上一頁與下一頁按鈕都會用到
+    page-counter: '&7頁次：&f{page}&8 / &f{total}'
+
+    close: '&c關閉'
+    close-lore: '&8關閉物品圖鑑'
+
+    previous-page: '&e上一頁'
+    previous-hint: '&8左鍵'
+
+    next-page: '&e下一頁'
+    next-hint: '&8F 鍵或左鍵'
+
+    back: '&b返回上層'
+    back-lore: '&8回到上一層分類'
+
+    overview: '&f物品總覽'
+    overview-total: '&7總物品數：&f{count}'
+    overview-listed: '&7目前清單：&f{count}'
+    overview-hint: '&8F 鍵：下一頁（末頁繞回）'
+
+    # 只有在物品頁才能切換階級；分類頁顯示的是下面那組灰色版本
+    tier-switch: '&6切換階級'
+    tier-current: '&7目前：{tier}'
+    tier-hint: '&8左鍵下一個 / 右鍵上一個'
+    tier-locked: '&8階級切換'
+    tier-locked-lore: '&8進入物品頁後可用'
+
+    admin-panel: '&d管理面板'
+    admin-panel-lore: '&7建立、複製與刪除物品模板'
+    admin-panel-note: '&8僅管理員可見'
+
+    # ── 主分類頁 ──
+    title-categories: 'MMO 物品圖鑑｜主分類'
+    header-categories: '&fMMO 物品圖鑑'
+    header-categories-lore1: '&7請先選擇主分類。'
+    header-categories-lore2: '&8武器、裝備、其他會分開顯示。'
+    category-description: '&7{description}'
+    category-type-count: '&7物品種類：&f{count}'
+    category-item-count: '&7可用物品：&f{count}'
+    category-hint: '&e左鍵：開啟分類'
+
+    # ── 種類頁 ──
+    title-types: 'MMO 物品圖鑑｜種類'
+    header-types: '&f種類列表'
+    header-types-lore: '&8選擇種類後會列出該種類的物品。'
+    types-all: '&7目前顯示全部種類。'
+    types-filtered: '&7分類：&f{category}'
+    type-category: '&7所屬分類：&f{category}'
+    type-item-count: '&7可用物品：&f{count}'
+    type-hint: '&e左鍵：查看物品'
+    type-hint-shift: '&6Shift 左鍵：使用隨機稀有度'
+
+    # ── 物品頁 ──
+    title-items: 'MMO 物品圖鑑｜{type}'
+    items-tier: '&7目前階級：{tier}'
+    items-count: '&7可用物品：&f{count}'
+    items-hint: '&8左鍵領取樣品，右鍵查看 3D 預覽。'
+    granted: '&a物品圖鑑已給予 {item}（{tier}）'
+
+    # 空狀態：整片空白的格子會讓玩家以為圖鑑壞了
+    empty: '&7這個階級沒有可用物品'
+    empty-hint: '&8按 &f切換階級 &8看看其他稀有度。'
+
+    # ── 物品頁的操作說明 ──
+    item-actions: '&e圖鑑操作'
+    item-action-left: '&7左鍵：取得目前稀有度樣品'
+    item-action-shift-left: '&7Shift 左鍵：取得隨機稀有度物品'
+    item-action-right: '&b右鍵：查看旋轉 3D 預覽'
+    item-action-shift-right: '&7Shift 右鍵：取得重新鍛造的物品'

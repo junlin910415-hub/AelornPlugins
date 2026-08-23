@@ -1,0 +1,106 @@
+STARTER_TRAINING_LEGGINGS:
+  base:
+    material: LEATHER_LEGGINGS
+    name: '&7新人測試護腿'
+    displayed-type: '&f護腿'
+    tier: STARTER
+    set: STARTER_TRAINING_SET
+    browser-display-idx: 1
+    gem-sockets: 0
+    rune-slots: 0
+    unbreakable: true
+    lore:
+      - '&7新人測試防具套裝之一。'
+    armor: { base: 2.0, scale: 0.12 }
+    max-health: { base: 3.0, scale: 0.20 }
+    required-level: 1
+
+RIVERSTONE_LEGGINGS:
+  base:
+    material: CHAINMAIL_LEGGINGS
+    name: '&b溪石護腿'
+    displayed-type: '&f護腿'
+    tier: RARE
+    set: GALE_RANGER
+    required-class: Ranger
+    browser-display-idx: 10
+    gem-sockets: 1
+    lore:
+      - '&7兼顧防護與長途移動的輕型護腿。'
+    armor: { base: 8.0, scale: 0.5 }
+    movement-speed: { base: 0.015, scale: 0.0002 }
+    stamina-regeneration: { base: 2.0, scale: 0.12 }
+    dexterity: { base: 3.0, scale: 0.18 }
+    required-level: 10
+
+STONEBOUND_LEGGINGS:
+  base:
+    material: IRON_LEGGINGS
+    name: '&6巖誓護腿'
+    displayed-type: '&f護腿'
+    tier: RARE
+    set: IMMORTAL_VANGUARD
+    required-class: Vanguard
+    browser-display-idx: 20
+    gem-sockets: 1
+    lore:
+      - '&7承接腿部衝擊，讓重裝前壓更穩定。'
+    armor: { base: 10.0, scale: 0.58 }
+    defense: { base: 6.0, scale: 0.34 }
+    earth-resistance: { base: 5.0, scale: 0.22 }
+    max-health: { base: 14.0, scale: 0.90 }
+    required-level: 14
+
+ASTROLACE_TROUSERS:
+  base:
+    material: LEATHER_LEGGINGS
+    name: '&d星綴長褲'
+    displayed-type: '&f長褲'
+    tier: RARE
+    set: STARFORGE_ARCANIST
+    required-class: Arcanist
+    browser-display-idx: 30
+    gem-sockets: 1
+    lore:
+      - '&7以秘法織帶固定步伐，方便施法走位。'
+    armor: { base: 4.0, scale: 0.24 }
+    cooldown-reduction: { base: 3.0, scale: 0.10 }
+    max-mana: { base: 14.0, scale: 1.1 }
+    arcane-damage: { base: 2.0, scale: 0.16 }
+    required-level: 13
+
+KNIFETREAD_LEGGINGS:
+  base:
+    material: LEATHER_LEGGINGS
+    name: '&5刃痕行褲'
+    displayed-type: '&f行褲'
+    tier: RARE
+    set: NIGHTSHADE_DUELIST
+    required-class: Shadowblade
+    browser-display-idx: 40
+    gem-sockets: 1
+    lore:
+      - '&7褲側暗袋讓近身職業能快速調整刀路。'
+    armor: { base: 5.0, scale: 0.26 }
+    dexterity: { base: 4.0, scale: 0.20 }
+    dodge-rating: { base: 4.0, scale: 0.18 }
+    critical-strike-power: { base: 160.0, scale: 0.45 }
+    required-level: 15
+
+TOTEMBOUND_LEGGINGS:
+  base:
+    material: CHAINMAIL_LEGGINGS
+    name: '&3守誓護腿'
+    displayed-type: '&f護腿'
+    tier: RARE
+    set: TOTEMIC_WARDEN
+    required-class: Warden
+    browser-display-idx: 50
+    gem-sockets: 1
+    lore:
+      - '&7走動時也能維持圖騰共鳴的穩定頻率。'
+    armor: { base: 6.0, scale: 0.30 }
+    mana-regeneration: { base: 1.5, scale: 0.08 }
+    water-damage: { base: 2.0, scale: 0.16 }
+    wisdom: { base: 4.0, scale: 0.20 }
+    required-level: 14

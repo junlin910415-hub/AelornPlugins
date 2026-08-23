@@ -1,0 +1,60 @@
+name: AelornItems
+version: '3.2.2-AELORN-NEXO_26.2'
+main: tw.linsy.aelorn.mmoitems.MMOItemsPlugin
+api-version: '26.2'
+author: LinSy
+description: 艾洛恩 MMORPG 的武器、裝備、詞條、圖鑑、強化與製作系統。
+folia-supported: true
+depend: [MythicCore]
+softdepend: [RPGCore, MythicLib, MMOCore, MythicMobs, MythicCrucible, Nexo, AeloriaHUD, PlaceholderAPI, Vault]
+
+commands:
+  mmoitems:
+    description: MMOItems 物品系統主指令。
+    aliases: [mi, aelornitems]
+    usage: /mmoitems [browse|editor|craft|forge|shop|gold|validate|give|roll|list|identify|upgrade|gem|gems|rune|runes|reforge|deconstruct|soulbound|reload]
+    permission: mmoitems.use
+  updateitem:
+    description: 更新手持的 MMOItems 物品。
+    aliases: [upitem, itemup]
+    permission: mmoitems.update
+
+permissions:
+  mmoitems.use:
+    default: true
+  mmoitems.give:
+    default: op
+  mmoitems.browse:
+    default: true
+  mmoitems.admin:
+    default: op
+  mmoitems.upgrade:
+    default: op
+  mmoitems.update:
+    default: op
+  mmoitems.socket:
+    default: op
+  mmoitems.reforge:
+    default: op
+  mmoitems.deconstruct:
+    default: op
+  mmoitems.soulbound:
+    default: op
+  mmoitems.soulbound.bypass:
+    default: op
+  mmoitems.shop:
+    default: true
+  mmoitems.craft:
+    default: true
+  mmoitems.forge:
+    default: true
+  mmoitems.gold:
+    default: true
+  mmoitems.bypass.level:
+    default: false
+  mmoitems.bypass.class:
+    default: op
+  mmoitems.bypass.skills:
+    default: op
+  mmoitems.bypass.requirements:
+    default: op

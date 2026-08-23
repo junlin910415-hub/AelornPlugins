@@ -1,0 +1,72 @@
+schema-version: 1
+
+# AELORN 由伺服器判定普攻的前搖、命中窗與收招；右鍵仍是技能連段起手。
+# 詳細節奏由 MythicCore/attack-cadence.yml 管理，cooldown-ms 僅供 API 缺席時保守備援。
+weapon-combat:
+  enabled: true
+  profiles:
+    vanguard-blade:
+      range: 4.0
+      hit-radius: 0.55
+      cooldown-ms: 620
+      damage-multiplier: 1.00
+      maximum-targets: 3
+      arc-degrees: 100.0
+    ranger-bow:
+      range: 24.0
+      hit-radius: 0.45
+      cooldown-ms: 780
+      damage-multiplier: 0.92
+      maximum-targets: 1
+      arc-degrees: 15.0
+    shadow-dagger:
+      range: 3.45
+      hit-radius: 0.42
+      cooldown-ms: 360
+      damage-multiplier: 0.72
+      maximum-targets: 1
+      arc-degrees: 54.0
+    arcane-focus:
+      range: 18.0
+      hit-radius: 0.70
+      cooldown-ms: 690
+      damage-multiplier: 1.10
+      maximum-targets: 1
+      arc-degrees: 12.0
+    warden-totem:
+      range: 13.0
+      hit-radius: 0.82
+      cooldown-ms: 820
+      damage-multiplier: 1.00
+      maximum-targets: 1
+      arc-degrees: 18.0
+
+effects:
+  enabled: true
+  maximum-trail-points: 48
+  maximum-impact-particles: 18
+  sound-volume: 0.72
+
+# This policy replaces survival acquisition with authored MMORPG content.
+# It does not delete map blocks or interfere with administrative test worlds.
+vanilla-content:
+  enabled: true
+  worlds: ['*']
+  bypass-permission: rpgcore.vanilla.bypass
+  block-natural-creatures: true
+  block-world-loot: true
+  block-block-drops: true
+  block-vanilla-recipes: true
+  block-fishing-and-bartering: true
+  strip-player-inventories: true
+  inventory-scan-ticks: 20
+  allowed-spawn-reasons: [CUSTOM, COMMAND]
+  allowed-item-namespaces:
+    - aelorn
+    - aeloria
+    - nexo
+    - rpgcore
+    - mmoitems
+    - mythiccore
+    - mythicmobs
+    - modelengine

@@ -1,0 +1,64 @@
+STARTER_TRAINING_SET:
+  name: '&7新人測試套裝'
+  bonuses:
+    2:
+      max-health: 4
+      max-mana: 4
+    4:
+      defense: 3
+      movement-speed: 0.005
+
+IMMORTAL_VANGUARD:
+  name: '&6裂境守誓'
+  bonuses:
+    2:
+      defense: 14
+      max-health: 8
+    4:
+      attack-damage: 5
+      block-rating: 6
+      lightness-resistance: 4
+
+STARFORGE_ARCANIST:
+  name: '&b星爐秘術'
+  bonuses:
+    2:
+      max-mana: 26
+      magic-damage: 5
+    4:
+      fire-damage: 7
+      arcane-damage: 5
+      cooldown-reduction: 3
+
+GALE_RANGER:
+  name: '&a逐風巡獵'
+  bonuses:
+    2:
+      projectile-damage: 5
+      movement-speed: 0.006
+    4:
+      wind-damage: 6
+      critical-strike-rating: 90
+      dodge-rating: 3
+
+NIGHTSHADE_DUELIST:
+  name: '&5夜影決鬥'
+  bonuses:
+    2:
+      attack-speed: 0.05
+      darkness-damage: 5
+    4:
+      critical-strike-chance: 3
+      life-steal: 1.5
+      parry-rating: 3
+
+TOTEMIC_WARDEN:
+  name: '&3圖騰共鳴'
+  bonuses:
+    2:
+      max-mana: 20
+      elemental-resistance: 6
+    4:
+      water-damage: 5
+      earth-damage: 5
+      mana-regeneration: 1.2

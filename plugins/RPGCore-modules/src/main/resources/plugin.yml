@@ -1,0 +1,52 @@
+﻿name: RPGCore
+version: '__BUILD_VERSION__'
+main: com.xuzhihuanjing.rpgcore.RpgCorePlugin
+api-version: '1.21'
+folia-supported: true
+author: LinSy
+description: AELORN original MMORPG core for combat, characters, progression, equipment, quests, encounters, monsters, and HUD.
+depend: [Nexo, MythicMobs, AeloriaHUD]
+softdepend: [MythicCore, ModelEngine, PlaceholderAPI, Citizens]
+commands:
+  rpg:
+    description: Open the AELORN character menu.
+    usage: /rpg [menu|character|skills|abilities|professions|journal|book|party|weapon|profile|hud|mob|encounter|quest|discovery|reload|selftest]
+    aliases: [character, characters]
+  rpgstatus:
+    description: 查看目前的職業資源與增益狀態。
+    usage: /rpgstatus
+    aliases: [buffs]
+permissions:
+  rpgcore.player:
+    description: Use RPGCore player features.
+    default: true
+  rpgcore.admin:
+    description: Reload and administer RPGCore.
+    default: op
+    children:
+      rpgcore.characters.slots.9: true
+      rpgcore.vanilla.bypass: true
+  rpgcore.vanilla.bypass:
+    description: Bypass AELORN vanilla-content acquisition restrictions for administration.
+    default: op
+  rpgcore.equipment.bypass:
+    description: Ignore all RPGCore and MMOItems equipment requirements.
+    default: op
+  rpgcore.characters.slots.4:
+    description: Unlock four character slots.
+    default: false
+  rpgcore.characters.slots.5:
+    description: Unlock five character slots.
+    default: false
+  rpgcore.characters.slots.6:
+    description: Unlock six character slots.
+    default: false
+  rpgcore.characters.slots.7:
+    description: Unlock seven character slots.
+    default: false
+  rpgcore.characters.slots.8:
+    description: Unlock eight character slots.
+    default: false
+  rpgcore.characters.slots.9:
+    description: Unlock all nine character slots.
+    default: false

@@ -34,8 +34,12 @@ final class BridgeAuditor {
 
         if (discordSrv.getMainGuild() == null) {
             entries.add(Entry.fail("DiscordSRV main guild is unavailable."));
-        } else if (!settings.expectedGuildId().isEmpty()
-            && !settings.expectedGuildId().equals(discordSrv.getMainGuild().getId())) {
+        } else if (settings.expectedGuildId().isEmpty()) {
+            // 空值等於「不比對」，而不比對就等於沒有白名單。以前這裡會落到下面的
+            // else 報 pass —— 一個從未設定過的白名單被報成通過，比不檢查更糟：
+            // 它讓人以為檢查過了。
+            entries.add(Entry.warn("expected-guild-id is unset; the guild whitelist is inactive."));
+        } else if (!settings.expectedGuildId().equals(discordSrv.getMainGuild().getId())) {
             entries.add(Entry.fail("Connected Discord guild does not match bridge configuration."));
         } else {
             entries.add(Entry.pass("Discord guild matches bridge configuration."));

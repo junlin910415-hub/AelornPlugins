@@ -1,0 +1,124 @@
+# ============================================================
+#  聖器（CATALYST） — 五階梯，命名採「階級語域」
+#  低階材質詞 → 中階意象詞 → 最高階兩字專名（不接詞綴）
+# ============================================================
+
+BRONZESIGIL_CATALYST:
+  base:
+    material: CLAY_BALL
+    name: '&f銅鑄靈符'
+    displayed-type: '&f聖器'
+    tier: COMMON
+    upgrade-template: weapon-default
+    browser-display-idx: 10
+    gem-sockets: 0
+    rune-slots: 0
+    lore:
+      - '&7法力容量與法術威力並重，是施法循環的核心。'
+      - '&8量產規格，作為入門與數值基準。'
+    story:
+      - '&7它不主動施法，只讓既有的法術更完整。'
+      - '&7共鳴起時，周身的空氣會微微發亮。'
+    attack-damage: { base: 5.0, scale: 0.35 }
+    weapon-damage: { base: 1.8, scale: 0.10 }
+    critical-strike-chance: { base: 3.0, scale: 0.20 }
+    spell-damage: { base: 8.0, scale: 0.60 }
+    max-mana: { base: 20.0, scale: 1.20 }
+    intelligence: { base: 4.0, scale: 0.25 }
+    required-level: { base: 1.0, scale: 0.0 }
+
+RESONANCE_CATALYST:
+  base:
+    material: HEART_OF_THE_SEA
+    name: '&9共鳴靈核'
+    displayed-type: '&f聖器'
+    tier: RARE
+    upgrade-template: weapon-default
+    browser-display-idx: 20
+    gem-sockets: 1
+    rune-slots: 0
+    lore:
+      - '&7法力容量與法術威力並重，是施法循環的核心。'
+      - '&8經過鍛造師調校，開始出現個體差異。'
+    story:
+      - '&7它不主動施法，只讓既有的法術更完整。'
+      - '&7共鳴起時，周身的空氣會微微發亮。'
+    attack-damage: { base: 11.0, scale: 1.15 }
+    weapon-damage: { base: 3.8, scale: 0.34 }
+    critical-strike-chance: { base: 6.0, scale: 0.20 }
+    spell-damage: { base: 8.0, scale: 0.60 }
+    max-mana: { base: 20.0, scale: 1.20 }
+    intelligence: { base: 4.0, scale: 0.25 }
+    required-level: { base: 20.0, scale: 0.0 }
+
+TIDEECHO_CATALYST:
+  base:
+    material: HEART_OF_THE_SEA
+    name: '&5潮汐迴響核'
+    displayed-type: '&f聖器'
+    tier: EPIC
+    upgrade-template: weapon-default
+    browser-display-idx: 30
+    gem-sockets: 2
+    rune-slots: 1
+    lore:
+      - '&7法力容量與法術威力並重，是施法循環的核心。'
+      - '&8以稀有材料重製，數值躍升一個級距。'
+    story:
+      - '&7它不主動施法，只讓既有的法術更完整。'
+      - '&7共鳴起時，周身的空氣會微微發亮。'
+    attack-damage: { base: 19.0, scale: 1.85 }
+    weapon-damage: { base: 6.6, scale: 0.56 }
+    critical-strike-chance: { base: 9.0, scale: 0.20 }
+    spell-damage: { base: 8.0, scale: 0.60 }
+    max-mana: { base: 20.0, scale: 1.20 }
+    intelligence: { base: 4.0, scale: 0.25 }
+    required-level: { base: 40.0, scale: 0.0 }
+
+SAMSARA_CATALYST:
+  base:
+    material: NETHER_STAR
+    name: '&6白金聖詠印'
+    displayed-type: '&f聖器'
+    tier: LEGENDARY
+    upgrade-template: weapon-default
+    browser-display-idx: 40
+    gem-sockets: 3
+    rune-slots: 1
+    lore:
+      - '&7法力容量與法術威力並重，是施法循環的核心。'
+      - '&8名匠之作，全境不超過數十柄。'
+    story:
+      - '&7它不主動施法，只讓既有的法術更完整。'
+      - '&7共鳴起時，周身的空氣會微微發亮。'
+    attack-damage: { base: 29.0, scale: 2.60 }
+    weapon-damage: { base: 10.1, scale: 0.78 }
+    critical-strike-chance: { base: 12.0, scale: 0.20 }
+    spell-damage: { base: 8.0, scale: 0.60 }
+    max-mana: { base: 20.0, scale: 1.20 }
+    intelligence: { base: 4.0, scale: 0.25 }
+    required-level: { base: 60.0, scale: 0.0 }
+
+ABYSSRETURN_CATALYST:
+  base:
+    material: NETHER_STAR
+    name: '&c萬象靈環'
+    displayed-type: '&f聖器'
+    tier: MYTHIC
+    upgrade-template: weapon-default
+    browser-display-idx: 50
+    gem-sockets: 4
+    rune-slots: 2
+    lore:
+      - '&7法力容量與法術威力並重，是施法循環的核心。'
+      - '&8已無鍛造紀錄可考，只餘傳聞。'
+    story:
+      - '&7它不主動施法，只讓既有的法術更完整。'
+      - '&7共鳴起時，周身的空氣會微微發亮。'
+    attack-damage: { base: 42.0, scale: 3.40 }
+    weapon-damage: { base: 14.7, scale: 1.02 }
+    critical-strike-chance: { base: 16.0, scale: 0.20 }
+    spell-damage: { base: 8.0, scale: 0.60 }
+    max-mana: { base: 20.0, scale: 1.20 }
+    intelligence: { base: 4.0, scale: 0.25 }
+    required-level: { base: 80.0, scale: 0.0 }

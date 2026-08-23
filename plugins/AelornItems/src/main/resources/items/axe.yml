@@ -1,0 +1,124 @@
+# ============================================================
+#  斧（AXE） — 五階梯，命名採「階級語域」
+#  低階材質詞 → 中階意象詞 → 最高階兩字專名（不接詞綴）
+# ============================================================
+
+IRONBARK_AXE:
+  base:
+    material: WOODEN_AXE
+    name: '&f鐵木戰斧'
+    displayed-type: '&f斧'
+    tier: COMMON
+    upgrade-template: weapon-default
+    browser-display-idx: 10
+    gem-sockets: 0
+    rune-slots: 0
+    lore:
+      - '&7以攻速換取單擊重量，命中時的回饋最直接。'
+      - '&8量產規格，作為入門與數值基準。'
+    story:
+      - '&7伐木與破陣用的是同一套發力。'
+      - '&7斧刃上的焦痕來自無數次的野火淬鍊。'
+    attack-damage: { base: 5.0, scale: 0.35 }
+    weapon-damage: { base: 1.8, scale: 0.10 }
+    critical-strike-chance: { base: 3.0, scale: 0.20 }
+    main-attack-damage-percent: { base: 8.0, scale: 0.25 }
+    knockback: { base: 8.0, scale: 0.20 }
+    attack-speed-tier: { base: -1.0, scale: 0.00 }
+    required-level: { base: 1.0, scale: 0.0 }
+
+BONESPLIT_AXE:
+  base:
+    material: IRON_AXE
+    name: '&9裂骨戰斧'
+    displayed-type: '&f斧'
+    tier: RARE
+    upgrade-template: weapon-default
+    browser-display-idx: 20
+    gem-sockets: 1
+    rune-slots: 0
+    lore:
+      - '&7以攻速換取單擊重量，命中時的回饋最直接。'
+      - '&8經過鍛造師調校，開始出現個體差異。'
+    story:
+      - '&7伐木與破陣用的是同一套發力。'
+      - '&7斧刃上的焦痕來自無數次的野火淬鍊。'
+    attack-damage: { base: 11.0, scale: 1.15 }
+    weapon-damage: { base: 3.8, scale: 0.34 }
+    critical-strike-chance: { base: 6.0, scale: 0.20 }
+    main-attack-damage-percent: { base: 8.0, scale: 0.25 }
+    knockback: { base: 8.0, scale: 0.20 }
+    attack-speed-tier: { base: -1.0, scale: 0.00 }
+    required-level: { base: 20.0, scale: 0.0 }
+
+WILDFIRE_AXE:
+  base:
+    material: DIAMOND_AXE
+    name: '&5焚野雙刃斧'
+    displayed-type: '&f斧'
+    tier: EPIC
+    upgrade-template: weapon-default
+    browser-display-idx: 30
+    gem-sockets: 2
+    rune-slots: 1
+    lore:
+      - '&7以攻速換取單擊重量，命中時的回饋最直接。'
+      - '&8以稀有材料重製，數值躍升一個級距。'
+    story:
+      - '&7伐木與破陣用的是同一套發力。'
+      - '&7斧刃上的焦痕來自無數次的野火淬鍊。'
+    attack-damage: { base: 19.0, scale: 1.85 }
+    weapon-damage: { base: 6.6, scale: 0.56 }
+    critical-strike-chance: { base: 9.0, scale: 0.20 }
+    main-attack-damage-percent: { base: 8.0, scale: 0.25 }
+    knockback: { base: 8.0, scale: 0.20 }
+    attack-speed-tier: { base: -1.0, scale: 0.00 }
+    required-level: { base: 40.0, scale: 0.0 }
+
+THUNDERFORGE_AXE:
+  base:
+    material: NETHERITE_AXE
+    name: '&6精鋼破陣斧'
+    displayed-type: '&f斧'
+    tier: LEGENDARY
+    upgrade-template: weapon-default
+    browser-display-idx: 40
+    gem-sockets: 3
+    rune-slots: 1
+    lore:
+      - '&7以攻速換取單擊重量，命中時的回饋最直接。'
+      - '&8名匠之作，全境不超過數十柄。'
+    story:
+      - '&7伐木與破陣用的是同一套發力。'
+      - '&7斧刃上的焦痕來自無數次的野火淬鍊。'
+    attack-damage: { base: 29.0, scale: 2.60 }
+    weapon-damage: { base: 10.1, scale: 0.78 }
+    critical-strike-chance: { base: 12.0, scale: 0.20 }
+    main-attack-damage-percent: { base: 8.0, scale: 0.25 }
+    knockback: { base: 8.0, scale: 0.20 }
+    attack-speed-tier: { base: -1.0, scale: 0.00 }
+    required-level: { base: 60.0, scale: 0.0 }
+
+STARFELLER_AXE:
+  base:
+    material: NETHERITE_AXE
+    name: '&c隕火開山斧'
+    displayed-type: '&f斧'
+    tier: MYTHIC
+    upgrade-template: weapon-default
+    browser-display-idx: 50
+    gem-sockets: 4
+    rune-slots: 2
+    lore:
+      - '&7以攻速換取單擊重量，命中時的回饋最直接。'
+      - '&8已無鍛造紀錄可考，只餘傳聞。'
+    story:
+      - '&7伐木與破陣用的是同一套發力。'
+      - '&7斧刃上的焦痕來自無數次的野火淬鍊。'
+    attack-damage: { base: 42.0, scale: 3.40 }
+    weapon-damage: { base: 14.7, scale: 1.02 }
+    critical-strike-chance: { base: 16.0, scale: 0.20 }
+    main-attack-damage-percent: { base: 8.0, scale: 0.25 }
+    knockback: { base: 8.0, scale: 0.20 }
+    attack-speed-tier: { base: -1.0, scale: 0.00 }
+    required-level: { base: 80.0, scale: 0.0 }

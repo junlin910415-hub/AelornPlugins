@@ -1,0 +1,44 @@
+shops:
+  capital-market:
+    display-name: 王國交易所
+    entries:
+      starter_sword:
+        type: SWORD
+        item: STARTER_TRAINING_SWORD
+        tier: STARTER
+        level: 1
+        buy: 45
+        sell: 12
+        order: 10
+      starter_bow:
+        type: BOW
+        item: STARTER_TRAINING_BOW
+        tier: STARTER
+        level: 1
+        buy: 45
+        sell: 12
+        order: 20
+      starter_staff:
+        type: STAFF
+        item: STARTER_TRAINING_STAFF
+        tier: STARTER
+        level: 1
+        buy: 45
+        sell: 12
+        order: 30
+      weapon_powder:
+        type: MATERIAL
+        item: WEAPON_POWDER
+        tier: COMMON
+        level: 1
+        buy: 18
+        sell: 5
+        order: 40
+      common_upgrade_stone:
+        type: UPGRADE_STONE
+        item: COMMON_UPGRADE_STONE
+        tier: COMMON
+        level: 1
+        buy: 65
+        sell: 18
+        order: 50

@@ -1,0 +1,81 @@
+schema-version: 1
+
+# ═══════════════════════════════════════════════════════════════
+#  艾洛恩 AELORN — 武器技能綁定
+# ═══════════════════════════════════════════════════════════════
+#
+#  決定「哪把武器有哪些技能」。技能本身定義在 skills.yml。
+#
+# ───────────────────────────────────────────────────────────────
+#  操作方式
+# ───────────────────────────────────────────────────────────────
+#  右鍵           → primary
+#  潛行 + 右鍵    → secondary
+#
+#  只給兩格是刻意的：這兩個操作玩家不用學就會。
+#  欄位一多就得做快捷列與綁鍵介面，對「拿起武器就能打」沒有幫助。
+#
+# ───────────────────────────────────────────────────────────────
+#  查找順序
+# ───────────────────────────────────────────────────────────────
+#  1. 先找 items 底下的特定物品代號（專武）
+#  2. 再找 types 底下的物品類型（整類武器的通用組）
+#
+#  特定物品優先，因此專武可以覆寫它所屬類型的預設技能組。
+#
+# ═══════════════════════════════════════════════════════════════
+
+bindings:
+
+  # ── 依武器類型 ────────────────────────────────────────────────
+  types:
+
+    # 單手劍：泛用。起手破空斬，接烈焰橫掃疊灼燒。
+    SWORD:
+      primary: rift_slash
+      secondary: flame_cleave
+
+    # 大劍：慢重。同樣以破空斬開場，但潛行接的是奧義級的血月狂舞。
+    GREATSWORD:
+      primary: rift_slash
+      secondary: bloodmoon_dance
+
+    # 斧：介於劍與大劍之間，走灼燒路線。
+    AXE:
+      primary: rift_slash
+      secondary: flame_cleave
+
+    # 矛：直線貫穿，走位獎勵明確。
+    SPEAR:
+      primary: piercing_thrust
+      secondary: flame_cleave
+
+    # 匕首：機動與爆發。影襲進場，血月狂舞收尾。
+    DAGGER:
+      primary: piercing_thrust
+      secondary: shadow_lunge
+
+    # 弓：距離與節奏。三段連射是主力。
+    BOW:
+      primary: piercing_thrust
+      secondary: gale_volley
+
+    # 法杖：控場與範圍。霜牢開窗，天譴雷罰收割。
+    STAFF:
+      primary: frost_prison
+      secondary: divine_judgement
+
+    # 觸媒／聖器：輔助向，以守護與淨化為主。
+    CATALYST:
+      primary: guardian_light
+      secondary: divine_judgement
+
+  # ── 依特定物品（專武） ────────────────────────────────────────
+  #  這裡列的是「因為技能而存在」的武器。
+  #  物品代號必須對得上 MMOItems 的物品 ID。
+  items:
+
+    # 深淵之刃 —— 把落單的敵人強行拖進近身
+    ABYSSAL_BLADE:
+      primary: shadow_lunge
+      secondary: abyssal_maw

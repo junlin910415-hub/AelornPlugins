@@ -1,0 +1,609 @@
+schema-version: 1
+
+# ═══════════════════════════════════════════════════════════════
+#  艾洛恩 AELORN — 武器技能腳本
+# ═══════════════════════════════════════════════════════════════
+#
+#  技能由「步驟」組成，每個步驟 = 延遲 + 目標形狀 + 機制。
+#  新增技能不需要改任何 Java，只要在這裡加一段。
+#
+# ───────────────────────────────────────────────────────────────
+#  設計原則（參考 Wynncraft 的法力循環）
+# ───────────────────────────────────────────────────────────────
+#  技能的樂趣不在數字大，而在「何時該用哪一個」。因此：
+#
+#  1. 簡易技能要便宜、瞬發，用來填輸出空檔並累積資源
+#  2. 精妙技能有前搖，對手看得見、來得及反應，攻防才有來回
+#  3. 奧義高耗長冷卻，是決定戰局的一擊，不該無腦丟
+#  4. 專武技能綁定特定武器，是那把武器存在的理由
+#
+#  前搖（delay）是最重要的設計工具。瞬發大招沒有攻防可言，
+#  加上 8~20 tick 的前搖之後，對手有機會走位、格擋或打斷。
+#
+# ───────────────────────────────────────────────────────────────
+#  施放代價 costs
+# ───────────────────────────────────────────────────────────────
+#  costs 底下的代號對應 reagents.yml 的資源，可以同時列好幾種：
+#
+#    costs:
+#      mana: 24
+#      rage: 20      # 兩種都要夠才放得出來
+#
+#  結算是「全有或全無」：其中一項不夠就整個不扣，不會出現
+#  「怒氣被吃掉但技能沒放出來」。付款時機是真的要放的那一刻——
+#  有吟唱的技能在讀條前只確認付不付得起，被打斷不會白付。
+#  冷卻也是扣款成功後才進入，資源不足不會順便吃掉冷卻。
+#
+#  ⚠ reagents.yml 裡有 classes 限制的資源（怒氣、精力、連擊點）
+#    只有那些職業拿得到。武器技能是「拿起武器就能打」，
+#    寫上限定資源等於讓其他職業完全用不了這把武器，
+#    因此以下十個技能一律只收法力——法力沒有職業限制。
+#    要做職業專屬武器時再視情況加限定資源。
+#
+#  省略 costs 的技能不收任何資源，只受冷卻約束。
+#
+# ───────────────────────────────────────────────────────────────
+#  目標形狀 targeter
+# ───────────────────────────────────────────────────────────────
+#  SELF     只作用在自己（增益、位移）
+#  CIRCLE   以自己為圓心（原地爆發）
+#  CONE     面向前方扇形（揮砍）        需要 radius + angle
+#  LINE     面向前方直線（突刺、貫穿）  radius = 粗細、range = 長度
+#  RAYCAST  視線正前方單一目標（指向）  隔牆打不到
+#  NEAREST  最近的若干目標（連鎖）
+#
+# ───────────────────────────────────────────────────────────────
+#  機制 mechanic
+# ───────────────────────────────────────────────────────────────
+#  DAMAGE     傷害      amount = 攻擊力的倍率
+#  HEAL       治療      amount = 攻擊力的倍率
+#  AURA       掛狀態    aura = auras.yml 的代號、amount = 層數
+#  CLEANSE    驅散      aura 留空 = 驅散全部減益
+#  KNOCKBACK  擊退      amount = 力道
+#  PULL       拉扯      amount = 力道
+#  DASH       前衝      amount = 力道（作用於自己）
+#  LEAP       躍起      amount = 力道（作用於自己）
+#  PARTICLE   粒子      particle = 粒子名、amount = 數量、spread = 擴散
+#  SOUND      音效      sound = 音效名、amount = 音量、spread = 音高
+#  LIGHTNING  閃電視覺
+#  IGNITE     點燃      amount = 秒數
+#  POTION     藥水      potion = 效果名、amount = 秒數、spread = 等級
+#
+# ═══════════════════════════════════════════════════════════════
+
+skills:
+
+  # ══════════════════════════════════════════════════════════════
+  #  一、簡易 SIMPLE — 低耗瞬發，填空檔用
+  # ══════════════════════════════════════════════════════════════
+
+  # 01 ── 破空斬（劍／大劍）
+  # 最基本的橫掃。瞬發、便宜，設計上就是給玩家一直按的那顆鍵。
+  rift_slash:
+    name: '&f破空斬'
+    tier: SIMPLE
+    cooldown-seconds: 2.5
+    cast-seconds: 0
+    costs:
+      mana: 8          # 便宜到可以一直按，這是它存在的理由
+    description: '橫掃身前的敵人，是最順手的起手式。'
+    steps:
+      - delay: 0
+        mechanic: SOUND
+        sound: ENTITY_PLAYER_ATTACK_SWEEP
+        amount: 1.0
+        spread: 1.2
+      - delay: 0
+        mechanic: PARTICLE
+        targeter: SELF
+        particle: SWEEP_ATTACK
+        amount: 3
+        spread: 1.5
+      - delay: 0
+        mechanic: DAMAGE
+        targeter: CONE
+        radius: 4.0
+        angle: 110
+        max-targets: 4
+        amount: 1.15
+
+  # 02 ── 穿刺（矛／長槍）
+  # 直線貫穿。範圍窄但能一次串起一排敵人，走位獎勵明確。
+  piercing_thrust:
+    name: '&f穿刺'
+    tier: SIMPLE
+    cooldown-seconds: 3.0
+    cast-seconds: 0
+    costs:
+      mana: 10         # 比破空斬貴一點，換來的是能串起一整排敵人
+    description: '向前突刺，貫穿一直線上的所有敵人。'
+    steps:
+      - delay: 0
+        mechanic: SOUND
+        sound: ENTITY_PLAYER_ATTACK_CRIT
+        amount: 1.0
+        spread: 0.9
+      - delay: 0
+        mechanic: PARTICLE
+        targeter: SELF
+        particle: CRIT
+        amount: 25
+        spread: 0.8
+      - delay: 2
+        mechanic: DAMAGE
+        targeter: LINE
+        radius: 0.9
+        range: 6.5
+        max-targets: 6
+        amount: 1.25
+
+  # ══════════════════════════════════════════════════════════════
+  #  二、精妙 FLASHY — 有前搖、帶控場或狀態，戰鬥主力
+  # ══════════════════════════════════════════════════════════════
+
+  # 03 ── 烈焰橫掃（劍／斧）
+  # 半秒前搖換取灼燒疊層。前搖讓對手來得及退開，這是刻意的。
+  flame_cleave:
+    name: '&c烈焰橫掃'
+    tier: FLASHY
+    cooldown-seconds: 8.0
+    cast-seconds: 0.6
+    costs:
+      mana: 24
+    description: '蓄力後橫掃前方，附加灼燒並將敵人擊退。'
+    steps:
+      - delay: 0
+        mechanic: SOUND
+        sound: ENTITY_BLAZE_SHOOT
+        amount: 1.0
+        spread: 0.8
+      - delay: 0
+        mechanic: PARTICLE
+        targeter: SELF
+        particle: FLAME
+        amount: 40
+        spread: 1.4
+      - delay: 10
+        mechanic: SOUND
+        sound: ENTITY_GENERIC_EXPLODE
+        amount: 0.8
+        spread: 1.4
+      - delay: 10
+        mechanic: DAMAGE
+        targeter: CONE
+        radius: 4.8
+        angle: 120
+        max-targets: 5
+        amount: 1.85
+      - delay: 10
+        mechanic: AURA
+        targeter: CONE
+        radius: 4.8
+        angle: 120
+        max-targets: 5
+        aura: searing_burn
+        amount: 1
+      - delay: 10
+        mechanic: KNOCKBACK
+        targeter: CONE
+        radius: 4.8
+        angle: 120
+        amount: 0.8
+      - delay: 12
+        mechanic: PARTICLE
+        targeter: CONE
+        radius: 4.8
+        angle: 120
+        particle: LAVA
+        amount: 12
+        spread: 0.6
+
+  # 04 ── 霜牢（法杖）
+  # 控場而非輸出。傷害低，價值在減速與碎甲，替隊伍開窗。
+  frost_prison:
+    name: '&b霜牢'
+    tier: FLASHY
+    cooldown-seconds: 10.0
+    cast-seconds: 0.8
+    costs:
+      mana: 28         # 控場技比同級輸出技貴，因為它替整隊開窗
+    description: '凍結周身敵人，大幅降低其速度與防禦。'
+    steps:
+      - delay: 0
+        mechanic: SOUND
+        sound: BLOCK_GLASS_BREAK
+        amount: 1.0
+        spread: 0.6
+      - delay: 0
+        mechanic: PARTICLE
+        targeter: SELF
+        particle: SNOWFLAKE
+        amount: 60
+        spread: 2.0
+      - delay: 14
+        mechanic: SOUND
+        sound: BLOCK_GLASS_PLACE
+        amount: 1.2
+        spread: 0.5
+      - delay: 14
+        mechanic: DAMAGE
+        targeter: CIRCLE
+        radius: 5.5
+        max-targets: 8
+        amount: 1.1
+      - delay: 14
+        mechanic: AURA
+        targeter: CIRCLE
+        radius: 5.5
+        max-targets: 8
+        aura: chill_snare
+        amount: 1
+      - delay: 14
+        mechanic: AURA
+        targeter: CIRCLE
+        radius: 5.5
+        max-targets: 8
+        aura: armor_break
+        amount: 2
+      - delay: 14
+        mechanic: PARTICLE
+        targeter: CIRCLE
+        radius: 5.5
+        particle: ITEM_SNOWBALL
+        amount: 20
+        spread: 0.8
+
+  # 05 ── 影襲（匕首）
+  # 位移接爆發。給刺客的進場手段，命中後自帶戰意疊層。
+  shadow_lunge:
+    name: '&5影襲'
+    tier: FLASHY
+    cooldown-seconds: 7.0
+    cast-seconds: 0
+    costs:
+      mana: 22
+    description: '瞬間突進並重擊，命中後湧起戰意。'
+    steps:
+      - delay: 0
+        mechanic: SOUND
+        sound: ENTITY_ENDERMAN_TELEPORT
+        amount: 0.9
+        spread: 1.6
+      - delay: 0
+        mechanic: PARTICLE
+        targeter: SELF
+        particle: SMOKE
+        amount: 30
+        spread: 0.5
+      - delay: 0
+        mechanic: DASH
+        targeter: SELF
+        amount: 1.4
+      - delay: 4
+        mechanic: DAMAGE
+        targeter: CONE
+        radius: 3.6
+        angle: 90
+        max-targets: 3
+        amount: 1.7
+      - delay: 4
+        mechanic: AURA
+        targeter: SELF
+        aura: battle_fury
+        amount: 2
+      - delay: 4
+        mechanic: PARTICLE
+        targeter: CONE
+        radius: 3.6
+        angle: 90
+        particle: DAMAGE_INDICATOR
+        amount: 8
+        spread: 0.4
+
+  # 06 ── 守護聖光（盾／錘）
+  # 純防禦。驅散身上減益再套護盾，是坦克的救命鍵。
+  guardian_light:
+    name: '&6守護聖光'
+    tier: FLASHY
+    cooldown-seconds: 14.0
+    cast-seconds: 0.5
+    costs:
+      mana: 30         # 救命鍵要貴，貴到不能當一般減傷來按
+    description: '淨化己身並展開護盾，短時間內大幅提升防禦。'
+    steps:
+      - delay: 0
+        mechanic: SOUND
+        sound: BLOCK_BEACON_ACTIVATE
+        amount: 1.0
+        spread: 1.4
+      - delay: 0
+        mechanic: PARTICLE
+        targeter: SELF
+        particle: END_ROD
+        amount: 50
+        spread: 1.2
+      - delay: 8
+        mechanic: CLEANSE
+        targeter: SELF
+      - delay: 8
+        mechanic: AURA
+        targeter: SELF
+        aura: stone_ward
+        amount: 1
+      - delay: 8
+        mechanic: HEAL
+        targeter: SELF
+        amount: 0.8
+      - delay: 8
+        mechanic: PARTICLE
+        targeter: SELF
+        particle: TOTEM_OF_UNDYING
+        amount: 25
+        spread: 1.0
+
+  # 07 ── 疾風連射（弓）
+  # 三段式連射，用延遲拉出節奏感。單發不強，總量可觀。
+  gale_volley:
+    name: '&a疾風連射'
+    tier: FLASHY
+    cooldown-seconds: 9.0
+    cast-seconds: 0
+    costs:
+      mana: 26
+    description: '連續射出三波箭矢，並讓自己身法輕盈。'
+    steps:
+      - delay: 0
+        mechanic: SOUND
+        sound: ENTITY_ARROW_SHOOT
+        amount: 1.0
+        spread: 1.2
+      - delay: 0
+        mechanic: DAMAGE
+        targeter: LINE
+        radius: 0.8
+        range: 18.0
+        max-targets: 4
+        amount: 0.75
+      - delay: 0
+        mechanic: AURA
+        targeter: SELF
+        aura: swift_step
+        amount: 1
+      - delay: 6
+        mechanic: SOUND
+        sound: ENTITY_ARROW_SHOOT
+        amount: 1.0
+        spread: 1.4
+      - delay: 6
+        mechanic: DAMAGE
+        targeter: LINE
+        radius: 0.8
+        range: 18.0
+        max-targets: 4
+        amount: 0.75
+      - delay: 12
+        mechanic: SOUND
+        sound: ENTITY_ARROW_SHOOT
+        amount: 1.0
+        spread: 1.6
+      - delay: 12
+        mechanic: DAMAGE
+        targeter: LINE
+        radius: 0.8
+        range: 18.0
+        max-targets: 4
+        amount: 0.9
+      - delay: 12
+        mechanic: PARTICLE
+        targeter: SELF
+        particle: CLOUD
+        amount: 20
+        spread: 0.6
+
+  # ══════════════════════════════════════════════════════════════
+  #  三、奧義 ULTIMATE — 高耗長冷卻，決定戰局的一擊
+  # ══════════════════════════════════════════════════════════════
+
+  # 08 ── 天譴雷罰（法杖／聖器）
+  # 一秒前搖，對手看得見閃電預兆。命中範圍大、傷害高。
+  divine_judgement:
+    name: '&e天譴雷罰'
+    tier: ULTIMATE
+    cooldown-seconds: 28.0
+    cast-seconds: 1.2
+    costs:
+      mana: 55         # 一級角色滿法力 100，奧義丟完就見底，這是刻意的
+    description: '召喚雷霆審判周身敵人，並使其陷入碎甲。'
+    steps:
+      - delay: 0
+        mechanic: SOUND
+        sound: BLOCK_BEACON_POWER_SELECT
+        amount: 1.2
+        spread: 0.7
+      - delay: 0
+        mechanic: PARTICLE
+        targeter: SELF
+        particle: ELECTRIC_SPARK
+        amount: 80
+        spread: 2.5
+      - delay: 12
+        mechanic: PARTICLE
+        targeter: CIRCLE
+        radius: 7.0
+        particle: ELECTRIC_SPARK
+        amount: 30
+        spread: 1.0
+      - delay: 24
+        mechanic: LIGHTNING
+        targeter: CIRCLE
+        radius: 7.0
+        max-targets: 6
+      - delay: 24
+        mechanic: SOUND
+        sound: ENTITY_LIGHTNING_BOLT_THUNDER
+        amount: 1.5
+        spread: 0.8
+      - delay: 25
+        mechanic: DAMAGE
+        targeter: CIRCLE
+        radius: 7.0
+        max-targets: 8
+        amount: 3.2
+      - delay: 25
+        mechanic: AURA
+        targeter: CIRCLE
+        radius: 7.0
+        max-targets: 8
+        aura: armor_break
+        amount: 3
+      - delay: 25
+        mechanic: KNOCKBACK
+        targeter: CIRCLE
+        radius: 7.0
+        amount: 1.2
+
+  # 09 ── 血月狂舞（雙刃／大劍）
+  # 五段連擊，靠 delay 做出「刀光不斷」的節奏，末段最重。
+  bloodmoon_dance:
+    name: '&4血月狂舞'
+    tier: ULTIMATE
+    cooldown-seconds: 32.0
+    cast-seconds: 0.4
+    costs:
+      mana: 50
+    description: '化身刀影連續斬擊五次，每一擊都讓自己更狂暴。'
+    steps:
+      - delay: 0
+        mechanic: SOUND
+        sound: ENTITY_WITHER_SHOOT
+        amount: 1.0
+        spread: 1.8
+      - delay: 0
+        mechanic: AURA
+        targeter: SELF
+        aura: battle_fury
+        amount: 2
+      - delay: 8
+        mechanic: DAMAGE
+        targeter: CIRCLE
+        radius: 4.2
+        max-targets: 6
+        amount: 0.9
+      - delay: 8
+        mechanic: PARTICLE
+        targeter: CIRCLE
+        radius: 4.2
+        particle: DUST_COLOR_TRANSITION
+        amount: 15
+        spread: 0.5
+      - delay: 14
+        mechanic: DAMAGE
+        targeter: CIRCLE
+        radius: 4.2
+        max-targets: 6
+        amount: 0.9
+      - delay: 20
+        mechanic: DAMAGE
+        targeter: CIRCLE
+        radius: 4.2
+        max-targets: 6
+        amount: 1.0
+      - delay: 20
+        mechanic: AURA
+        targeter: SELF
+        aura: battle_fury
+        amount: 1
+      - delay: 26
+        mechanic: DAMAGE
+        targeter: CIRCLE
+        radius: 4.2
+        max-targets: 6
+        amount: 1.0
+      - delay: 34
+        mechanic: SOUND
+        sound: ENTITY_GENERIC_EXPLODE
+        amount: 1.2
+        spread: 0.6
+      - delay: 34
+        mechanic: DAMAGE
+        targeter: CIRCLE
+        radius: 5.5
+        max-targets: 8
+        amount: 2.4
+      - delay: 34
+        mechanic: KNOCKBACK
+        targeter: CIRCLE
+        radius: 5.5
+        amount: 1.4
+      - delay: 34
+        mechanic: PARTICLE
+        targeter: CIRCLE
+        radius: 5.5
+        particle: LARGE_SMOKE
+        amount: 40
+        spread: 1.5
+
+  # ══════════════════════════════════════════════════════════════
+  #  四、專武 SIGNATURE — 綁定特定武器，是那把武器存在的理由
+  # ══════════════════════════════════════════════════════════════
+
+  # 10 ── 深淵之喉（專屬武器）
+  # 拉近 + 重擊 + 劇毒。專武技能該有明確的戰術定位，
+  # 這把的定位是「把落單的敵人強行拖進近身」。
+  abyssal_maw:
+    name: '&5深淵之喉'
+    tier: SIGNATURE
+    cooldown-seconds: 18.0
+    cast-seconds: 0.5
+    costs:
+      mana: 38
+    description: '撕裂空間將敵人拖至身前，重創並注入劇毒。'
+    steps:
+      - delay: 0
+        mechanic: SOUND
+        sound: ENTITY_ENDERMAN_STARE
+        amount: 1.0
+        spread: 0.5
+      - delay: 0
+        mechanic: PARTICLE
+        targeter: SELF
+        particle: PORTAL
+        amount: 60
+        spread: 1.5
+      - delay: 10
+        mechanic: PULL
+        targeter: CONE
+        radius: 9.0
+        angle: 70
+        max-targets: 4
+        amount: 1.6
+      - delay: 10
+        mechanic: SOUND
+        sound: ENTITY_ENDERMAN_TELEPORT
+        amount: 1.2
+        spread: 0.6
+      - delay: 16
+        mechanic: DAMAGE
+        targeter: CIRCLE
+        radius: 4.0
+        max-targets: 4
+        amount: 2.6
+      - delay: 16
+        mechanic: AURA
+        targeter: CIRCLE
+        radius: 4.0
+        max-targets: 4
+        aura: deep_poison
+        amount: 3
+      - delay: 16
+        mechanic: PARTICLE
+        targeter: CIRCLE
+        radius: 4.0
+        particle: SCULK_SOUL
+        amount: 30
+        spread: 0.8
+      - delay: 16
+        mechanic: AURA
+        targeter: SELF
+        aura: battle_fury
+        amount: 3

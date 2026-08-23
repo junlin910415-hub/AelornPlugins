@@ -27,7 +27,9 @@
 | **AelornHolograms** | 浮空文字。 |
 | **AelornQuestBridge** | RPGCore 任務的 PlaceholderAPI 橋接。 |
 | **AelornDiscordBridge** | DiscordSRV 安全橋接。 |
-| **RPGCoreMythicBridge** | RPGCore ↔ MythicMobs 橋接。 |
+| **AelornItems** | 物品系統：屬性、鍛造、詞綴、工具提示。 |
+| **MythicCore** | 戰鬥底層：屬性計算、傷害管線、技能觸發。 |
+| **RPGCoreMythicBridge** | RPGCore ↔ MythicCore 橋接。 |
 | **ServerBackup** | 伺服器備份。 |
 | **PluginsManager** | 插件熱重載與管理。 |
 
@@ -110,11 +112,29 @@ Kotlin 插件**不必自己宣告 kotlin-stdlib**，`depend: [AelornLibKt]` 就�
 
 ---
 
-## 沒有包含在這裡的東西
+## 兩件開源前要知道的事
 
-兩支插件**刻意排除**，因為它們是從**商業付費插件反編譯**出來的產物，不是手寫原始碼：
+### RPGCore 的原始碼目前分散在兩棵樹
 
-- `AelornItems` — 由 MMOItems 衍生
-- `MythicCore` — 由 MythicMobs 系衍生
+兩棵都建不出正式服在跑的 0.26.0。詳細數字與衝突清單見
+`plugins/RPGCORE-STATUS.md` —— **開源前請先讀那一份**。
 
-散布這些會侵犯原作者的著作權，公開或私下都一樣。它們留在原本的伺服器樹裡。
+### AelornItems 與 MythicCore 的原始碼是反編譯回來的
+
+`DECOMPILED.md` 保留在各自目錄裡，說明來源 JAR 與時間。反編譯的是
+**作者自己先前建置的 JAR**（原始碼當時沒留下），不是別人的作品 ——
+`D:\RPGSystem\MMOItems\REBUILD-STATUS.md` 有完整說明：
+
+> 這台機器上沒有 MMOItems 1.8.0 的 Java 原始碼，因此用 CFR 把執行中的
+> `MMOItems-1.8.0-SNAPSHOT-folia-26.2.jar` 反編譯回原始碼再修改。
+> 那是 LinSy 自己的插件，反編譯自己的作品沒有問題。
+>
+> 舊測試服中的 `MMOItems-6.10.1-...jar` 是 Indyuce 的商業付費插件，
+> **沒有**被反編譯，也沒有抄用其程式碼。只參考過「有哪些功能」這種功能面設計。
+
+版本線也對得上：上游 MMOItems 是 6.x，這裡是 1.8 → 1.9 → 2.0.1 → 3.2.2，
+是獨立的實作。
+
+**代價要講清楚**：反編譯產物缺少註解、泛型資訊與區域變數名稱。
+`D:\RPGSystem\` 底下有較新的手寫樹（MMOItems 19 檔、MythicCore 12 檔），
+但都只是部分重寫，還沒取代這裡的完整版本。

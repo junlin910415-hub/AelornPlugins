@@ -1,0 +1,21 @@
+name: MythicCore
+version: '2.1.1'
+main: tw.linsy.aelorn.mythiccore.MythicCorePlugin
+api-version: '26.2'
+author: LinSy
+description: 艾洛恩 MMORPG 的屬性、傷害、套裝、詞綴與能力核心。
+folia-supported: true
+softdepend: [RPGCore, MythicLib, MMOCore, MythicMobs, PlaceholderAPI, Vault, WorldGuard, AuraSkills]
+
+commands:
+  mythiccore:
+    description: MythicCore MMORPG 核心指令。
+    aliases: [mycore, aelorncore]
+    usage: /mythiccore [stats|classes|skills|elements|cadence|economy|combo|simulate|selftest|reload]
+    permission: mythiccore.use
+
+permissions:
+  mythiccore.use:
+    default: op
+  mythiccore.admin:
+    default: op
