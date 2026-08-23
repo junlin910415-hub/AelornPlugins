@@ -22,8 +22,6 @@ final class BridgeAuditor {
         List<Entry> entries = new ArrayList<>();
         PluginManager pluginManager = plugin.getServer().getPluginManager();
         checkPlugin(entries, pluginManager, "DiscordSRV");
-        checkPlugin(entries, pluginManager, "InteractiveChat");
-        checkPlugin(entries, pluginManager, "InteractiveChatDiscordSrvAddon");
 
         DiscordSRV discordSrv = DiscordSRV.getPlugin();
         if (DiscordSRV.isReady && discordSrv.getJda() != null) {
@@ -49,9 +47,6 @@ final class BridgeAuditor {
 
         File pluginsFolder = plugin.getDataFolder().getParentFile();
         auditDiscordSrvConfig(entries, new File(pluginsFolder, "DiscordSRV/config.yml"), settings);
-        auditInteractiveChatConfig(entries, new File(pluginsFolder, "InteractiveChat/config.yml"), settings);
-        auditAddonConfig(entries, new File(pluginsFolder, "InteractiveChatDiscordSrvAddon/config.yml"));
-        auditResourcePack(entries, pluginsFolder, settings);
         return new Report(List.copyOf(entries));
     }
 
@@ -131,64 +126,8 @@ final class BridgeAuditor {
         }
     }
 
-    private static void auditInteractiveChatConfig(List<Entry> entries, File file, BridgeSettings settings) {
-        if (!file.isFile()) {
-            entries.add(Entry.fail("InteractiveChat config.yml is missing."));
-            return;
-        }
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        int maxPlaceholders = config.getInt("Settings.MaxPlaceholders", -1);
-        if (maxPlaceholders >= 1 && maxPlaceholders <= settings.maxSharePlaceholders()) {
-            entries.add(Entry.pass("InteractiveChat placeholder limit is enabled."));
-        } else {
-            entries.add(Entry.warn("InteractiveChat placeholder limit is not optimized."));
-        }
-        expectAtLeast(entries, config, "ItemDisplay.Item.Cooldown", 2);
-        expectAtLeast(entries, config, "ItemDisplay.Inventory.Cooldown", 8);
-        expectAtLeast(entries, config, "ItemDisplay.EnderChest.Cooldown", 12);
-    }
 
-    private static void auditAddonConfig(List<Entry> entries, File file) {
-        if (!file.isFile()) {
-            entries.add(Entry.fail("InteractiveChatDiscordSrvAddon config.yml is missing."));
-            return;
-        }
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        expectFalse(entries, config, "DiscordCommands.GlobalSettings.RespondToCommandsInInvalidChannels");
-        expectFalse(entries, config, "DiscordCommands.ShareItem.AllowAsOthers");
-        expectFalse(entries, config, "DiscordCommands.ShareInventory.AllowAsOthers");
-        expectFalse(entries, config, "DiscordCommands.ShareEnderChest.AllowAsOthers");
-        expectTrue(entries, config, "DiscordMention.SuppressDiscordPings");
-        expectTrue(entries, config, "DiscordAttachments.RestrictImageUrl.Enabled");
-        int rendererThreads = config.getInt("Settings.RendererSettings.RendererThreads", -1);
-        if (rendererThreads >= 1 && rendererThreads <= 4) {
-            entries.add(Entry.pass("Addon renderer thread count is bounded."));
-        } else {
-            entries.add(Entry.warn("Addon renderer thread count should be between 1 and 4."));
-        }
-    }
 
-    private static void auditResourcePack(List<Entry> entries, File pluginsFolder, BridgeSettings settings) {
-        if (!settings.resourcePackAuditEnabled()) {
-            return;
-        }
-        try {
-            ResourcePackSynchronizer.Result result = ResourcePackSynchronizer.synchronize(
-                pluginsFolder.toPath(), settings.resourcePackSource(), settings.resourcePackCopy(),
-                settings.resourcePackAuditEnabled(), false);
-            switch (result.status()) {
-                case CURRENT -> entries.add(Entry.pass("Addon resource pack content matches the Nexo/Aeloria source."));
-                case SOURCE_MISSING -> entries.add(Entry.warn("Nexo/Aeloria source resource pack is missing."));
-                case PENDING_RESTART -> entries.add(Entry.warn("Addon resource pack differs and is pending a safe restart."));
-                case LOCKED -> entries.add(Entry.warn("Addon resource pack is locked and could not be audited."));
-                case DISABLED -> entries.add(Entry.pass("Resource pack synchronization is disabled."));
-                case UPDATED -> entries.add(Entry.pass("Addon resource pack content was synchronized."));
-                case FAILED -> entries.add(Entry.warn("Addon resource pack audit failed."));
-            }
-        } catch (IOException exception) {
-            entries.add(Entry.warn("Addon resource pack audit failed: " + exception.getMessage()));
-        }
-    }
 
     private static void expectTrue(List<Entry> entries, YamlConfiguration config, String path) {
         if (config.getBoolean(path, false)) {

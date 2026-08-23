@@ -24,7 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AelornDiscordBridgePlugin extends JavaPlugin implements CommandExecutor, TabCompleter {
 
-    private static final List<String> SUBCOMMANDS = List.of("status", "audit", "reload", "syncpack");
+    private static final List<String> SUBCOMMANDS = List.of("status", "audit", "reload");
 
     private final BridgeMetrics metrics = new BridgeMetrics();
     private final DiscordEvents discordEvents = new DiscordEvents();
@@ -33,22 +33,17 @@ public final class AelornDiscordBridgePlugin extends JavaPlugin implements Comma
     private WindowRateLimiter discordLimiter;
     private WindowRateLimiter shareLimiter;
     private WindowRateLimiter noticeLimiter;
-    private volatile ResourcePackSynchronizer.Result lastPackSync;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
         reloadBridgeSettings();
-        // Must run synchronously: this plugin loads before InteractiveChatDiscordSrvAddon
-        // (plugin.yml loadbefore) so the pack copy has to land before the addon reads it.
-        synchronizeResourcePack(true);
         PluginCommand command = Objects.requireNonNull(getCommand("aelornbridge"),
             "aelornbridge command is missing from plugin.yml");
         command.setExecutor(this);
         command.setTabCompleter(this);
         DiscordSRV.api.subscribe(discordEvents);
         getLogger().info("Subscribed to DiscordSRV API events.");
-        schedulePostStartupResourceAudit();
         if (DiscordSRV.isReady) {
             scheduleAudit("enable");
         } else {
@@ -141,15 +136,7 @@ public final class AelornDiscordBridgePlugin extends JavaPlugin implements Comma
                 sender.sendMessage(color("&aAelornDiscordBridge configuration reloaded."));
                 scheduleAudit("reload");
             }
-            case "syncpack" -> {
-                sender.sendMessage(color("&eChecking the Nexo/Aeloria resource pack asynchronously..."));
-                getServer().getAsyncScheduler().runNow(this, task -> {
-                    boolean addonLoaded = getServer().getPluginManager().isPluginEnabled("InteractiveChatDiscordSrvAddon");
-                    ResourcePackSynchronizer.Result result = synchronizeResourcePack(!addonLoaded);
-                    sendMessageSafely(sender, describeResourcePackResult(result));
-                });
-            }
-            default -> sender.sendMessage(color("&eUsage: /" + label + " <status|audit|reload|syncpack>"));
+            default -> sender.sendMessage(color("&eUsage: /" + label + " <status|audit|reload>"));
         }
         return true;
     }
@@ -185,65 +172,14 @@ public final class AelornDiscordBridgePlugin extends JavaPlugin implements Comma
         sender.sendMessage(color("&7Discord: &a" + snapshot.discordForwarded()
             + " forwarded &8/ &c" + snapshot.discordBlocked() + " blocked"));
         sender.sendMessage(color("&7Interactive shares: &f" + snapshot.interactiveShares()));
-        ResourcePackSynchronizer.Result packSync = lastPackSync;
-        if (packSync != null) {
-            sender.sendMessage(color("&7Resource pack: &f" + packSync.status()));
-        }
     }
 
     private String color(String text) {
         return ChatColor.translateAlternateColorCodes('&', text);
     }
 
-    private ResourcePackSynchronizer.Result synchronizeResourcePack(boolean allowWrite) {
-        try {
-            ResourcePackSynchronizer.Result result = ResourcePackSynchronizer.synchronize(
-                getDataFolder().getParentFile().toPath(), settings.resourcePackSource(),
-                settings.resourcePackCopy(), settings.resourcePackAuditEnabled(), allowWrite);
-            lastPackSync = result;
-            if (result.changed()) {
-                getLogger().info("Synchronized the Nexo/Aeloria resource pack for Discord rendering ("
-                    + result.bytes() + " bytes).");
-            }
-            return result;
-        } catch (IOException exception) {
-            getLogger().log(Level.WARNING, "Resource pack synchronization failed.", exception);
-            ResourcePackSynchronizer.Result failed =
-                new ResourcePackSynchronizer.Result(ResourcePackSynchronizer.Status.FAILED, 0L);
-            lastPackSync = failed;
-            return failed;
-        }
-    }
 
-    private void schedulePostStartupResourceAudit() {
-        getServer().getAsyncScheduler().runDelayed(this, task -> {
-            ResourcePackSynchronizer.Result result = synchronizeResourcePack(false);
-            switch (result.status()) {
-                case SOURCE_MISSING -> getLogger().warning(
-                    "Nexo/Aeloria resource pack is unavailable; Discord textures may be incomplete.");
-                case PENDING_RESTART -> getLogger().warning(
-                    "Nexo/Aeloria resource pack changed after the addon loaded; it will be synchronized before the addon on the next restart.");
-                case LOCKED -> getLogger().warning(
-                    "Addon resource pack is locked; keeping the current copy until the next restart.");
-                case FAILED -> getLogger().warning(
-                    "Resource pack audit failed; keeping the current addon copy.");
-                default -> {
-                }
-            }
-        }, 20L, TimeUnit.SECONDS);
-    }
 
-    private String describeResourcePackResult(ResourcePackSynchronizer.Result result) {
-        return switch (result.status()) {
-            case SOURCE_MISSING -> "&cNexo/Aeloria resource pack is missing.";
-            case PENDING_RESTART -> "&eNexo/Aeloria changed after the addon loaded; restart to synchronize safely.";
-            case LOCKED -> "&cAddon resource pack is locked; the current copy was kept unchanged.";
-            case FAILED -> "&cResource pack synchronization failed; check the server log.";
-            case UPDATED -> "&aNexo/Aeloria resource pack copied and verified.";
-            case CURRENT -> "&aAddon resource pack already matches Nexo/Aeloria.";
-            case DISABLED -> "&eResource pack synchronization is disabled.";
-        };
-    }
 
     private void sendMessageSafely(CommandSender sender, String message) {
         String colored = color(message);

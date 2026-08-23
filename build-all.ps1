@@ -151,7 +151,7 @@ $Projects = @(
     # joml 走 LibCp:物品的位移/旋轉計算用到,但它不在無核心的基礎 classpath 裡。
     @{ Name = "AelornItems";         Jar = "AelornItems-3.2.2-AELORN-NEXO_26.2";                    ExtraCp = @("MythicCore-*.jar", "RPGCore-*.jar"); Core = $true; LibCp = @("org\joml\joml\1.10.9\joml-1.10.9.jar") },
     @{ Name = "RPGCoreMythicBridge"; Jar = "RPGCoreMythicBridge-0.2.0_26.2";                       ExtraCp = @("MythicCore-*.jar", "RPGCore-*.jar") },
-    @{ Name = "AelornDiscordBridge"; Jar = "AelornDiscordBridge-3.0.0_26.2";           ExtraCp = @("DiscordSRV-*.jar") },
+    @{ Name = "AelornDiscordBridge"; Jar = "AelornDiscordBridge-4.0.0_26.2";           ExtraCp = @("DiscordSRV-*.jar") },
     @{ Name = "AelornQuestBridge";   Jar = "AelornQuestBridge-3.1.0_26.2";             ExtraCp = @("PlaceholderAPI-*.jar"); Core = $true },
     @{ Name = "AelornHolograms";     Jar = "AelornHolograms-1.1.0_26.2";                 ExtraCp = @(); Core = $true },
     # AelornStore 只與 Vault 編譯期相依；JDBC 驅動走 java.sql + Class.forName，不進 classpath。
