@@ -108,7 +108,37 @@ Kotlin 插件**不必自己宣告 kotlin-stdlib**，`depend: [AelornLibKt]` 就�
 
 ## 授權
 
-**尚未選定。** 見 `LICENSE`。在選定之前，這份程式碼沒有授予任何使用權限。
+**Apache License 2.0** —— 全文見 `LICENSE`，著作權宣告見 `NOTICE`。
+
+白話版：可以自由使用、修改、散布，包含閉源商用。三個義務：
+
+1. 保留 `LICENSE` 與 `NOTICE`
+2. 標示你改過哪些檔案
+3. 不得使用「艾洛恩／AELORN」作為你自己產品的品牌背書
+
+另外它**明確授予專利授權**，並在你對貢獻者提出專利訴訟時自動終止 ——
+這是 Apache-2.0 相對 MIT 多出來的保護。
+
+原始碼檔案目前**沒有**逐檔加上授權標頭。Apache-2.0 的附錄建議加，但不強制；
+`LICENSE` + `NOTICE` 已構成完整有效的授權宣告。要加的話標準格式是：
+
+```java
+/*
+ * Copyright 2026 LinSy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+```
 
 ---
 

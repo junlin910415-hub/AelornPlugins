@@ -1,0 +1,23 @@
+艾洛恩 AELORN — Minecraft 插件
+Copyright 2026 LinSy
+
+本產品包含由 LinSy 開發的軟體。
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+---
+
+本倉庫**不含**任何第三方的原始碼。編譯需要的第三方 JAR
+（Paper/Purpur API、ProtocolLib、PacketEvents、PlaceholderAPI、
+MythicMobs、ModelEngine、Nexo 等）由使用者自己的伺服器樹提供，
+各自適用其原作者的授權條款。

@@ -63,6 +63,23 @@ public final class RpgScheduler {
       Bukkit.getGlobalRegionScheduler().execute(this.plugin, task);
    }
 
+   /**
+    * 全域定時任務。
+    *
+    * <p>簽章與實機 0.26.0 的 class 一致（javap 取得）：吃的是
+    * {@code Consumer<ScheduledTask>} 而不是 {@code Runnable}，因為週期任務通常需要
+    * 拿到自己的 handle 才能在條件滿足時自我取消。
+    *
+    * <p>登記進 {@code repeatingTasks} 是必要的 —— {@link #shutdown()} 靠那份集合
+    * 在插件停用時收掉所有週期任務，漏登記的任務會在插件卸載後繼續跑，
+    * 而且是對著已經失效的 class loader 跑。
+    */
+   public ScheduledTask runGlobalAtFixedRate(Consumer<ScheduledTask> task, long initialDelayTicks, long periodTicks) {
+      ScheduledTask scheduled = Bukkit.getGlobalRegionScheduler().runAtFixedRate(this.plugin, task, Math.max(1L, initialDelayTicks), Math.max(1L, periodTicks));
+      this.repeatingTasks.add(scheduled);
+      return scheduled;
+   }
+
    public ScheduledTask runGlobalLater(Runnable task, long delayTicks) {
       return Bukkit.getGlobalRegionScheduler().runDelayed(this.plugin, (ignored) -> task.run(), Math.max(1L, delayTicks));
    }

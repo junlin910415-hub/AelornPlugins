@@ -52,3 +52,4 @@ final class AeloriaHudGlyphProvider implements HudGlyphProvider {
    private record Glyph(int codePoint, Key font) {
    }
 }
+

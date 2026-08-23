@@ -27,3 +27,4 @@ final class NexoCustomItemProvider implements CustomItemProvider {
       return NexoItems.optionalItemFromId(nexoId).map(builder -> builder.build());
    }
 }
+

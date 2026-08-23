@@ -34,3 +34,4 @@ public final class HudGlyphProviders {
       return new AeloriaHudGlyphProvider(logger, glyphs);
    }
 }
+

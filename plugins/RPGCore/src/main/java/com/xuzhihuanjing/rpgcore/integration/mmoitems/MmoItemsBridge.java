@@ -17,244 +17,211 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 public final class MmoItemsBridge {
-   private static final String API_CLASS = "tw.linsy.aelorn.mmoitems.api.MMOItemsApi";
-   private final PluginManager pluginManager;
-   private final Logger logger;
-   private boolean warned;
+    private static final String API_CLASS = "tw.linsy.aelorn.mmoitems.api.MMOItemsApi";
+    private final PluginManager pluginManager;
+    private final Logger logger;
+    private boolean warned;
 
-   public MmoItemsBridge(PluginManager pluginManager, Logger logger) {
-      this.pluginManager = pluginManager;
-      this.logger = logger;
-   }
+    public MmoItemsBridge(PluginManager pluginManager, Logger logger) {
+        this.pluginManager = pluginManager;
+        this.logger = logger;
+    }
 
-   public boolean available() {
-      Object service = this.provider().orElse(null);
-      if (service == null) {
-         return false;
-      } else {
-         try {
-            return this.invoke(service, "definitions", new Class[0]) instanceof Iterable;
-         } catch (LinkageError | RuntimeException | ReflectiveOperationException exception) {
-            String var10001 = this.rootMessage(exception);
-            this.warn("AelornItems service API is registered but cannot be called: " + var10001);
+    public boolean available() {
+        Object service = provider().orElse(null);
+        if (service == null) {
             return false;
-         }
-      }
-   }
+        }
+        try {
+            return invoke(service, "definitions", new Class<?>[0]) instanceof Iterable<?>;
+        } catch (LinkageError | ReflectiveOperationException | RuntimeException exception) {
+            warn("AelornItems service API is registered but cannot be called: " + rootMessage(exception));
+            return false;
+        }
+    }
 
-   public Optional<Identity> inspect(ItemStack item) {
-      if (item != null && !item.getType().isAir()) {
-         try {
-            Object provider = this.provider().orElse(null);
-            if (provider == null) {
-               return Optional.empty();
-            } else {
-               Object result = this.invoke(provider, "inspect", new Class[]{ItemStack.class}, item);
-               if (result instanceof Optional) {
-                  Optional<?> optional = (Optional)result;
-                  if (!optional.isEmpty()) {
-                     Object identity = optional.get();
-                     return Optional.of(new Identity(this.string(identity, "type"), this.string(identity, "id"), this.string(identity, "tier"), this.number(identity, "level").intValue(), this.string(identity, "requiredClass"), this.number(identity, "requiredLevel").intValue(), this.stats(identity), this.integerMap(identity, "skillRequirements"), this.stringList(identity, "questRequirements"), this.optionalString(identity, "majorIdentification")));
-                  }
-               }
-
-               return Optional.empty();
-            }
-         } catch (LinkageError | RuntimeException | ReflectiveOperationException exception) {
-            String var10001 = this.rootMessage(exception);
-            this.warn("Could not inspect AelornItems item through its service API: " + var10001);
+    public Optional<Identity> inspect(ItemStack item) {
+        if (item == null || item.getType().isAir()) {
             return Optional.empty();
-         }
-      } else {
-         return Optional.empty();
-      }
-   }
+        }
+        try {
+            Object service = provider().orElse(null);
+            if (service == null) {
+                return Optional.empty();
+            }
+            Object result = invoke(service, "inspect", new Class<?>[] { ItemStack.class }, item);
+            if (!(result instanceof Optional<?> optional) || optional.isEmpty()) {
+                return Optional.empty();
+            }
+            Object identity = optional.get();
+            return Optional.of(new Identity(
+                    string(identity, "type"),
+                    string(identity, "id"),
+                    string(identity, "tier"),
+                    number(identity, "level").intValue(),
+                    string(identity, "requiredClass"),
+                    number(identity, "requiredLevel").intValue(),
+                    stats(identity),
+                    integerMap(identity, "skillRequirements"),
+                    stringList(identity, "questRequirements"),
+                    optionalString(identity, "majorIdentification")));
+        } catch (LinkageError | ReflectiveOperationException | RuntimeException exception) {
+            warn("Could not inspect AelornItems item through its service API: " + rootMessage(exception));
+            return Optional.empty();
+        }
+    }
 
-   private Optional<Object> provider() {
-      Plugin plugin = this.pluginManager.getPlugin("AelornItems");
-      if (plugin != null && plugin.isEnabled()) {
-         try {
+    private Optional<Object> provider() {
+        Plugin plugin = pluginManager.getPlugin("AelornItems");
+        if (plugin == null || !plugin.isEnabled()) {
+            return Optional.empty();
+        }
+        try {
             Class<?> apiType = Class.forName(API_CLASS, true, plugin.getClass().getClassLoader());
             RegisteredServiceProvider<?> registration = Bukkit.getServicesManager().getRegistration(apiType);
             return registration == null ? Optional.empty() : Optional.ofNullable(registration.getProvider());
-         } catch (LinkageError | RuntimeException | ClassNotFoundException exception) {
-            String var10001 = this.rootMessage(exception);
-            this.warn("AelornItems service API is not ready: " + var10001);
+        } catch (ClassNotFoundException | LinkageError | RuntimeException exception) {
+            warn("AelornItems service API is not ready: " + rootMessage(exception));
             return Optional.empty();
-         }
-      } else {
-         return Optional.empty();
-      }
-   }
+        }
+    }
 
-   private Map<String, Double> stats(Object identity) throws ReflectiveOperationException {
-      Object raw = this.invoke(identity, "stats", new Class[0]);
-      if (raw instanceof Map<?, ?> map) {
-         LinkedHashMap converted = new LinkedHashMap();
-
-         for(Map.Entry<?, ?> entry : map.entrySet()) {
-            Object var9 = entry.getKey();
-            if (var9 instanceof String key) {
-               var9 = entry.getValue();
-               if (var9 instanceof Number value) {
-                  if (Double.isFinite(value.doubleValue())) {
-                     converted.put(key, value.doubleValue());
-                  }
-               }
+    private Map<String, Double> stats(Object identity) throws ReflectiveOperationException {
+        Object raw = invoke(identity, "stats", new Class<?>[0]);
+        if (!(raw instanceof Map<?, ?> map)) {
+            return Map.of();
+        }
+        LinkedHashMap<String, Double> converted = new LinkedHashMap<>();
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
+            if (entry.getKey() instanceof String key
+                    && entry.getValue() instanceof Number value
+                    && Double.isFinite(value.doubleValue())) {
+                converted.put(key, value.doubleValue());
             }
-         }
+        }
+        return Map.copyOf(converted);
+    }
 
-         return converted;
-      } else {
-         return Map.of();
-      }
-   }
-
-   private Map<String, Integer> integerMap(Object identity, String method) throws ReflectiveOperationException {
-      Object raw = this.optionalInvoke(identity, method);
-      if (raw instanceof Map<?, ?> map) {
-         LinkedHashMap converted = new LinkedHashMap();
-
-         for(Map.Entry<?, ?> entry : map.entrySet()) {
-            Object var10 = entry.getKey();
-            if (var10 instanceof String key) {
-               var10 = entry.getValue();
-               if (var10 instanceof Number value) {
-                  converted.put(key, Math.max(0, value.intValue()));
-               }
+    private Map<String, Integer> integerMap(Object identity, String method) throws ReflectiveOperationException {
+        Object raw = optionalInvoke(identity, method);
+        if (!(raw instanceof Map<?, ?> map)) {
+            return Map.of();
+        }
+        LinkedHashMap<String, Integer> converted = new LinkedHashMap<>();
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
+            if (entry.getKey() instanceof String key && entry.getValue() instanceof Number value) {
+                converted.put(key, Math.max(0, value.intValue()));
             }
-         }
+        }
+        return Map.copyOf(converted);
+    }
 
-         return converted;
-      } else {
-         return Map.of();
-      }
-   }
-
-   private List<String> stringList(Object identity, String method) throws ReflectiveOperationException {
-      Object raw = this.optionalInvoke(identity, method);
-      if (raw instanceof Iterable<?> values) {
-         ArrayList converted = new ArrayList();
-
-         for(Object value : values) {
+    private List<String> stringList(Object identity, String method) throws ReflectiveOperationException {
+        Object raw = optionalInvoke(identity, method);
+        if (!(raw instanceof Iterable<?> values)) {
+            return List.of();
+        }
+        ArrayList<String> converted = new ArrayList<>();
+        for (Object value : values) {
             if (value != null && !value.toString().isBlank()) {
-               converted.add(value.toString());
+                converted.add(value.toString());
             }
-         }
+        }
+        return List.copyOf(converted);
+    }
 
-         return List.copyOf(converted);
-      } else {
-         return List.of();
-      }
-   }
+    private String optionalString(Object identity, String method) throws ReflectiveOperationException {
+        Object value = optionalInvoke(identity, method);
+        return value == null ? "" : value.toString();
+    }
 
-   private String optionalString(Object identity, String method) throws ReflectiveOperationException {
-      Object value = this.optionalInvoke(identity, method);
-      return value == null ? "" : value.toString();
-   }
+    private Object optionalInvoke(Object target, String method) throws ReflectiveOperationException {
+        try {
+            return invoke(target, method, new Class<?>[0]);
+        } catch (NoSuchMethodException ignored) {
+            return null;
+        }
+    }
 
-   private Object optionalInvoke(Object target, String method) throws ReflectiveOperationException {
-      try {
-         return this.invoke(target, method, new Class[0]);
-      } catch (NoSuchMethodException var4) {
-         return null;
-      }
-   }
+    private String string(Object target, String method) throws ReflectiveOperationException {
+        Object value = invoke(target, method, new Class<?>[0]);
+        return value == null ? "" : value.toString();
+    }
 
-   private String string(Object target, String method) throws ReflectiveOperationException {
-      Object value = this.invoke(target, method, new Class[0]);
-      return value == null ? "" : value.toString();
-   }
+    private Number number(Object target, String method) throws ReflectiveOperationException {
+        Object value = invoke(target, method, new Class<?>[0]);
+        return value instanceof Number number ? number : 0;
+    }
 
-   private Number number(Object target, String method) throws ReflectiveOperationException {
-      Object value = this.invoke(target, method, new Class[0]);
-      Object var10000;
-      if (value instanceof Number number) {
-         var10000 = number;
-      } else {
-         var10000 = 0;
-      }
-
-      return (Number)var10000;
-   }
-
-   private Object invoke(Object target, String method, Class<?>[] parameterTypes, Object... arguments) throws ReflectiveOperationException {
-      try {
-         Method reflected = publicContractMethod(target, method, parameterTypes);
-         return reflected.invoke(target, arguments);
-      } catch (InvocationTargetException exception) {
-         Throwable cause = exception.getCause();
-         if (cause instanceof ReflectiveOperationException reflective) {
-            throw reflective;
-         } else if (cause instanceof RuntimeException runtime) {
-            throw runtime;
-         } else {
+    private Object invoke(Object target, String method, Class<?>[] parameterTypes, Object... arguments)
+            throws ReflectiveOperationException {
+        try {
+            Method reflected = publicContractMethod(target, method, parameterTypes);
+            return reflected.invoke(target, arguments);
+        } catch (InvocationTargetException exception) {
+            Throwable cause = exception.getCause();
+            if (cause instanceof ReflectiveOperationException reflective) {
+                throw reflective;
+            }
+            if (cause instanceof RuntimeException runtime) {
+                throw runtime;
+            }
             throw exception;
-         }
-      }
-   }
+        }
+    }
 
-   static Method publicContractMethod(Object target, String method, Class<?>[] parameterTypes) throws NoSuchMethodException {
-      for(Class<?> current = target.getClass(); current != null; current = current.getSuperclass()) {
-         for(Class<?> contract : current.getInterfaces()) {
-            try {
-               Method candidate = contract.getMethod(method, parameterTypes);
-               if (Modifier.isPublic(candidate.getDeclaringClass().getModifiers())) {
-                  return candidate;
-               }
-            } catch (NoSuchMethodException var9) {
+    static Method publicContractMethod(Object target, String method, Class<?>[] parameterTypes)
+            throws NoSuchMethodException {
+        for (Class<?> current = target.getClass(); current != null; current = current.getSuperclass()) {
+            for (Class<?> contract : current.getInterfaces()) {
+                try {
+                    Method candidate = contract.getMethod(method, parameterTypes);
+                    if (Modifier.isPublic(candidate.getDeclaringClass().getModifiers())) {
+                        return candidate;
+                    }
+                } catch (NoSuchMethodException ignored) {
+                    // Try the next public contract.
+                }
             }
-         }
-      }
+        }
+        return target.getClass().getMethod(method, parameterTypes);
+    }
 
-      return target.getClass().getMethod(method, parameterTypes);
-   }
+    private void warn(String message) {
+        if (!warned) {
+            warned = true;
+            logger.warning(message);
+        }
+    }
 
-   private void warn(String message) {
-      if (!this.warned) {
-         this.warned = true;
-         this.logger.warning(message);
-      }
-   }
+    private String rootMessage(Throwable throwable) {
+        Throwable root = throwable instanceof InvocationTargetException invocation && invocation.getCause() != null
+                ? invocation.getCause()
+                : throwable;
+        String message = root.getMessage();
+        return message == null || message.isBlank() ? root.getClass().getSimpleName() : message;
+    }
 
-   private String rootMessage(Throwable throwable) {
-      Throwable var10000;
-      label21: {
-         if (throwable instanceof InvocationTargetException invocation) {
-            if (invocation.getCause() != null) {
-               var10000 = invocation.getCause();
-               break label21;
-            }
-         }
+    public record Identity(
+            String type,
+            String id,
+            String tier,
+            int level,
+            String requiredClass,
+            int requiredLevel,
+            Map<String, Double> stats,
+            Map<String, Integer> skillRequirements,
+            List<String> questRequirements,
+            String majorIdentification) {
 
-         var10000 = throwable;
-      }
+        public Identity {
+            stats = Map.copyOf(stats);
+            skillRequirements = Map.copyOf(skillRequirements);
+            questRequirements = List.copyOf(questRequirements);
+        }
 
-      Throwable root = var10000;
-      String message = root.getMessage();
-      return message != null && !message.isBlank() ? message : root.getClass().getSimpleName();
-   }
-
-   public static record Identity(String type, String id, String tier, int level, String requiredClass, int requiredLevel, Map<String, Double> stats, Map<String, Integer> skillRequirements, List<String> questRequirements, String majorIdentification) {
-      public Identity(String type, String id, String tier, int level, String requiredClass, int requiredLevel, Map<String, Double> stats, Map<String, Integer> skillRequirements, List<String> questRequirements, String majorIdentification) {
-         stats = Map.copyOf(stats);
-         skillRequirements = Map.copyOf(skillRequirements);
-         questRequirements = List.copyOf(questRequirements);
-         this.type = type;
-         this.id = id;
-         this.tier = tier;
-         this.level = level;
-         this.requiredClass = requiredClass;
-         this.requiredLevel = requiredLevel;
-         this.stats = stats;
-         this.skillRequirements = skillRequirements;
-         this.questRequirements = questRequirements;
-         this.majorIdentification = majorIdentification;
-      }
-
-      public String objectiveTarget() {
-         String var10000 = this.type.toUpperCase(Locale.ROOT);
-         return var10000 + ":" + this.id.toUpperCase(Locale.ROOT);
-      }
-   }
+        public String objectiveTarget() {
+            return type.toUpperCase(Locale.ROOT) + ":" + id.toUpperCase(Locale.ROOT);
+        }
+    }
 }

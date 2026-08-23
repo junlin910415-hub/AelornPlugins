@@ -165,7 +165,7 @@ $Projects = @(
     #               的委派層,核心不在時走內建回退,不會 NoClassDefFoundError。
     #  LibCp      — HikariCP 供選用的 SQL 稽核連線池,同樣「在就用、不在就退回」。
     @{ Name = "PluginsManager";      Jar = "PluginsManager-2.0.0_26.2";                        ExtraCp = @(); Core = $true; Release = "25"; LibCp = @("com\zaxxer\HikariCP\6.3.2\HikariCP-6.3.2.jar", "org\slf4j\slf4j-api\2.0.18\slf4j-api-2.0.18.jar"); AdapterRoot = "src\main\java\tw\linsy\aelorn\plugins\nms\impl"; Adapters = @(@{ Family = "26_2"; ServerJars = @("versions\26.2\folia-26.2.jar", "versions\26.2\purpur-26.2.jar") }) },
-    @{ Name = "RPGCore";             Jar = "RPGCore-0.25.0-SNAPSHOT-AELORN-Nexo_26.2"; ExtraCp = @("Nexo-*.jar", "AeloriaHUD-*.jar", "MythicMobsPremium-*.jar", "MythicCore-*.jar", "ModelEngine-*.jar", "PlaceholderAPI-*.jar", "Citizens*.jar") }
+    @{ Name = "RPGCore";             Jar = "RPGCore-0.26.0-SNAPSHOT_26.2"; ExtraCp = @("Nexo-*.jar", "AeloriaHUD-*.jar", "MythicMobsPremium-*.jar", "MythicCore-*.jar", "ModelEngine-*.jar", "PlaceholderAPI-*.jar", "Citizens*.jar") }
 )
 $OnlySet = @($Only | ForEach-Object { $_ -split ',' } | Where-Object { $_ })
 

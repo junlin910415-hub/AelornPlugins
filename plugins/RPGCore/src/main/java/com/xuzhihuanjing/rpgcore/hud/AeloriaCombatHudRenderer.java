@@ -123,3 +123,4 @@ public final class AeloriaCombatHudRenderer implements CombatHudRenderer {
       }
    }
 }
+
