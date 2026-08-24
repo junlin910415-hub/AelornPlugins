@@ -63,7 +63,7 @@ import tw.linsy.aelorn.mythiccore.core.StatRegistry;
 import tw.linsy.aelorn.mythiccore.core.StatSnapshotService;
 
 public final class MythicCorePlugin extends JavaPlugin implements Listener, CommandExecutor, TabCompleter, MythicCoreApi, AttackCadenceApi {
-   private static final String RPG_ABILITY_EVENT = "com.xuzhihuanjing.rpgcore.api.event.RpgAbilityCastEvent";
+   private static final String RPG_ABILITY_EVENT = "tw.linsy.aelorn.rpgcore.api.event.RpgAbilityCastEvent";
    private final StatRegistry statRegistry = new StatRegistry();
    private ItemDataService itemDataService;
    private PlayerClassStateService classStateService;
@@ -369,7 +369,7 @@ public final class MythicCorePlugin extends JavaPlugin implements Listener, Comm
          Plugin var1 = Bukkit.getPluginManager().getPlugin("RPGCore");
          if (var1 != null) {
             try {
-               Class var2 = Class.forName("com.xuzhihuanjing.rpgcore.api.event.RpgAbilityCastEvent", false, var1.getClass().getClassLoader()).asSubclass(Event.class);
+               Class var2 = Class.forName("tw.linsy.aelorn.rpgcore.api.event.RpgAbilityCastEvent", false, var1.getClass().getClassLoader()).asSubclass(Event.class);
                Listener var3 = new Listener() {
                };
                Bukkit.getPluginManager().registerEvent(var2, var3, EventPriority.MONITOR, (var1x, var2x) -> this.classStateService.captureFromEvent(var2x), this, false);

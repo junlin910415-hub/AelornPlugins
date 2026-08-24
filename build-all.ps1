@@ -149,8 +149,9 @@ $Projects = @(
     # Core = $true 起手只是把核心掛上 classpath;實際改用核心的 Messages/ConfigParse
     # 取代自家 config\TextBundle 是後續的事,分開做才看得出哪一步弄壞了什麼。
     # joml 走 LibCp:物品的位移/旋轉計算用到,但它不在無核心的基礎 classpath 裡。
-    @{ Name = "AelornItems";         Jar = "AelornItems-3.2.2-AELORN-NEXO_26.2";                    ExtraCp = @("MythicCore-*.jar", "RPGCore-*.jar"); Core = $true; LibCp = @("org\joml\joml\1.10.9\joml-1.10.9.jar") },
-    @{ Name = "RPGCoreMythicBridge"; Jar = "RPGCoreMythicBridge-0.2.0_26.2";                       ExtraCp = @("MythicCore-*.jar", "RPGCore-*.jar") },
+    @{ Name = "RPGCore";             Jar = "RPGCore-0.26.0-SNAPSHOT_26.2"; ExtraCp = @("Nexo-*.jar", "AeloriaHUD-*.jar", "MythicMobsPremium-*.jar", "MythicCore-*.jar", "ModelEngine-*.jar", "PlaceholderAPI-*.jar", "Citizens*.jar") },
+    @{ Name = "AelornItems";         Jar = "AelornItems-3.2.2-AELORN-NEXO_26.2";                    ExtraCp = @("MythicCore-*.jar"); SiblingCp = @("RPGCore"); Core = $true; LibCp = @("org\joml\joml\1.10.9\joml-1.10.9.jar") },
+    @{ Name = "RPGCoreMythicBridge"; Jar = "RPGCoreMythicBridge-0.2.0_26.2";                       ExtraCp = @("MythicCore-*.jar"); SiblingCp = @("RPGCore") },
     @{ Name = "AelornDiscordBridge"; Jar = "AelornDiscordBridge-4.0.0_26.2";           ExtraCp = @("DiscordSRV-*.jar") },
     @{ Name = "AelornQuestBridge";   Jar = "AelornQuestBridge-3.1.0_26.2";             ExtraCp = @("PlaceholderAPI-*.jar"); Core = $true },
     @{ Name = "AelornHolograms";     Jar = "AelornHolograms-1.1.0_26.2";                 ExtraCp = @(); Core = $true },
@@ -164,8 +165,7 @@ $Projects = @(
     #  Core       — 只是編譯期相依:platform\CoreSched 與 CoreRenderer 是 softdepend
     #               的委派層,核心不在時走內建回退,不會 NoClassDefFoundError。
     #  LibCp      — HikariCP 供選用的 SQL 稽核連線池,同樣「在就用、不在就退回」。
-    @{ Name = "PluginsManager";      Jar = "PluginsManager-2.0.0_26.2";                        ExtraCp = @(); Core = $true; Release = "25"; LibCp = @("com\zaxxer\HikariCP\6.3.2\HikariCP-6.3.2.jar", "org\slf4j\slf4j-api\2.0.18\slf4j-api-2.0.18.jar"); AdapterRoot = "src\main\java\tw\linsy\aelorn\plugins\nms\impl"; Adapters = @(@{ Family = "26_2"; ServerJars = @("versions\26.2\folia-26.2.jar", "versions\26.2\purpur-26.2.jar") }) },
-    @{ Name = "RPGCore";             Jar = "RPGCore-0.26.0-SNAPSHOT_26.2"; ExtraCp = @("Nexo-*.jar", "AeloriaHUD-*.jar", "MythicMobsPremium-*.jar", "MythicCore-*.jar", "ModelEngine-*.jar", "PlaceholderAPI-*.jar", "Citizens*.jar") }
+    @{ Name = "PluginsManager";      Jar = "PluginsManager-2.0.0_26.2";                        ExtraCp = @(); Core = $true; Release = "25"; LibCp = @("com\zaxxer\HikariCP\6.3.2\HikariCP-6.3.2.jar", "org\slf4j\slf4j-api\2.0.18\slf4j-api-2.0.18.jar"); AdapterRoot = "src\main\java\tw\linsy\aelorn\plugins\nms\impl"; Adapters = @(@{ Family = "26_2"; ServerJars = @("versions\26.2\folia-26.2.jar", "versions\26.2\purpur-26.2.jar") }) }
 )
 $OnlySet = @($Only | ForEach-Object { $_ -split ',' } | Where-Object { $_ })
 
@@ -185,7 +185,10 @@ function Resolve-PluginJar([string]$pattern) {
     return $match.FullName
 }
 
+$script:SkippedProjects = @()
+
 foreach ($project in $Projects) {
+    $skipThisProject = $false
     $name = $project.Name
     if ($OnlySet.Count -gt 0 -and $name -notin $OnlySet) { continue }
     $projectDir = Join-Path $Root $name
@@ -221,6 +224,29 @@ foreach ($project in $Projects) {
     # KotlinExt = $true:同樣的道理,但相依的是 Kotlin 擴充面。分開兩個旗標而不是
     # 讓 Core 一併帶上,是因為絕大多數專案是純 Java,不該把 Kotlin 擴充面塞進它們的
     # classpath —— 那會讓「不小心用到 Kotlin API」變成編得過、執行期才炸。
+    # SiblingCp:對同一個倉庫裡、這次剛建好的其他專案編譯。
+    # 和 Core/KotlinExt 同一個道理,只是可以指名任意專案。用它而不是 ExtraCp,
+    # 是因為 ExtraCp 去 <ServerRoot>\plugins\ 找 —— 那會讓「倉庫內部的相依」
+    # 取決於使用者的伺服器剛好裝了哪一版，而那一版通常比倉庫舊。
+    foreach ($sibling in $project.SiblingCp) {
+        $siblingEntry = $Projects | Where-Object { $_.Name -eq $sibling } | Select-Object -First 1
+        if ($null -eq $siblingEntry) {
+            throw "$name 的 SiblingCp 指向不存在的專案 $sibling。"
+        }
+        $siblingJar = Join-Path $Root ($sibling + "/build/libs/" + $siblingEntry.Jar + ".jar")
+        if (-not (Test-Path -LiteralPath $siblingJar)) {
+            # 被依賴的專案自己被跳過了（多半是它也缺第三方 JAR）。
+            # 這一支跟著跳過,而不是丟一個看不出根因的編譯錯誤。
+            Write-Host "   略過 $name -- 相依的 $sibling 沒有建置產物" -ForegroundColor DarkYellow
+            $script:SkippedProjects += [pscustomobject] @{ Name = $name; Missing = @("$sibling（同倉庫，未建置）") }
+            $skipThisProject = $true
+            break
+        }
+        Write-Host "   sib:  $(Split-Path -Leaf $siblingJar)" -ForegroundColor DarkGray
+        $cp = $cp + ";" + $siblingJar
+    }
+    if ($skipThisProject) { continue }
+
     if ($project.KotlinExt) {
         $ktEntry = $Projects | Where-Object { $_.Name -eq "AelornLibKt" } | Select-Object -First 1
         $ktJar = Join-Path $Root ("AelornLibKt/build/libs/" + $ktEntry.Jar + ".jar")
@@ -230,10 +256,32 @@ foreach ($project in $Projects) {
         Write-Host "   kt:   $(Split-Path -Leaf $ktJar)" -ForegroundColor DarkGray
         $cp = $cp + ";" + $ktJar
     }
+    # 第三方 JAR 缺席的處理:整批建置時跳過該專案,指名建置時硬失敗。
+    #
+    # 理由是這兩種情境的意圖不同。跑整批的人想要「能建的都建出來」——
+    # 為了一支需要付費插件的專案讓另外 15 支一起失敗，是把工具的方便性
+    # 換成了一個沒有人受益的嚴格。而 -Only 指名某支卻建不了，安靜跳過
+    # 會讓人以為建好了，那是更糟的失敗。
+    $missingDeps = @()
     foreach ($extra in $project.ExtraCp) {
-        $resolved = Resolve-PluginJar $extra
+        $resolved = $null
+        try {
+            $resolved = Resolve-PluginJar $extra
+        } catch {
+            $missingDeps += $extra
+            continue
+        }
         Write-Host "   dep: $(Split-Path -Leaf $resolved)" -ForegroundColor DarkGray
         $cp = $cp + ";" + $resolved
+    }
+    if ($missingDeps.Count -gt 0) {
+        $detail = "$name 需要這些第三方 JAR，但 $Plugins 裡找不到: " + ($missingDeps -join '、')
+        if ($Only.Count -gt 0) {
+            throw "$detail。（-Only 指名的專案不會被跳過。）"
+        }
+        Write-Host "   略過 $name -- $detail" -ForegroundColor DarkYellow
+        $script:SkippedProjects += [pscustomobject] @{ Name = $name; Missing = $missingDeps }
+        continue
     }
     # LibCp:伺服器 libraries/ 樹裡的相依,只在編譯期需要。
     # 執行期由伺服器或插件自己的 library loader 提供;不在的話程式碼必須降級,
@@ -457,4 +505,15 @@ foreach ($project in $Projects) {
     Write-Host "   -> $outJar" -ForegroundColor Green
 }
 
-Write-Host "`nAll plugins built." -ForegroundColor Green
+if ($script:SkippedProjects.Count -gt 0) {
+    Write-Host "`n略過 $($script:SkippedProjects.Count) 個專案（缺第三方 JAR）:" -ForegroundColor DarkYellow
+    foreach ($skipped in $script:SkippedProjects) {
+        Write-Host "   $($skipped.Name): $($skipped.Missing -join '、')" -ForegroundColor DarkYellow
+    }
+    Write-Host "   這些 JAR 要放進 <ServerRoot>\plugins\。部分是付費插件，倉庫不會、也不能附帶。" -ForegroundColor DarkYellow
+}
+if ($script:SkippedProjects.Count -gt 0) {
+    Write-Host "`n$($Projects.Count - $script:SkippedProjects.Count)/$($Projects.Count) 個專案建置完成（$($script:SkippedProjects.Count) 個跳過）。" -ForegroundColor Green
+} else {
+    Write-Host "`nAll plugins built." -ForegroundColor Green
+}

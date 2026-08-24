@@ -1,8 +1,8 @@
 package tw.linsy.aelorn.mmoitems.lore;
 
-import com.xuzhihuanjing.rpgcore.equipment.EquipmentRequirementReport;
-import com.xuzhihuanjing.rpgcore.equipment.EquipmentService;
-import com.xuzhihuanjing.rpgcore.service.CharacterService;
+import tw.linsy.aelorn.rpgcore.equipment.EquipmentRequirementReport;
+import tw.linsy.aelorn.rpgcore.equipment.EquipmentService;
+import tw.linsy.aelorn.rpgcore.service.CharacterService;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;

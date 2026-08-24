@@ -1,7 +1,7 @@
 package tw.linsy.aelorn.mmoitems;
 
-import com.xuzhihuanjing.rpgcore.equipment.EquipmentRequirementReport;
-import com.xuzhihuanjing.rpgcore.equipment.EquipmentRequirementReport.Kind;
+import tw.linsy.aelorn.rpgcore.equipment.EquipmentRequirementReport;
+import tw.linsy.aelorn.rpgcore.equipment.EquipmentRequirementReport.Kind;
 import io.papermc.paper.threadedregions.scheduler.EntityScheduler;
 import java.io.File;
 import java.io.IOException;

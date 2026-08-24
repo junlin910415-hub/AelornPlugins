@@ -1,6 +1,6 @@
 ﻿name: RPGCore
 version: '0.26.0-SNAPSHOT_26.2'
-main: com.xuzhihuanjing.rpgcore.RpgCorePlugin
+main: tw.linsy.aelorn.rpgcore.RpgCorePlugin
 api-version: '1.21'
 folia-supported: true
 author: LinSy

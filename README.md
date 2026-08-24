@@ -76,9 +76,28 @@ powershell -ExecutionPolicy Bypass -File build-all.ps1 -ServerRoot "..." -Only A
 ```
 
 需要 **JDK 25**（AelornLib 與 PluginsManager 走 `--release 25`，其餘 21）。
-Kotlin 專案另外需要 kotlinc，路徑在 `build-all.ps1` 頂部。
+Kotlin 專案另外需要 kotlinc（可用 `AELORN_KOTLINC` 指定，預設找 IntelliJ 隨附的那份）。
+`-ServerRoot` 也可以用環境變數 `AELORN_SERVER_ROOT` 給。
 
 單一插件也可以自己建：`plugins/AelornLib/build.ps1` 會自己往上找伺服器樹。
+
+### 沒有付費插件也能建 12/15
+
+`RPGCore`、`AelornItems`、`RPGCoreMythicBridge` 的編譯 classpath 需要
+MythicMobsPremium、ModelEngine、Nexo、AeloriaHUD、Citizens ——
+**這些是第三方（部分付費）插件，本倉庫不會、也不能附帶。**
+
+缺了它們**不會讓整批建置失敗**：那三支會被跳過並在收尾列出缺什麼，其餘 12 支照建。
+
+```
+略過 3 個專案（缺第三方 JAR）:
+   RPGCore: Nexo-*.jar、AeloriaHUD-*.jar、MythicMobsPremium-*.jar、ModelEngine-*.jar、Citizens*.jar
+   AelornItems: RPGCore（同倉庫，未建置）
+   RPGCoreMythicBridge: RPGCore（同倉庫，未建置）
+12/15 個專案建置完成（3 個跳過）。
+```
+
+`-Only` 指名某一支卻缺件時**會硬失敗** —— 指名要建卻安靜跳過，會讓人以為建好了。
 
 ---
 
@@ -92,6 +111,10 @@ AelornLibKt ←── 純 Kotlin 插件（depend）
 
 AelornLib 的 `plugin.yml` 有 `provides: [AelornCore]`（舊名遷移橋）。
 Kotlin 插件**不必自己宣告 kotlin-stdlib**，`depend: [AelornLibKt]` 就會拿到。
+
+倉庫**內部**的相依（AelornItems / RPGCoreMythicBridge 需要 RPGCore）走 `SiblingCp`，
+指向這次建出來的 jar，而不是 `<ServerRoot>\plugins\` 裡那個。
+後者會讓建置結果取決於使用者的伺服器剛好裝了哪一版 —— 通常比倉庫舊。
 
 ---
 
@@ -144,10 +167,17 @@ Kotlin 插件**不必自己宣告 kotlin-stdlib**，`depend: [AelornLibKt]` 就�
 
 ## 兩件開源前要知道的事
 
-### RPGCore 的原始碼目前分散在兩棵樹
+### RPGCore 曾分散在兩棵樹，已合併
 
-兩棵都建不出正式服在跑的 0.26.0。詳細數字與衝突清單見
-`plugins/RPGCORE-STATUS.md` —— **開源前請先讀那一份**。
+兩棵都建不出正式服在跑的 0.26.0。2026-08-23 已合併為單一棵樹，
+怎麼裁定衝突的完整紀錄見 `plugins/RPGCORE-STATUS.md`。
+
+套件也從 `com.xuzhihuanjing.rpgcore`（虛之幻境，早期品牌遺留）改成
+`tw.linsy.aelorn.rpgcore`，與 CONVENTIONS.md 的命名規則一致。
+`RPGCoreMythicBridge` 的 `com.xuzhihuanjing.rpgbridge` 同理。
+
+> **要部署的話四支必須一起換**：RPGCore、RPGCoreMythicBridge、AelornItems、MythicCore。
+> 舊 jar 找的是舊套件名，混著部署會 `NoClassDefFoundError`。
 
 ### AelornItems 與 MythicCore 的原始碼是反編譯回來的
 
