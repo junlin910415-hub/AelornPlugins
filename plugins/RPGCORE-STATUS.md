@@ -50,21 +50,72 @@ integration/nexo/HudGlyphProvider.java     同上 —— 那是 Oraxen 時代的
 的既有寫法補回去，包含登記進 `repeatingTasks` —— 漏登記的週期任務會在插件卸載後
 繼續對著失效的 class loader 跑。
 
-## 結果：261 / 263
+## 結果：頂層 261 / 263，含內部類別 382 / 388
 
 ```
-實機 263 個類別｜合併後 261 個
-實機有、合併後沒有：2
-    integration/oraxen/CustomItemProvider.class
-    integration/oraxen/HudGlyphProvider.class
-合併後有、實機沒有：0
+             實機    合併後   缺
+頂層類別      263     261      2      <- 早期只量到這一層
+所有 .class   388     382      6
 ```
 
-缺的那兩個是 **Oraxen 整合**。Oraxen 早已被 Nexo 取代，實機 `plugins/` 底下
-只剩一個空的 `Oraxen` 資料夾、沒有 jar —— 那是實機 jar 裡的死程式碼，
-兩棵樹都沒有它的原始碼，也不值得為一個已經下架的系統重建。
+**只量頂層類別會把內部類別的落差整個藏起來。** 用 `unzip -l` 對整個 jar
+逐一比對才看得到真實數字：
 
-**所以合併後的樹比實機那個 jar 乾淨**，不是比它少東西。
+```
+integration/oraxen/CustomItemProvider.class    死程式碼（見下）
+integration/oraxen/HudGlyphProvider.class      死程式碼（見下）
+RpgCorePlugin$1.class                          真缺口
+RpgCorePlugin$2.class                          真缺口
+RpgCorePlugin$3.class                          真缺口
+combat/StatService$StatDecorator.class         真缺口
+```
+
+### 兩個 Oraxen 是死程式碼
+
+Oraxen 早已被 Nexo 取代，實機 `plugins/` 底下只剩一個空的 `Oraxen` 資料夾、
+沒有 jar。兩棵樹都沒有它的原始碼，也不值得為一個已下架的系統重建。
+
+### 四個是真缺口 —— 原始碼比實機舊
+
+| 缺的類別 | 是什麼 |
+|---|---|
+| `RpgCorePlugin$1` | 匿名 `ReagentService.ExternalReagent` —— 法力／試劑整合接線 |
+| `RpgCorePlugin$2` | 匿名 `SkillContext.Hooks` —— 傷害／治療／光環接線 |
+| `RpgCorePlugin$3` | 匿名 `SkillCostGate` —— 技能耗費檢查接線 |
+| `combat.StatService$StatDecorator` | 公開介面 + `setDecorator()` 擴充點 |
+
+跟 `RpgScheduler.runGlobalAtFixedRate` 同一類：**實機有、兩棵原始碼樹都沒有**。
+合併並沒有製造這些缺口，只是讓它們第一次被量出來。
+
+## EquipmentService 已對齊實機（2026-08-26）
+
+原始碼是**重構前**的版本，實機是**重構後**的。實機多出這些：
+
+```
+inspectRequirements(ItemStack, CharacterProfile)     公開
+report(EquipmentTemplate, int, CharacterProfile)     私有
+report(MmoItemsBridge$Identity, CharacterProfile)    私有
+appendSkillEntries / appendQuestEntries              私有
+summarize(EquipmentRequirementReport)                私有靜態
+denialMessage(Entry)                                 私有靜態
+```
+
+`summarize` 正是 `EquipmentRequirementReport` javadoc 承諾的那個重構
+（「requirements 改為建立在本型別之上」）—— 實機做完了，原始碼樹停在做之前。
+舊的 `skillRequirements` / `questRequirements` 兩個 helper 在實機已被刪除。
+
+依 bytecode 補回後驗證：
+
+```
+EquipmentService                    83 / 83 成員，只差 oraxen -> nexo
+  其中需求相關 19 個方法             完全一致
+EquipmentRequirementReport          15 / 15 成員完全一致
+EquipmentRequirementReport$Entry    15 / 15 成員完全一致
+```
+
+**一個只有實機才看得出來的細節**：兩個 `report()` 都把「職業」排在「戰鬥等級」
+之前。順序決定 `firstUnmet()` 挑中哪一項，也就決定玩家看到哪一句阻擋訊息。
+先照直覺寫成等級在前，比對 bytecode 常數順序才發現反了。
 
 ## 還沒做的
 

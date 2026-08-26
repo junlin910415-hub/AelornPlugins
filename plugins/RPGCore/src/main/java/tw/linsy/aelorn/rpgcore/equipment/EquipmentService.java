@@ -92,137 +92,119 @@ public final class EquipmentService {
    /**
     * 能不能穿戴，以及第一個擋住的理由。
     *
-    * <p>建立在 {@link #inspectRequirements} 之上：同一份逐項判定，這裡只取第一個
-    * 未滿足項組訊息。兩條路徑共用邏輯，就不會出現「提示框說可以穿、實際擋下來」
-    * 這種只有玩家會發現的漂移。
+    * <p>與 {@link #inspectRequirements} 共用同一份逐項判定：私有多載算出報告後交給
+    * {@link #summarize} 取第一個未滿足項。兩條路徑不會漂移成「提示框說可以穿、
+    * 實際卻擋下來」——那種不一致只有玩家會發現。
     */
    public EquipmentRequirementResult requirements(ItemStack item, CharacterProfile character) {
-      if (item == null || item.getType().isAir() || !item.hasItemMeta()) {
+      if (item != null && !item.getType().isAir() && item.hasItemMeta()) {
+         PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
+         if (!"identified".equals(data.get(this.stateKey, PersistentDataType.STRING))) {
+            return (EquipmentRequirementResult)this.mmoItems.inspect(item).map((identity) -> character == null ? EquipmentRequirementResult.denied("角色資料尚未載入") : this.requirements(identity, character)).orElseGet(EquipmentRequirementResult::allowed);
+         } else if (character == null) {
+            return EquipmentRequirementResult.denied("角色資料尚未載入");
+         } else {
+            String templateId = (String)data.get(this.templateKey, PersistentDataType.STRING);
+            Integer itemLevel = (Integer)data.get(this.levelKey, PersistentDataType.INTEGER);
+            EquipmentTemplate template = templateId == null ? null : (EquipmentTemplate)this.registry.find(templateId).orElse(null);
+            return template != null && itemLevel != null ? this.requirements(template, itemLevel, character) : EquipmentRequirementResult.denied("裝備資料不完整");
+         }
+      } else {
          return EquipmentRequirementResult.allowed();
       }
-      PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
-      boolean identified = "identified".equals(data.get(this.stateKey, PersistentDataType.STRING));
-      if (identified) {
-         if (character == null) {
-            return EquipmentRequirementResult.denied("角色資料尚未載入");
-         }
-         if (!this.hasCompleteEquipmentData(data)) {
-            return EquipmentRequirementResult.denied("裝備資料不完整");
-         }
-      } else if (character == null && this.mmoItems.inspect(item).isPresent()) {
-         return EquipmentRequirementResult.denied("角色資料尚未載入");
-      }
-      EquipmentRequirementReport report = this.inspectRequirements(item, character);
-      return (EquipmentRequirementResult)report.firstUnmet()
-            .map((entry) -> EquipmentRequirementResult.denied(describeUnmet(entry)))
-            .orElseGet(EquipmentRequirementResult::allowed);
    }
 
    /**
     * 每一條需求各自的 ✔ / ✖，不短路。
     *
-    * <p>提示框要的是全部項目，所以這裡把每條都算完 —— 這也是為什麼它不能重用
-    * 「找到第一個失敗就回傳」的那種寫法。
+    * <p>提示框要畫出全部項目，所以這裡把每條都算完——這也是它不能重用
+    * 「找到第一個失敗就回傳」那種寫法的原因。
     *
-    * @return 逐項結果；非裝備、模板未設限制或角色未載入時為
+    * @return 逐項結果；非裝備、角色未載入或模板查不到時為
     *         {@link EquipmentRequirementReport#empty()}
     */
    public EquipmentRequirementReport inspectRequirements(ItemStack item, CharacterProfile character) {
-      if (item == null || item.getType().isAir() || !item.hasItemMeta() || character == null) {
+      if (item != null && !item.getType().isAir() && item.hasItemMeta() && character != null) {
+         PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
+         if ("identified".equals(data.get(this.stateKey, PersistentDataType.STRING))) {
+            String templateId = (String)data.get(this.templateKey, PersistentDataType.STRING);
+            Integer itemLevel = (Integer)data.get(this.levelKey, PersistentDataType.INTEGER);
+            EquipmentTemplate template = templateId == null ? null : (EquipmentTemplate)this.registry.find(templateId).orElse(null);
+            return template != null && itemLevel != null ? this.report(template, itemLevel, character) : EquipmentRequirementReport.empty();
+         } else {
+            return (EquipmentRequirementReport)this.mmoItems.inspect(item).map((identity) -> this.report(identity, character)).orElseGet(EquipmentRequirementReport::empty);
+         }
+      } else {
          return EquipmentRequirementReport.empty();
       }
-      PersistentDataContainer data = item.getItemMeta().getPersistentDataContainer();
-      if (!"identified".equals(data.get(this.stateKey, PersistentDataType.STRING))) {
-         return (EquipmentRequirementReport)this.mmoItems.inspect(item)
-               .map((identity) -> this.report(identity, character))
-               .orElseGet(EquipmentRequirementReport::empty);
-      }
-      String templateId = (String)data.get(this.templateKey, PersistentDataType.STRING);
-      Integer itemLevel = (Integer)data.get(this.levelKey, PersistentDataType.INTEGER);
-      EquipmentTemplate template = templateId == null ? null : (EquipmentTemplate)this.registry.find(templateId).orElse(null);
-      if (template == null || itemLevel == null) {
-         return EquipmentRequirementReport.empty();
-      }
-      return this.report(template, itemLevel, character);
    }
 
-   private boolean hasCompleteEquipmentData(PersistentDataContainer data) {
-      String templateId = (String)data.get(this.templateKey, PersistentDataType.STRING);
-      Integer itemLevel = (Integer)data.get(this.levelKey, PersistentDataType.INTEGER);
-      return templateId != null && itemLevel != null && this.registry.find(templateId).isPresent();
-   }
-
-   /** 自家模板的逐項需求。 */
+   /**
+    * 自家模板的逐項需求。
+    *
+    * <p>職業排在戰鬥等級之前是刻意的：兩項同時不符時，{@link #summarize} 取的是
+    * 第一個未滿足項，而「職業不符」比「等級不足」更根本——等級可以練，職業不行。
+    */
    private EquipmentRequirementReport report(EquipmentTemplate template, int itemLevel, CharacterProfile character) {
       List<EquipmentRequirementReport.Entry> entries = new ArrayList();
-      entries.add(new EquipmentRequirementReport.Entry(
-            EquipmentRequirementReport.Kind.LEVEL, "戰鬥等級",
-            String.valueOf(itemLevel), itemLevel <= character.level()));
       if (!template.classRequirements().isEmpty()) {
-         boolean met = template.classRequirements().stream()
-               .anyMatch((required) -> required.equalsIgnoreCase(character.classId()));
-         entries.add(new EquipmentRequirementReport.Entry(
-               EquipmentRequirementReport.Kind.CLASS, "職業",
-               this.classRequirements(template), met));
+         boolean met = template.classRequirements().stream().anyMatch((required) -> required.equalsIgnoreCase(character.classId()));
+         entries.add(new EquipmentRequirementReport.Entry(EquipmentRequirementReport.Kind.CLASS, "職業", this.classRequirements(template), met));
       }
-      this.appendSkills(entries, template.skillRequirements(), character);
-      this.appendQuests(entries, template.questRequirements(), character);
+
+      entries.add(new EquipmentRequirementReport.Entry(EquipmentRequirementReport.Kind.LEVEL, "戰鬥等級", Integer.toString(itemLevel), itemLevel <= character.level()));
+      this.appendSkillEntries(entries, template.skillRequirements(), character);
+      this.appendQuestEntries(entries, template.questRequirements(), character);
       return new EquipmentRequirementReport(entries);
    }
 
-   /** MMOItems 來源物品的逐項需求。 */
+   /** MMOItems 來源物品的逐項需求。順序與模板那條路徑一致。 */
    private EquipmentRequirementReport report(MmoItemsBridge.Identity identity, CharacterProfile character) {
       List<EquipmentRequirementReport.Entry> entries = new ArrayList();
-      entries.add(new EquipmentRequirementReport.Entry(
-            EquipmentRequirementReport.Kind.LEVEL, "戰鬥等級",
-            String.valueOf(identity.requiredLevel()), identity.requiredLevel() <= character.level()));
       if (identity.requiredClass() != null && !identity.requiredClass().isBlank()) {
-         boolean met = MmoItemsEquipmentMapper.meetsRequirements(
-               identity.requiredClass(), identity.requiredLevel(), character.classId(), character.level());
-         entries.add(new EquipmentRequirementReport.Entry(
-               EquipmentRequirementReport.Kind.CLASS, "職業",
-               identity.requiredClass().replace('|', '/'), met));
+         boolean met = MmoItemsEquipmentMapper.meetsRequirements(identity.requiredClass(), identity.requiredLevel(), character.classId(), character.level());
+         entries.add(new EquipmentRequirementReport.Entry(EquipmentRequirementReport.Kind.CLASS, "職業", identity.requiredClass().replace('|', '/'), met));
       }
-      Map<PrimarySkill, Integer> requiredSkills = new EnumMap(PrimarySkill.class);
-      identity.skillRequirements().forEach((id, value) ->
-            PrimarySkill.parse(id).ifPresent((skill) -> requiredSkills.put(skill, Math.max(0, value))));
-      this.appendSkills(entries, requiredSkills, character);
-      this.appendQuests(entries, identity.questRequirements(), character);
+
+      entries.add(new EquipmentRequirementReport.Entry(EquipmentRequirementReport.Kind.LEVEL, "戰鬥等級", Integer.toString(identity.requiredLevel()), identity.requiredLevel() <= character.level()));
+      EnumMap<PrimarySkill, Integer> requiredSkills = new EnumMap(PrimarySkill.class);
+      identity.skillRequirements().forEach((id, value) -> PrimarySkill.parse(id).ifPresent((skill) -> requiredSkills.put(skill, Math.max(0, value))));
+      this.appendSkillEntries(entries, requiredSkills, character);
+      this.appendQuestEntries(entries, identity.questRequirements(), character);
       return new EquipmentRequirementReport(entries);
    }
 
    /**
-    * 只列出「真的有要求」的技能。
+    * 只列出真的有要求的技能。
     *
-    * <p>需求為 0 的技能不進報告 —— 提示框列出六條「力量 0 ✔」不是資訊，是雜訊。
+    * <p>需求為 0 的技能不進報告——提示框列出六條「力量 0 ✔」不是資訊，是雜訊。
     */
-   private void appendSkills(List<EquipmentRequirementReport.Entry> entries,
-                             Map<PrimarySkill, Integer> requirements, CharacterProfile character) {
+   private void appendSkillEntries(List<EquipmentRequirementReport.Entry> entries, Map<PrimarySkill, Integer> requirements, CharacterProfile character) {
       for(PrimarySkill skill : PrimarySkill.values()) {
          int required = (Integer)requirements.getOrDefault(skill, 0);
-         if (required <= 0) {
-            continue;
+         if (required > 0) {
+            int current = (Integer)character.skillPoints().getOrDefault(skill, 0);
+            entries.add(new EquipmentRequirementReport.Entry(EquipmentRequirementReport.Kind.SKILL, skill.displayName(), required + " 點", current >= required));
          }
-         int current = (Integer)character.skillPoints().getOrDefault(skill, 0);
-         entries.add(new EquipmentRequirementReport.Entry(
-               EquipmentRequirementReport.Kind.SKILL, skill.displayName(),
-               required + " 點", current >= required));
       }
+
    }
 
-   private void appendQuests(List<EquipmentRequirementReport.Entry> entries,
-                             Iterable<String> requirements, CharacterProfile character) {
+   private void appendQuestEntries(List<EquipmentRequirementReport.Entry> entries, Iterable<String> requirements, CharacterProfile character) {
       for(String questId : requirements) {
-         boolean completed = character.questProgress().entrySet().stream()
-               .anyMatch((entry) -> ((String)entry.getKey()).equalsIgnoreCase(questId)
-                     && ((QuestProgress)entry.getValue()).status() == QuestStatus.COMPLETED);
-         entries.add(new EquipmentRequirementReport.Entry(
-               EquipmentRequirementReport.Kind.QUEST, "前置任務", questId, completed));
+         boolean completed = character.questProgress().entrySet().stream().anyMatch((entry) -> ((String)entry.getKey()).equalsIgnoreCase(questId) && ((QuestProgress)entry.getValue()).status() == QuestStatus.COMPLETED);
+         entries.add(new EquipmentRequirementReport.Entry(EquipmentRequirementReport.Kind.QUEST, "前置任務", questId, completed));
       }
+
    }
 
-   /** 未滿足項的阻擋訊息。措辭沿用原本那幾句，玩家看到的字不變。 */
-   private static String describeUnmet(EquipmentRequirementReport.Entry entry) {
+   /** 報告 -> 可否穿戴。取第一個未滿足項當理由。 */
+   private static EquipmentRequirementResult summarize(EquipmentRequirementReport report) {
+      return (EquipmentRequirementResult)report.firstUnmet().map((entry) -> EquipmentRequirementResult.denied(denialMessage(entry))).orElseGet(EquipmentRequirementResult::allowed);
+   }
+
+   /** 未滿足項的阻擋訊息。 */
+   private static String denialMessage(EquipmentRequirementReport.Entry entry) {
       return switch (entry.kind()) {
          case LEVEL -> "戰鬥等級不足，需要 " + entry.requirement() + " 級";
          case CLASS -> "職業不符，需要 " + entry.requirement();
@@ -431,57 +413,15 @@ public final class EquipmentService {
    }
 
    private EquipmentRequirementResult requirements(EquipmentTemplate template, int itemLevel, CharacterProfile character) {
-      if (itemLevel > character.level()) {
-         return EquipmentRequirementResult.denied("戰鬥等級不足，需要 " + itemLevel + " 級");
-      } else if (!template.classRequirements().isEmpty() && template.classRequirements().stream().noneMatch((required) -> required.equalsIgnoreCase(character.classId()))) {
-         String var10000 = this.classRequirements(template);
-         return EquipmentRequirementResult.denied("職業不符，需要 " + var10000);
-      } else {
-         EquipmentRequirementResult skillResult = this.skillRequirements(template.skillRequirements(), character);
-         return !skillResult.usable() ? skillResult : this.questRequirements(template.questRequirements(), character);
-      }
+      return summarize(this.report(template, itemLevel, character));
    }
 
    private EquipmentRequirementResult requirements(MmoItemsBridge.Identity identity, CharacterProfile character) {
-      if (identity.requiredLevel() > character.level()) {
-         return EquipmentRequirementResult.denied("戰鬥等級不足，需要 " + identity.requiredLevel() + " 級");
-      } else if (!MmoItemsEquipmentMapper.meetsRequirements(identity.requiredClass(), identity.requiredLevel(), character.classId(), character.level())) {
-         String var10000 = identity.requiredClass();
-         return EquipmentRequirementResult.denied("職業不符，需要 " + var10000.replace('|', '/'));
-      } else {
-         Map<PrimarySkill, Integer> requiredSkills = new EnumMap(PrimarySkill.class);
-         identity.skillRequirements().forEach((id, value) -> PrimarySkill.parse(id).ifPresent((skill) -> requiredSkills.put(skill, Math.max(0, value))));
-         EquipmentRequirementResult skillResult = this.skillRequirements(requiredSkills, character);
-         return !skillResult.usable() ? skillResult : this.questRequirements(identity.questRequirements(), character);
-      }
-   }
-
-   private EquipmentRequirementResult skillRequirements(Map<PrimarySkill, Integer> requirements, CharacterProfile character) {
-      for(PrimarySkill skill : PrimarySkill.values()) {
-         int required = (Integer)requirements.getOrDefault(skill, 0);
-         int current = (Integer)character.skillPoints().getOrDefault(skill, 0);
-         if (required > current) {
-            String var10000 = skill.displayName();
-            return EquipmentRequirementResult.denied(var10000 + "不足，需要 " + required + " 點");
-         }
-      }
-
-      return EquipmentRequirementResult.allowed();
-   }
-
-   private EquipmentRequirementResult questRequirements(Iterable<String> requirements, CharacterProfile character) {
-      for(String questId : requirements) {
-         boolean completed = character.questProgress().entrySet().stream().anyMatch((entry) -> ((String)entry.getKey()).equalsIgnoreCase(questId) && ((QuestProgress)entry.getValue()).status() == QuestStatus.COMPLETED);
-         if (!completed) {
-            return EquipmentRequirementResult.denied("尚未完成任務 " + questId);
-         }
-      }
-
-      return EquipmentRequirementResult.allowed();
+      return summarize(this.report(identity, character));
    }
 
    private List<Component> unidentifiedLore(EquipmentTemplate template, int level, EquipmentRarity rarity) {
-      List<Component> lore = new ArrayList();
+      ArrayList<Component> lore = new ArrayList();
       String var10002 = this.itemFamily(template);
       lore.add(this.line("<gray>未鑑定的 " + var10002 + "</gray>"));
       lore.add(this.line("<dark_gray>鑑定後會揭露完整數值與品質。</dark_gray>"));
@@ -513,7 +453,7 @@ public final class EquipmentService {
    }
 
    private List<Component> identifiedLore(EquipmentTemplate template, int level, EquipmentRarity rarity, EquipmentRoll roll, CharacterProfile character, int completedRolls) {
-      List<Component> lore = new ArrayList();
+      ArrayList<Component> lore = new ArrayList();
       this.addPreviewBlock(lore, template, roll);
       lore.add(this.line("<dark_gray>────────────────────</dark_gray>"));
       lore.add(this.line("<gray>稀有度：</gray>" + rarity.displayName()));
